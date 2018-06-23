@@ -1,0 +1,314 @@
+[
+  {
+    "id": 1,
+    "rank": "ace",
+    "suit": "hearts",
+    "image": "./images/1h.png"
+  },
+  {
+    "id": 2,
+    "rank": "two",
+    "suit": "hearts",
+    "image": "./images/2h.png"
+  },
+  {
+    "id": 3,
+    "rank": "three",
+    "suit": "hearts",
+    "image": "./images/3h.png"
+  },
+  {
+    "id": 4,
+    "rank": "four",
+    "suit": "hearts",
+    "image": "./images/4h.png"
+  },
+  {
+    "id": 5,
+    "rank": "five",
+    "suit": "hearts",
+    "image": "./images/5h.png"
+  },
+  {
+    "id": 6,
+    "rank": "six",
+    "suit": "hearts",
+    "image": "./images/6h.png"
+  },
+  {
+    "id": 7,
+    "rank": "seven",
+    "suit": "hearts",
+    "image": "./images/7h.png"
+  },
+  {
+    "id": 8,
+    "rank": "eight",
+    "suit": "hearts",
+    "image": "./images/8h.png"
+  },
+  {
+    "id": 9,
+    "rank": "nine",
+    "suit": "hearts",
+    "image": "./images/9h.png"
+  },
+  {
+    "id": 10,
+    "rank": "ten",
+    "suit": "hearts",
+    "image": "./images/10h.png"
+  },
+  {
+    "id": 11,
+    "rank": "jack",
+    "suit": "hearts",
+    "image": "./images/11h.png"
+  },
+  {
+    "id": 12,
+    "rank": "queen",
+    "suit": "hearts",
+    "image": "./images/12h.png"
+  },
+  {
+    "id": 13,
+    "rank": "king",
+    "suit": "hearts",
+    "image": "./images/13h.png"
+  },
+  {
+    "id": 14,
+    "rank": "ace",
+    "suit": "clubs",
+    "image": "./images/1c.png"
+  },
+  {
+    "id": 15,
+    "rank": "two",
+    "suit": "clubs",
+    "image": "./images/2c.png"
+  },
+  {
+    "id": 16,
+    "rank": "three",
+    "suit": "clubs",
+    "image": "./images/3c.png"
+  },
+  {
+    "id": 17,
+    "rank": "four",
+    "suit": "clubs",
+    "image": "./images/4c.png"
+  },
+  {
+    "id": 18,
+    "rank": "five",
+    "suit": "clubs",
+    "image": "./images/5c.png"
+  },
+  {
+    "id": 19,
+    "rank": "six",
+    "suit": "clubs",
+    "image": "./images/6c.png"
+  },
+  {
+    "id": 20,
+    "rank": "seven",
+    "suit": "clubs",
+    "image": "./images/7c.png"
+  },
+  {
+    "id": 21,
+    "rank": "eight",
+    "suit": "clubs",
+    "image": "./images/8c.png"
+  },
+  {
+    "id": 22,
+    "rank": "nine",
+    "suit": "clubs",
+    "image": "./images/9c.png"
+  },
+  {
+    "id": 23,
+    "rank": "ten",
+    "suit": "clubs",
+    "image": "./images/10c.png"
+  },
+  {
+    "id": 24,
+    "rank": "jack",
+    "suit": "clubs",
+    "image": "./images/11c.png"
+  },
+  {
+    "id": 25,
+    "rank": "queen",
+    "suit": "clubs",
+    "image": "./images/12c.png"
+  },
+  {
+    "id": 26,
+    "rank": "king",
+    "suit": "clubs",
+    "image": "./images/13c.png"
+  },
+  {
+    "id": 27,
+    "rank": "ace",
+    "suit": "diamonds",
+    "image": "./images/1d.png"
+  },
+  {
+    "id": 28,
+    "rank": "two",
+    "suit": "diamonds",
+    "image": "./images/2d.png"
+  },
+  {
+    "id": 29,
+    "rank": "three",
+    "suit": "diamonds",
+    "image": "./images/3d.png"
+  },
+  {
+    "id": 30,
+    "rank": "four",
+    "suit": "diamonds",
+    "image": "./images/4d.png"
+  },
+  {
+    "id": 31,
+    "rank": "five",
+    "suit": "diamonds",
+    "image": "./images/5d.png"
+  },
+  {
+    "id": 32,
+    "rank": "six",
+    "suit": "diamonds",
+    "image": "./images/6d.png"
+  },
+  {
+    "id": 33,
+    "rank": "seven",
+    "suit": "diamonds",
+    "image": "./images/7d.png"
+  },
+  {
+    "id": 34,
+    "rank": "eight",
+    "suit": "diamonds",
+    "image": "./images/8d.png"
+  },
+  {
+    "id": 35,
+    "rank": "nine",
+    "suit": "diamonds",
+    "image": "./images/9d.png"
+  },
+  {
+    "id": 36,
+    "rank": "ten",
+    "suit": "diamonds",
+    "image": "./images/10d.png"
+  },
+  {
+    "id": 37,
+    "rank": "jack",
+    "suit": "diamonds",
+    "image": "./images/11d.png"
+  },
+  {
+    "id": 38,
+    "rank": "queen",
+    "suit": "diamonds",
+    "image": "./images/12d.png"
+  },
+  {
+    "id": 39,
+    "rank": "king",
+    "suit": "diamonds",
+    "image": "./images/13d.png"
+  },
+  {
+    "id": 40,
+    "rank": "ace",
+    "suit": "spades",
+    "image": "./images/1s.png"
+  },
+  {
+    "id": 41,
+    "rank": "two",
+    "suit": "spades",
+    "image": "./images/2s.png"
+  },
+  {
+    "id": 42,
+    "rank": "three",
+    "suit": "spades",
+    "image": "./images/3s.png"
+  },
+  {
+    "id": 43,
+    "rank": "four",
+    "suit": "spades",
+    "image": "./images/4s.png"
+  },
+  {
+    "id": 44,
+    "rank": "five",
+    "suit": "spades",
+    "image": "./images/5s.png"
+  },
+  {
+    "id": 45,
+    "rank": "six",
+    "suit": "spades",
+    "image": "./images/6s.png"
+  },
+  {
+    "id": 46,
+    "rank": "seven",
+    "suit": "spades",
+    "image": "./images/7s.png"
+  },
+  {
+    "id": 47,
+    "rank": "eight",
+    "suit": "spades",
+    "image": "./images/8s.png"
+  },
+  {
+    "id": 48,
+    "rank": "nine",
+    "suit": "spades",
+    "image": "./images/9s.png"
+  },
+  {
+    "id": 49,
+    "rank": "ten",
+    "suit": "spades",
+    "image": "./images/10s.png"
+  },
+  {
+    "id": 50,
+    "rank": "jack",
+    "suit": "spades",
+    "image": "./images/11s.png"
+  },
+  {
+    "id": 51,
+    "rank": "queen",
+    "suit": "spades",
+    "image": "./images/12s.png"
+  },
+  {
+    "id": 52,
+    "rank": "king",
+    "suit": "spades",
+    "image": "./images/13s.png"
+  }
+]
