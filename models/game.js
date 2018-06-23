@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const gameSchema = new Schema({
-  gameName: { type: String, required: true },
+  gameName: { type: String, required: true }, // unique?
   admin: { type: String, required: true },
   forkedFrom: { type: String },
   created: { type: String, default: Date.now },

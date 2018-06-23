@@ -35,3 +35,5 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   }
 };
+
+// find queries inside queries_planning.js

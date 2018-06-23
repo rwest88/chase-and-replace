@@ -333,8 +333,8 @@ const gameSeed = [
           },
           {
             "8": {
-              "name": "Pick a Mate",
-              "instructions": "Pick a person. For the rest of the game, whenever you drink, that person must drink."
+              "name": "Pick a Nate",
+              "instructions": "For the duration of the game, Nate must drink once for every person drinking, times the number of eights drawn."
             }
           },
           {
@@ -379,16 +379,137 @@ const gameSeed = [
   }
 ];
 
-db.Game
+// seed into db.User
+
+const userSeed = [
+  {
+    userName: "Chase_Replacenson"
+  },
+  {
+    userName: "n8morton"
+  },
+  {
+    userName: "rwest88"
+  }
+];
+
+
+// user
+// game
+// user
+
+db.User
   .remove({})
-  .then(() => db.Game.insertMany(gameSeed))
+  .then(() => db.User.insertMany(userSeed))
   .then(data => {
-    console.log(data.length + " records inserted!");
-    process.exit(0);
+    console.log(data.length + " records inserted into User collection!");
+
+    db.Game
+    .remove({})
+    .then(() => db.Game.insertMany(gameSeed))
+    .then(data => {
+      console.log(data.length + " records inserted into Game collection!");
+      
+      for (let i in data) {
+        db.User
+          .update({"userName": data[i].admin}, { $push: { games: data[i]._id }, }, {new: true} )
+          .then(() => {
+              console.log(`${data[i]._id} inserted into ${data[i].admin}'s games!`);
+              if (i == data.length - 1) {
+                process.exit(0);
+              }
+          })
+          .catch(err => {
+              console.error(err);
+              process.exit(1);
+          });
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      process.exit(1);
+    });
+
   })
   .catch(err => {
     console.error(err);
     process.exit(1);
   });
 
-// seed into db.User
+// what a damn doozy that was!
+
+
+  // db.Game
+  //   .remove({})
+  //   .then(() => db.Game.insertMany(gameSeed))
+  //   .then(data => {
+  //     console.log(data.length + " records inserted into Game collection!");
+  //     process.exit(0);
+  //   })
+  //   .catch(err => {
+  //     console.error(err);
+  //     process.exit(1);
+  //   });
+
+
+// for (let i in gameSeed) {
+//   db.User
+//     .findOneAndUpdate({"userName": gameSeed[i].admin}, { $push: { games: gameSeed[i]._id } } )
+//     .then(data => {
+//         console.log("1 Game._id inserted into User.games!");
+//         process.exit(0);
+//     })
+//     .catch(err => {
+//         console.error(err);
+//         process.exit(1);
+//     });
+// }
+
+
+
+
+
+
+  // step 3
+  // return db.User.findOneAndUpdate({"userName": gameSeed[i].data}, { $push: { games: dbGame._id } }, { new: true });
+
+
+
+// db.User
+//   .remove({})
+  
+//   .then(data => {
+//     console.log(data.length + " records inserted!");
+//     process.exit(0);
+//   })
+//   .catch(err => {
+//     console.error(err);
+//     process.exit(1);
+//   });
+
+// // Route for saving a new Game to the db and associating it with a User
+
+// // Create a new Game in the db
+// db.Game.create(req.body)
+//   .then(function(dbGame) {
+//     // If a Game was created successfully, find one User (there's only one) and push the new Game's _id to the User's `Games` array
+//     // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
+//     // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
+//     return db.User.findOneAndUpdate({}, { $push: { games: dbGame._id } }, { new: true });
+//   })
+//   .then(function(dbUser) {
+//     // If the User was updated successfully, send it back to the client
+//     res.json(dbUser);
+//   })
+//   .catch(function(err) {
+//     // If an error occurs, send it back to the client
+//     res.json(err);
+//   });
+
+
+
+
+  // what is the {new: true} param?
+
+// can we seed this in production?
+

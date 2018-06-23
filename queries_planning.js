@@ -85,6 +85,6 @@ db.games.update({"gameName" : gameName}, { $pull: { "versions" : { "versionName"
 
 
 // Many of these require knowing how [linking the user collection to the game collection] is going to work
-
+// Remember that forking IS creating a new Game
 
 // component state is going to be large :)
