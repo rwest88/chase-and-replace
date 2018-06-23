@@ -381,12 +381,14 @@ const gameSeed = [
 
 db.Game
   .remove({})
-  .then(() => db.Game.collection.insertMany(gameSeed))
+  .then(() => db.Game.insertMany(gameSeed))
   .then(data => {
-    console.log(data.insertedIds.length + " records inserted!");
+    console.log(data.length + " records inserted!");
     process.exit(0);
   })
   .catch(err => {
     console.error(err);
     process.exit(1);
   });
+
+// seed into db.User

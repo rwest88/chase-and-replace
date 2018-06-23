@@ -1,0 +1,31 @@
+MVC + React architecture (a reminder)
+
+INDEX.js ---> requires react, react-dom, and app.js
+
+>>>
+
+APP.js (client) (page router) ---> requires pages (.js)
+
+>>>
+
+PAGE (client) (require("[utils/API]")  ---> requires Link (react-router-dom) and Components
+
+>>>
+
+UTILS (client) (axios)
+
+>>>
+
+ROUTES (server) (require(express).Router(); const c = require("../../someController");)
+
+>>>
+
+CONTROLLER (server) (const db = require("../models");) --> sends response up to VIEW (changes state)
+
+>>>
+
+MODEL (server) (require("[orm]");
+
+>>>
+
+DB (mongo) (requires Robo3T or Mongo shell to view)
