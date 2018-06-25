@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import LandingLogin from "./pages/LandingLogin";
 import Dashboard from "./pages/Dashboard";
 
 
@@ -8,7 +9,8 @@ const App = () => (
     <div>
       
       <Switch>
-        <Route exact path="/" component={Dashboard} />
+        <Route exact path="/" component={LandingLogin} />
+        <Route exact path="/dashboard" component={Dashboard} />
         
         
       </Switch>

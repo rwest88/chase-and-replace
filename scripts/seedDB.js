@@ -383,13 +383,19 @@ const gameSeed = [
 
 const userSeed = [
   {
-    userName: "Chase_Replacenson"
+    userName: "Chase_Replacenson",
+    email: "chase@yahoo.com",
+    password: "password"
   },
   {
-    userName: "n8morton"
+    userName: "n8morton",
+    email: "n8morton@nate.com",
+    password: "password"
   },
   {
-    userName: "rwest88"
+    userName: "rwest88",
+    email: "rwest88.va@gmail.com",
+    password: "ferndoggy"
   }
 ];
 
@@ -400,7 +406,7 @@ const userSeed = [
 
 db.User
   .remove({})
-  .then(() => db.User.insertMany(userSeed))
+  .then(() => db.User.create(userSeed[2]))
   .then(data => {
     console.log(data.length + " records inserted into User collection!");
 
