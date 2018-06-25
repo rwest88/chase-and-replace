@@ -77,6 +77,7 @@ db.games.update({"gameName" : gameName}, { $pull: { "versions" : { "versionName"
 
 // /// 9b. Update {saved: true} and {forkedFrom: admin} and {admin: [userName]}
 // /// ========================================================================
+  ///// Change object locally
 
 
 // 10. Delete a game (where {admin: [userName]} and {gameName: gameName})

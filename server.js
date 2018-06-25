@@ -1,11 +1,13 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const logger = require("morgan"); // let's see what this does
 const routes = require("./routes");
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Define middleware here
+app.use(logger("dev")); // let's see what this does
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 // Serve up static assets (usually on heroku)
