@@ -3,6 +3,7 @@ import CurrentCard from "../../components/CurrentCard";
 import API from "../../utils/API";
 import { Link } from "react-router-dom";
 import cards from "./cards.json";
+import "./Dashboard.css";
 
 
 class Dashboard extends Component {
@@ -47,15 +48,44 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <div>
-        <img src="./images/deck.png" onClick={()=>this.drawCard()}/>
-        <CurrentCard rank={this.state.currentCard.rank} image={this.state.currentCard.image}/>
+      <div className="wrapper">
         
-        {this.state.burnedCards.map(card=>(
-
-        <CurrentCard rank={card.rank} image={card.image}/>))}
         
-
+        <div className="nav">nav</div>
+        
+        
+        <div className="app-title">App Title</div>
+       
+        
+        <div className="game-title">Game Title</div>
+        
+        
+        <div className="author">Author</div>
+        
+        
+        <div className="version">Version</div>
+        
+        
+        <div className="king-rules">King Rules</div>
+        
+        
+        <div className="game-rules">Game Rules</div>
+        
+        {/* <div className="decks"> */}
+        <img src="./images/deck.png" className="deck" onClick={()=>this.drawCard()}/>
+        {/* </div> */}
+        
+        <div className="current-cards">
+        <CurrentCard rank={this.state.currentCard.rank} image={this.state.currentCard.image} className="current-card"/>
+        </div>
+        
+        <div className="burned-cards">
+          {this.state.burnedCards.map(card=>(
+          <CurrentCard rank={card.rank} image={card.image} className="burned-card"/>))}
+        </div>
+        
+      
+        
       </div>
 
     );

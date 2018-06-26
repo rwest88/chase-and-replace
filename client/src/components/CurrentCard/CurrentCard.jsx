@@ -3,7 +3,7 @@ import "./CurrentCard.css";
 
 const CurrentCard = props => (
     <div>
-        <img alt={props.rank} src={props.image} />
+        <img alt={props.rank} src={props.image} className={props.className} />
     </div>
   );
   
