@@ -1,4 +1,5 @@
 import React from "react";
+import "./LandingLogin.css";
 
 const LandingLogin = () => (
   <div className="container">
