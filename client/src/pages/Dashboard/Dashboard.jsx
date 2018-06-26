@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Nav from "../../components/Nav";
 import CurrentCard from "../../components/CurrentCard";
 import API from "../../utils/API";
 import { Link } from "react-router-dom";
@@ -41,7 +42,7 @@ class Dashboard extends Component {
     return (
       <React.Fragment>
 
-        <div className="nav">nav</div>
+        <Nav />
 
         <div className="wrapper">
           
