@@ -1,0 +1,84 @@
+[
+{
+    "id": 1,
+    "image": "./images/2s.png",
+    "name": "rule name here",
+    "description": "rule description here"
+},
+
+{
+    "id": 2,
+    "image": "./images/3s.png",
+    "name": "rule name here",
+    "description": "rule description here"
+},
+
+{
+    "id": 3,
+    "image": "./images/4s.png",
+    "name": "rule name here",
+    "description": "rule description here"
+},
+
+{
+    "id": 4,
+    "image": "./images/5s.png",
+    "name": "rule name here",
+    "description": "rule description here"
+},
+
+{
+    "id": 5,
+    "image": "./images/6s.png",
+    "name": "rule name here",
+    "description": "rule description here"
+},
+
+{
+    "id": 6,
+    "image": "./images/7s.png",
+    "name": "rule name here",
+    "description": "rule description here"
+},
+
+{
+    "id": 7,
+    "image": "./images/8s.png",
+    "name": "rule name here",
+    "description": "rule description here"
+},
+
+{
+    "id": 8,
+    "image": "./images/9s.png",
+    "name": "rule name here",
+    "description": "rule description here"
+},
+
+{
+    "id": 9,
+    "image": "./images/10s.png",
+    "name": "rule name here",
+    "description": "rule description here"
+},
+
+{
+    "id": 10,
+    "image": "./images/11s.png",
+    "name": "rule name here",
+    "description": "rule description here"
+},
+{
+    "id": 11,
+    "image": "./images/12s.png",
+    "name": "rule name here",
+    "description": "rule description here"
+},
+{
+    "id": 12,
+    "image": "./images/13s.png",
+    "name": "rule name here",
+    "description": "rule description here"
+}
+ 
+]

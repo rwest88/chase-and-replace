@@ -4,14 +4,18 @@ import CurrentCard from "../../components/CurrentCard";
 import API from "../../utils/API";
 import { Link } from "react-router-dom";
 import cards from "./cards.json";
+import rules from "./rules.json";
 import "./Dashboard.css";
+import GameRule from "../../components/GameRule"
 
 class Dashboard extends Component {
   state = {
     burnedCards: [],
     currentRule: "",
     currentCard: "",
-    cards
+    cards,
+    rules,
+    
   };  
 
   componentDidMount() {
@@ -61,8 +65,14 @@ class Dashboard extends Component {
           </div>
           
           <div className="king-rules">King Rules</div>
-          <div className="game-rules">Game Rules</div>
-
+          
+          <div className="game-rules">
+            <div className="title">Game Rules</div>
+            {this.state.rules.map(rule=>(
+            <GameRule image={rule.image} name={rule.name} description={rule.description}/>))}
+          </div>
+          
+          
           <div className="burned-cards">
             {this.state.burnedCards.map(card=>(
             <img alt={card.rank} src={card.image} className="burned-card" />))}
