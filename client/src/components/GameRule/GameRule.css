@@ -1,0 +1,16 @@
+.game-rule{
+    float:left;
+    margin: 1%;
+}
+
+.game-rule>img{
+    height: 100%;
+}
+.game-rule>button {
+    margin: 3%;
+    width: 75%;
+    font-size: 2vh;
+}
+.game-rule.title {
+    grid-column: 1/3;
+}
