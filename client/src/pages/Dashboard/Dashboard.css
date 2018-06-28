@@ -31,10 +31,17 @@ body {
   background-color: forestgreen;
 }
 .king-rules {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-auto-rows:7.5vh;
   grid-column: 8/12;
   grid-row: 2/5;
   background-color: lime;
 }
+.king-rules > .title {
+  grid-column: 1/3;
+}
+
 .game-rules {
   display: grid;
   grid-template-columns: 50% 50%;

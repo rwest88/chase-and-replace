@@ -7,6 +7,7 @@ import cards from "./cards.json";
 import games from "./games.json";
 import "./Dashboard.css";
 import GameRule from "../../components/GameRule"
+import KingRule from "../../components/KingRule"
 
 class Dashboard extends Component {
   // trying to:
@@ -40,7 +41,7 @@ class Dashboard extends Component {
         games,
         currentGame: games[0],
         rules: games[0].versions[0].rules,
-        kingRules: []
+        kingRules: [{name:"blah", instructions:"foo", image:"bar"},{name:"blah", instructions:"foo", image:"bar"},{name:"blah", instructions:"foo", image:"bar"},{name:"blah", instructions:"foo", image:"bar"}]
       });
     } else {
       console.log('yes session data');
@@ -78,7 +79,8 @@ class Dashboard extends Component {
       currentCard: {},
       deckEmpty: false,
       currentGame: game,
-      rules: game.versions[0].rules
+      rules: game.versions[0].rules,
+      kingRules:[]
     });
   }
 
@@ -112,17 +114,15 @@ class Dashboard extends Component {
   }
 
   undo() {
-    this.setState({deckEmpty: false});
-
     if (this.state.cards.length < 52) {
       const card = this.state.burnedCards.pop();
-      const newCurrentCard = this.state.burnedCards[this.state.burnedCards.length - 1];
+      const newCurrentCard = this.state.burnedCards[this.state.burnedCards.length - 1] || card;
       const newCards = this.state.cards;
       newCards.push(card);
-
       this.setState({
         currentCard: newCurrentCard,
-        cards: newCards
+        cards: newCards,
+        deckEmpty: false
       });
     }
   }
@@ -163,7 +163,12 @@ class Dashboard extends Component {
                  className="current-card"/>
           </div>
           
-          <div className="king-rules">King Rules</div>
+          <div className="king-rules">
+            <div className="title">King Rules</div>
+            {this.state.kingRules.map(rule=>(
+              <KingRule image={rule.image} name={rule.name} instructions={rule.instructions}/>
+            ))}
+          </div>
           
           <div className="game-rules">
             <div className="title">Game Rules</div>

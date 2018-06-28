@@ -1,10 +1,11 @@
 import React from "react";
-import "./GameRule.css";
+import "./KingRule.css";
 
-const GameRule = props => (
-    <div className="game-rule dropup">
-      <img src={`./images/${props.rank}s.png`}/>
+const KingRule = props=>(
+<div className="game-rule dropdown">
+      <img src={props.image}/>
       <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{props.name}
+      {props.name}
       </button>
       <div class="dropdown-menu">
     <p>{props.instructions}</p>
@@ -13,4 +14,7 @@ const GameRule = props => (
     </div>
   );
 
-export default GameRule;
+
+
+
+export default KingRule;
