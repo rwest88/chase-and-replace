@@ -1,15 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import "./Nav.css";
 
 class Nav extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  // }
-  // componentDidUpdate() {
-  //   console.log(props);
-  // }
-  render = ({games, handleLoadGame} = this.props) => {
+  
+  render = ({games, loadGame} = this.props) => {
+
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-green">
         <a className="navbar-brand" href="/dashboard">Chase and Replace</a>
@@ -24,7 +20,7 @@ class Nav extends React.Component {
                     className={
                     window.location.pathname === "/dashboard" ? "nav-link active" : "nav-link"
               }>
-                Play <span className="sr-only">(current)</span>
+                Play {/*<span className="sr-only">(current)</span>*/}
               </Link>
             </li>
             <li className="nav-item dropdown">
@@ -32,10 +28,14 @@ class Nav extends React.Component {
                 Load Game
               </a>
               <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                {/* {for (var i in this.props.games)} */}
-                <a className="dropdown-item" href="#" onClick={() => this.props.handleLoadGame(this.props.games[0])}>Classic Kings</a>
-                <a className="dropdown-item" href="#" onClick={() => this.props.handleLoadGame(this.props.games[1])}>Kings Variation</a>
-                <a className="dropdown-item" href="#" onClick={() => this.props.handleLoadGame(this.props.games[2])}>Custom</a>
+                {games.map(game => (
+                  <Route render={({history}) => (
+                    <button className="dropdown-item" 
+                      onClick={() => {loadGame(game); setTimeout(() => {history.push('/dashboard')}, 500);}}>
+                      {game.gameName}
+                    </button>
+                  )} />
+                ))}
               </div>
             </li>
             <li className="nav-item">
