@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import "./Nav.css";
 
 class Nav extends React.Component {
@@ -29,7 +29,12 @@ class Nav extends React.Component {
               </a>
               <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 {games.map(game => (
-                  <button className="dropdown-item" onClick={() => loadGame(game)}>{game.gameName}</button>
+                  <Route render={({history}) => (
+                    <button className="dropdown-item" 
+                      onClick={() => {loadGame(game); setTimeout(() => {history.push('/dashboard')}, 500);}}>
+                      {game.gameName}
+                    </button>
+                  )} />
                 ))}
               </div>
             </li>
