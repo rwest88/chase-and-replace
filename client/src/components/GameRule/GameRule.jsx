@@ -3,7 +3,7 @@ import "./GameRule.css";
 
 const GameRule = props => (
     <div className="game-rule">
-      <img src={props.image}/>
+      <img src={`./images/${props.rank}s.png`}/>
       <button>{props.name}
       </button>
 

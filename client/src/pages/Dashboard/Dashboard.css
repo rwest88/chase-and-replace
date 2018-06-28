@@ -1,26 +1,23 @@
-.nav {
+body {
+  font-weight: 600;
   background-color: green;
-  height: 40px;
-  /* position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 12%; */
+}
+.navbar {
+  background-color: green;
+  height: 8% !important;
 }
 .wrapper {
-  /* position: relative;
-  border: 2px, solid, gray; */
   display: grid;
   grid-template-columns: repeat(11, 1fr);
   grid-auto-rows: 9vh;
 }
 .wrapper > div {
   text-align: center;
-}
+} /*
 .app-title {
   grid-column: 1/5;
   background-color: forestgreen;
-}
+} */
 .game-title {
   grid-column: 5/8;
   background-color: seagreen;
@@ -35,45 +32,27 @@
 }
 .king-rules {
   grid-column: 8/12;
-  grid-row: 2/6;
+  grid-row: 2/5;
   background-color: lime;
-  /* position: absolute;
-  top: 95px;
-  right: 48px;
-  width: 26%;
-  height: 40%; */
 }
 .game-rules {
   display: grid;
   grid-template-columns: 50% 50%;
-  grid-auto-rows:6vh;
+  grid-auto-rows:7.5vh;
   grid-column: 8/12;
-  grid-row: 6/11;
+  grid-row: 5/11;
   background-color: darkgreen;
-  /* position: absolute;
-  top: 230px;
-  right: 20px;
-  width: 33%;
-  height: 141%; */
 }
 .game-rules > .title {
   grid-column: 1/3;
 }
 .decks {
   grid-column: 1/5;
-  grid-row: 2/6;
+  grid-row: 1/5;
   text-align: center;
   background-color: lime;
-  
-  /* position: absolute;
-  top: 50px;
-  left: 0px;
-  width: 15%;
-  height: 10%; */
 }
 .deck {
-  /* position: relative; */
-  /* max-width: 80%; */
   height: 100%;
   cursor: pointer;
 }
@@ -81,33 +60,18 @@
   grid-column: 5/8;
   grid-row: 2/7;
   text-align: center;
-  /* overflow: initial; */
   background-color: green;
-  /* position: absolute;
-  top: 59px;
-  left: 536px;
-  width: 21%;
-  height: 132%; */
 }
 .current-card {
-  /* position: relative; */
-  /* max-width: 80%; */
   height: 100%;
 }
 .burned-cards {
   grid-column: 1/5;
-  grid-row: 6/11;
+  grid-row: 5/11;
   background-color: darkgreen;
-  padding: 3% 4% 0% 4%;
-  /* position: absolute;
-  top: 390px;
-  left: 20px;
-  width: 33%;
-  height: 88%; */
+  padding: 9vh 3% 3% 3%;
 }
 .burned-card {
-  /* position: relative; */
-  /* max-width: 8%; */
   margin: 0.2%;
   height: 19%;
   float: left;
@@ -117,7 +81,22 @@
   grid-row: 7/11;
   background-color: seagreen;
 }
-.footer {
-  background-color: green;
-  height: 30px;
+
+@media screen and (max-aspect-ratio: 100/52) {
+  .burned-card {
+    height: 17%;
+  }
+}
+@media screen and (max-aspect-ratio: 100/58) {
+  .burned-card {
+    height: 15%;
+  }
+  .game-rules > button {
+    font-size: 1px;
+  }
+}
+@media screen and (max-aspect-ratio: 100/74) { /* tablet portrait */
+  .burned-card {
+    height: 13%;
+  }
 }
