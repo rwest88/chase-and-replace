@@ -9,34 +9,35 @@ import "./Dashboard.css";
 import GameRule from "../../components/GameRule"
 
 class Dashboard extends Component {
-  state = {
-    burnedCards: [],
-    currentRule: "",
-    currentCard: {},
-    cards,
-    games,
-    currentGame: games[0],
-    rules: games[0].versions[0].rules
-  }
 
   componentWillMount() {
     // this.setState({rules: games[0].versions[0].rules});
+    if (!sessionStorage.getItem('gameState')) {
+      this.setState({
+        cards,
+        burnedCards: [],
+        currentCard: {},
+        currentRule: {},
+        games,
+        currentGame: games[0],
+        rules: games[0].versions[0].rules,
+        kingRules: []
+      });
+    } else {
+      this.setState(JSON.parse(sessionStorage.getItem('gameState')));
+    }
   }
 
   componentDidMount() {
-    var sessionObject = sessionStorage.getItem('gameState');
-    if (sessionObject) {
-      this.setState(JSON.parse(sessionObject));
-      sessionStorage.removeItem('gameState')
-    } else {
+    // var sessionObject = sessionStorage.getItem('gameState');
       this.shuffleArray(cards);
       // To Do:
       // if (authenticated) setState games to db query result (User.games) 
       // .then query result ({games._id} && {saved: true} [and slice versions array for latest version])
-    }
-  // or, do that here. Yes.
+    // }
+    // or, do that here. Yes.
 
-  console.log(this.state.rules);
+    // console.log(this.state.rules);
   }
 
   componentWillUnmount() {
@@ -44,8 +45,8 @@ class Dashboard extends Component {
   }
 
   loadGame = game => {
-    sessionStorage.removeItem('gameState');
-    console.log(game);
+    // sessionStorage.removeItem('gameState');
+    console.log("loaded game");
     this.setState({
       cards: this.shuffleArray(this.state.cards.concat(this.state.burnedCards)),
       burnedCards: [],
@@ -53,7 +54,7 @@ class Dashboard extends Component {
       currentCard: {},
       deckEmpty: false,
       currentGame: game,
-      rules: game.versions[0].rules // needs to update according to function's 'game' argument
+      rules: game.versions[0].rules
     });
   }
 
@@ -87,8 +88,19 @@ class Dashboard extends Component {
   }
 
   undo() {
-    // pop from burnedCards and push to deck
-    // setState currentCard to last item in burnedCards array
+    this.setState({deckEmpty: false});
+
+    if (this.state.cards.length < 52) {
+      const card = this.state.burnedCards.pop();
+      const newCurrentCard = this.state.burnedCards[this.state.burnedCards.length - 1];
+      const newCards = this.state.cards;
+      newCards.push(card);
+
+      this.setState({
+        currentCard: newCurrentCard,
+        cards: newCards
+      });
+    }
   }
 
   shuffleArray = (array) => {
@@ -103,7 +115,7 @@ class Dashboard extends Component {
     return (
       <React.Fragment>
 
-        <Nav games={this.state.games} handleLoadGame={this.loadGame}/>
+        <Nav games={this.state.games} loadGame={this.loadGame}/>
 
         <div className="wrapper">
           
@@ -121,7 +133,10 @@ class Dashboard extends Component {
           
           <div className="current-cards">
             {/* <CurrentCard rank={this.state.currentCard.rank} image={this.state.currentCard.image} className="current-card"/> */}
-            <img alt={this.state.currentCard.rank} src={this.state.currentCard.image} className="current-card"/>
+            <img alt={this.state.currentCard.rank} 
+                 src={this.state.currentCard.image} 
+                 onClick={() => this.undo()}
+                 className="current-card"/>
           </div>
           
           <div className="king-rules">King Rules</div>
@@ -129,13 +144,15 @@ class Dashboard extends Component {
           <div className="game-rules">
             <div className="title">Game Rules</div>
             {this.state.rules.map(rule=>(
-            <GameRule rank={rule.rank} name={rule.name} instructions={rule.instructions}/>))}
+              <GameRule rank={rule.rank} name={rule.name} instructions={rule.instructions}/>
+            ))}
           </div>
           
           
           <div className="burned-cards">
             {this.state.burnedCards.map(card=>(
-            <img alt={card.rank} src={card.image} className="burned-card" />))}
+              <img alt={card.rank} src={card.image} className="burned-card" />
+            ))}
           </div>
 
           <div className="HUD">Heads-Up Display</div>
