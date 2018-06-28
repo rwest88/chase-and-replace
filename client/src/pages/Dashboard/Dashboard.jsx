@@ -9,10 +9,29 @@ import "./Dashboard.css";
 import GameRule from "../../components/GameRule"
 
 class Dashboard extends Component {
+  // trying to:
+  // save game state across pages in session storage (how many cards have been drawn, etc.)
+  // save version state (subset of game state) in local storage (what the rule set is for each game)
+
+  // it seems like the page mounts before the session storage can finish
+  // and the data is only moving from dashboard to createpage, and not vice-versa
+  // ^^ except for the first time, which is really strange to me
+
+  // redux?  
+  //
+  // NEVERMIND! I got this to work by repeating this code twice in each page (strangely and not super DRY):
+  // 
+  //  var sessionObject = sessionStorage.getItem('gameState');
+  //  this.setState(JSON.parse(sessionObject));
+  // ==========================================================================================
+
+  // ===================
+  // Life Cycle Methods:
+  // ===================
 
   componentWillMount() {
-    // this.setState({rules: games[0].versions[0].rules});
     if (!sessionStorage.getItem('gameState')) {
+      console.log('no session data');
       this.setState({
         cards,
         burnedCards: [],
@@ -24,25 +43,30 @@ class Dashboard extends Component {
         kingRules: []
       });
     } else {
-      this.setState(JSON.parse(sessionStorage.getItem('gameState')));
+      console.log('yes session data');
     }
+      
+    var sessionObject = sessionStorage.getItem('gameState');
+    this.setState(JSON.parse(sessionObject));
   }
 
   componentDidMount() {
-    // var sessionObject = sessionStorage.getItem('gameState');
-      this.shuffleArray(cards);
+    var sessionObject = sessionStorage.getItem('gameState');
+    this.setState(JSON.parse(sessionObject));
+
+    this.shuffleArray(cards);
       // To Do:
       // if (authenticated) setState games to db query result (User.games) 
       // .then query result ({games._id} && {saved: true} [and slice versions array for latest version])
-    // }
-    // or, do that here. Yes.
-
-    // console.log(this.state.rules);
   }
 
   componentWillUnmount() {
     sessionStorage.setItem('gameState', JSON.stringify(this.state));
   }
+
+  // ==============
+  // Custom Methods
+  // ==============
 
   loadGame = game => {
     // sessionStorage.removeItem('gameState');
@@ -50,7 +74,7 @@ class Dashboard extends Component {
     this.setState({
       cards: this.shuffleArray(this.state.cards.concat(this.state.burnedCards)),
       burnedCards: [],
-      currentRule: "",
+      currentRule: {},
       currentCard: {},
       deckEmpty: false,
       currentGame: game,
@@ -120,7 +144,7 @@ class Dashboard extends Component {
         <div className="wrapper">
           
           {/* <div className="app-title">App Title</div> */}
-          <div className="game-title">Game Title</div>
+          <div className="game-title">Game Title<br/>{this.state.currentGame.gameName}</div>
           <div className="author">Author</div>
           <div className="version">Version</div>
           
