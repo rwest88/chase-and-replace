@@ -1,3 +1,7 @@
 .bg-green {
   background-color: green;
 }
+.navbar {
+  padding: 4px 16px;
+  font-weight: 900;
+}
