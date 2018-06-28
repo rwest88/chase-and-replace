@@ -23,85 +23,72 @@ const gameSeed = [
         date: new Date(Date.now()),
         rules: [
           {
-            "2": {
+              "rank": "2",
               "name": "You",
               "instructions": "Pick a person, that person drinks."
-            }
           },
           {
-            "3": {
+              "rank": "3",
               "name": "Me",
               "instructions": "Drink. Yeah, you."
-            }
           },
           {
-            "4": {
+              "rank": "4",
               "name": "Floor",
               "instructions": "Last person to put a hand on the floor drinks."
-            }
           },
           {
-            "5": {
+              "rank": "5",
               "name": "Guys",
               "instructions": "All boys drink."
-            }
           },
           {
-            "6": {
+              "rank": "6",
               "name": "Chicks",
               "instructions": "All girls drink."
-            }
           },
           {
-            "7": {
+              "rank": "7",
               "name": "Heaven",
               "instructions": "Last person to raise both hands in the air must drink."
-            }
           },
           {
-            "8": {
+              "rank": "8",
               "name": "Pick a Mate",
               "instructions": "Pick a person. For the rest of the game, whenever you drink, that person must drink."
-            }
           },
           {
-            "9": {
+              "rank": "9",
               "name": "Bust a Rhyme",
               "instructions": "Say a word. Play continues clockwise blah blah blah"
-            }
           },
           {
-            "10": {
+              "rank": "10",
               "name": "Categories",
               "instructions": "Pick a category. Say a thing belonging to that category. Play continues clockwise blah blah blah blah blah blah blah."
-            }
           },
           {
-            "J": {
+              "rank": "J",
               "name": "I Never",
               "instructions": "Everyone raises three (or five) fingers and starts a game of 'Never Have I Ever'."
-            }
           },
           {
-            "Q": {
+              "rank": "Q",
               "name": "Questions",
               "instructions": "klasjd kadsjf ;lakdsjf ;laskdjf ;ladsjf;l aksjdf;lka sdfk;ljasd ;lkjadsf;lk jasdfk;lj lskdjflaskdjf?"
-            }
           },
           {
-            "K": {
+              "rank": "K",
               "name": "Make a Rule",
               "instructions": "Make a global rule for the current game!"
-            }
           },
           {
-            "A": {
+              "rank": "A",
               "name": "Chase and Replace",
               "instructions": "Everybody drinks! If anyone is feeling bold, take a shot and a chaser. Then, choose a rank (other than King and Ace) and change the rule for that card."
-            }
           }
         ]
-      },
+      }
     ]
   },
   {
@@ -118,82 +105,69 @@ const gameSeed = [
         date: new Date(Date.now()),
         rules: [
           {
-            "2": {
+              "rank": "2",
               "name": "Poo",
               "instructions": "Throw poo."
-            }
           },
           {
-            "3": {
+              "rank": "3",
               "name": "Pee",
               "instructions": "Throw pee."
-            }
           },
           {
-            "4": {
+              "rank": "4",
               "name": "Score",
               "instructions": "And seven years ago."
-            }
           },
           {
-            "5": {
+              "rank": "5",
               "name": "Hive",
               "instructions": "Find a beehive and eat it."
-            }
           },
           {
-            "6": {
+              "rank": "6",
               "name": "Dicks",
               "instructions": "Eat a bag of dicks."
-            }
           },
           {
-            "7": {
+              "rank": "7",
               "name": "Seven-Eleven",
               "instructions": "Leave the game and get more beer."
-            }
           },
           {
-            "8": {
+              "rank": "8",
               "name": "Cate",
               "instructions": "Cate must drink."
-            }
           },
           {
-            "9": {
+              "rank": "9",
               "name": "Stein",
               "instructions": "Chug 32 oz of beer."
-            }
           },
           {
-            "10": {
+              "rank": "10",
               "name": "Win",
               "instructions": "You win! Drink."
-            }
           },
           {
-            "J": {
+              "rank": "J",
               "name": "asdfasdf",
               "instructions": "asdf"
-            }
           },
           {
-            "Q": {
+              "rank": "Q",
               "name": "lkjalk",
               "instructions": "kla;lj lskdjflaskdjf?"
-            }
           },
           {
-            "K": {
+              "rank": "K",
               "name": "Make a Rule",
               "instructions": "Make a global rule for the current game!"
-            }
           },
           {
-            "A": {
+              "rank": "A",
               "name": "Chase and Replace",
               "instructions": "Everybody drinks! If anyone is feeling bold, take a shot and a chaser. Then, choose a rank (other than King and Ace) and change the rule for that card."
-            }
           }
         ]
       },
@@ -202,82 +176,69 @@ const gameSeed = [
         date: new Date(Date.now()),
         rules: [
           {
-            "2": {
+              "rank": "2",
               "name": "piss",
               "instructions": "piss"
-            }
           },
           {
-            "3": {
+              "rank": "3",
               "name": "Pee",
               "instructions": "piss"
-            }
           },
           {
-            "4": {
+              "rank": "4",
               "name": "Urinate",
               "instructions": "piss"
-            }
           },
           {
-            "5": {
+              "rank": "5",
               "name": "Hive",
               "instructions": "piss on a beehive"
-            }
           },
           {
-            "6": {
+              "rank": "6",
               "name": "Dicks",
               "instructions": "piss"
-            }
           },
           {
-            "7": {
+              "rank": "7",
               "name": "Spring a Leak",
               "instructions": "piss"
-            }
           },
           {
-            "8": {
+              "rank": "8",
               "name": "Cate",
               "instructions": "piss on Cate"
-            }
           },
           {
-            "9": {
+              "rank": "9",
               "name": "Wine",
               "instructions": "pee in a wine glass"
-            }
           },
           {
-            "10": {
+              "rank": "10",
               "name": "I dunno",
               "instructions": "hmm."
-            }
           },
           {
-            "J": {
+              "rank": "J",
               "name": "Jack-o-Lantern",
               "instructions": "pee in a pumpkin"
-            }
           },
           {
-            "Q": {
+              "rank": "Q",
               "name": "Queen Pee",
               "instructions": "pee in a dress"
-            }
           },
           {
-            "K": {
+              "rank": "K",
               "name": "Make a Rule",
               "instructions": "Make a global rule for the current game!"
-            }
           },
           {
-            "A": {
+              "rank": "A",
               "name": "Chase and Replace",
               "instructions": "Everybody drinks! If anyone is feeling bold, take a shot and a chaser. Then, choose a rank (other than King and Ace) and change the rule for that card."
-            }
           }
         ]
       }
@@ -296,85 +257,72 @@ const gameSeed = [
         date: new Date(Date.now()),
         rules: [
           {
-            "2": {
+              "rank": "2",
               "name": "Artoo",
               "instructions": "Do best R2D2 impression, and then continue play clockwise. Vote for the loser who must drink."
-            }
           },
           {
-            "3": {
+              "rank": "3",
               "name": "Me",
               "instructions": "Drink. Yeah, you."
-            }
           },
           {
-            "4": {
+              "rank": "4",
               "name": "Floor",
               "instructions": "Last person to put a hand on the floor drinks."
-            }
           },
           {
-            "5": {
+              "rank": "5",
               "name": "Guys",
               "instructions": "All boys drink."
-            }
           },
           {
-            "6": {
+              "rank": "6",
               "name": "Chicks",
               "instructions": "All girls drink."
-            }
           },
           {
-            "7": {
+              "rank": "7",
               "name": "Heaven",
               "instructions": "Last person to raise both hands in the air must drink."
-            }
           },
           {
-            "8": {
+              "rank": "8",
               "name": "Pick a Nate",
               "instructions": "For the duration of the game, Nate must drink once for every person drinking, times the number of eights drawn."
-            }
           },
           {
-            "9": {
+              "rank": "9",
               "name": "Chewy",
               "instructions": "Make the Chewbacca noise, and then drink."
-            }
           },
           {
-            "10": {
+              "rank": "10",
               "name": "Star Wars Categories",
               "instructions": "Pick a Star Wars category, such as planets, vehicles, characters, etc. Say a thing belonging to that category. Play continues clockwise. If you get stumped, you must drink."
-            }
           },
           {
-            "J": {
+              "rank": "J",
               "name": "I Never (Star Wars edition)",
               "instructions": "Everyone raises three (or five) fingers and starts a game of 'Never Have I Ever'. All responses must contain a Star-Wars reference."
-            }
           },
           {
-            "Q": {
+              "rank": "Q",
               "name": "Princesses",
               "instructions": "You're in the hot seat for a round of 'Would You Rather'"
-            }
           },
           {
-            "K": {
+              "rank": "K",
               "name": "Make a Rule",
               "instructions": "Make a global rule for the current game!"
-            }
           },
           {
-            "A": {
+              "rank": "A",
               "name": "Chase and Replace",
               "instructions": "Everybody drinks! If anyone is feeling bold, take a shot and a chaser. Then, choose a rank (other than King and Ace) and change the rule for that card."
-            }
           }
         ]
-      },
+      }
     ]
   }
 ];
@@ -406,7 +354,7 @@ const userSeed = [
 
 db.User
   .remove({})
-  .then(() => db.User.create(userSeed[2]))
+  .then(() => db.User.create(userSeed))
   .then(data => {
     console.log(data.length + " records inserted into User collection!");
 
