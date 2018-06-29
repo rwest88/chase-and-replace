@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Nav from "../../components/Nav";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import "./CreateEditGame.css";
 import cards from "../Dashboard/cards.json";
 import games from "../Dashboard/games.json";
@@ -46,7 +46,8 @@ class CreateEditGame extends Component {
       currentCard: {},
       deckEmpty: false,
       currentGame: game,
-      rules: game.versions[0].rules
+      rules: game.versions[0].rules,
+      redirectTo: '/dashboard',
     });
   }
 
@@ -59,6 +60,9 @@ class CreateEditGame extends Component {
   }
 
   render() {
+    if (this.state.redirectTo) {
+      return <Redirect to={this.state.redirectTo}/>;
+    }
     return (
       <React.Fragment>
         <Nav games={this.state.games} loadGame={this.loadGame}/>
