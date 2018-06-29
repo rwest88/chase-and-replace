@@ -84,9 +84,11 @@ class Dashboard extends Component {
       kingRules:[]
     });
   }
-
-  setKing() {
-    
+ 
+  sendRule(name) {
+    const blah = this.state.kingRules;
+    blah.push({"name": name});
+    this.setState({kingRules: blah});
   }
 
   loadGamesFromDB() {
@@ -190,7 +192,7 @@ class Dashboard extends Component {
           </div>
 
           <div className="HUD">
-            <HUD />
+            <HUD sendRule={() => this.sendRule()}/>
           </div>
           
         </div>

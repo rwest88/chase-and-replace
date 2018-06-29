@@ -6,14 +6,14 @@ const HUD = props => (
   <React.Fragment>
     <form>
       <div className="form-group">
-        <label for="exampleInputEmail1">Rule Name</label>
-        <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter a snazzy name" />
+        <label for="rule-name">Rule Name</label>
+        <input type="text" className="form-control" id="enter-rule-name" placeholder="Enter a snazzy name" />
       </div>
       <div className="form-group">
-        <label for="exampleInputPassword1">Instructions</label>
+        <label for="rule-instructions">Instructions</label>
         <textarea className="form-control" id="enter-rule-instructions" placeholder="e.g., no eye-contact" rows="3" />
       </div>
-      <button  className="btn btn-primary">Submit</button>
+      <button onClick={() => props.sendRule()} className="btn btn-primary">Submit</button>
     </form>
 
   </React.Fragment>
