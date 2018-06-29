@@ -6,8 +6,9 @@ import { Link } from "react-router-dom";
 import cards from "./cards.json";
 import games from "./games.json";
 import "./Dashboard.css";
-import GameRule from "../../components/GameRule"
-import KingRule from "../../components/KingRule"
+import GameRule from "../../components/GameRule";
+import KingRule from "../../components/KingRule";
+import HUD from "../../components/HUD";
 
 class Dashboard extends Component {
   // trying to:
@@ -82,6 +83,12 @@ class Dashboard extends Component {
       rules: game.versions[0].rules,
       kingRules:[]
     });
+  }
+ 
+  sendRule(name) {
+    const blah = this.state.kingRules;
+    blah.push({"name": name});
+    this.setState({kingRules: blah});
   }
 
   loadGamesFromDB() {
@@ -184,7 +191,9 @@ class Dashboard extends Component {
             ))}
           </div>
 
-          <div className="HUD">Heads-Up Display</div>
+          <div className="HUD">
+            <HUD sendRule={() => this.sendRule()}/>
+          </div>
           
         </div>
 
