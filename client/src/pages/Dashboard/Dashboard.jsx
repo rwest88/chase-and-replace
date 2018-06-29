@@ -42,19 +42,31 @@ class Dashboard extends Component {
         games,
         currentGame: games[0],
         rules: games[0].versions[0].rules,
-        kingRules: [{name:"blah", instructions:"foo", image:"bar"},{name:"blah", instructions:"foo", image:"bar"},{name:"blah", instructions:"foo", image:"bar"},{name:"blah", instructions:"foo", image:"bar"}]
+        kingRules: [{name:"blah", instructions:"foo", image:"bar"},{name:"blah", instructions:"foo", image:"bar"},{name:"blah", instructions:"foo", image:"bar"},{name:"blah", instructions:"foo", image:"bar"}],
+        // redirectTo: false
       });
     } else {
       console.log('yes session data');
+      // this.setState({redirectTo: false});
+      // sessionStorage.removeItem('gameState');
+      var sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
+      // // sessionObject.redirectTo = false;
+      this.setState(sessionObject);
     }
       
-    var sessionObject = sessionStorage.getItem('gameState');
-    this.setState(JSON.parse(sessionObject));
+    // var sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
+    // // sessionObject.redirectTo = false;
+    // this.setState(sessionObject);
   }
 
   componentDidMount() {
-    var sessionObject = sessionStorage.getItem('gameState');
-    this.setState(JSON.parse(sessionObject));
+    var sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
+    if (sessionObject) {
+      sessionObject.redirectTo = false;
+      this.setState(sessionObject);
+      sessionStorage.removeItem('gameState');
+    }
+
 
     this.shuffleArray(cards);
       // To Do:
@@ -63,7 +75,9 @@ class Dashboard extends Component {
   }
 
   componentWillUnmount() {
+    // this.setState({redirectTo: false});
     sessionStorage.setItem('gameState', JSON.stringify(this.state));
+
   }
 
   // ==============
@@ -123,7 +137,7 @@ class Dashboard extends Component {
   undo() {
     if (this.state.cards.length < 52) {
       const card = this.state.burnedCards.pop();
-      const newCurrentCard = this.state.burnedCards[this.state.burnedCards.length - 1] || card;
+      const newCurrentCard = this.state.burnedCards[this.state.burnedCards.length - 1] || {};
       const newCards = this.state.cards;
       newCards.push(card);
       this.setState({
