@@ -47,6 +47,7 @@ class CreateEditGame extends Component {
       deckEmpty: false,
       currentGame: game,
       rules: game.versions[0].rules,
+      kingRules: [],
       redirectTo: '/dashboard',
     });
   }

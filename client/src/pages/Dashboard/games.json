@@ -5,6 +5,11 @@
       {
         "versionName": "init",
         "rules": [
+            {
+                "rank": "1",
+                "name": "Chase and Replace",
+                "instructions": "Everybody drinks! If anyone is feeling bold, take a shot and a chaser. Then, choose a rank (other than King and Ace) and change the rule for that card."
+            },
           {
               "rank": "2",
               "name": "You",
@@ -51,17 +56,17 @@
               "instructions": "Pick a category. Say a thing belonging to that category. Play continues clockwise blah blah blah blah blah blah blah."
           },
           {
-              "rank": "J",
+              "rank": "11",
               "name": "I Never",
               "instructions": "Everyone raises three (or five) fingers and starts a game of 'Never Have I Ever'."
           },
           {
-              "rank": "Q",
+              "rank": "12",
               "name": "Questions",
               "instructions": "klasjd kadsjf ;lakdsjf ;laskdjf ;ladsjf;l aksjdf;lka sdfk;ljasd ;lkjadsf;lk jasdfk;lj lskdjflaskdjf?"
           },
           {
-              "rank": "K",
+              "rank": "13",
               "name": "Make a Rule",
               "instructions": "Make a global rule for the current game!"
           }
@@ -75,6 +80,11 @@
       {
         "versionName": "init",
         "rules": [
+            {
+                "rank": "1",
+                "name": "Chase and Replace",
+                "instructions": "Everybody drinks! If anyone is feeling bold, take a shot and a chaser. Then, choose a rank (other than King and Ace) and change the rule for that card."
+            },
           {
               "rank": "2",
               "name": "Poo",
@@ -121,17 +131,17 @@
               "instructions": "You win! Drink."
           },
           {
-              "rank": "J",
+              "rank": "11",
               "name": "asdfasdf",
               "instructions": "asdf"
           },
           {
-              "rank": "Q",
+              "rank": "12",
               "name": "lkjalk",
               "instructions": "kla;lj lskdjflaskdjf?"
           },
           {
-              "rank": "K",
+              "rank": "13",
               "name": "Make a Rule",
               "instructions": "Make a global rule for the current game!"
           }
@@ -145,6 +155,11 @@
       {
         "versionName": "init",
         "rules": [
+            {
+                "rank": "1",
+                "name": "Chase and Replace",
+                "instructions": "Everybody drinks! If anyone is feeling bold, take a shot and a chaser. Then, choose a rank (other than King and Ace) and change the rule for that card."
+            },
           {
               "rank": "2",
               "name": "Artoo",
@@ -191,17 +206,17 @@
               "instructions": "Pick a Star Wars category, such as planets, vehicles, characters, etc. Say a thing belonging to that category. Play continues clockwise. If you get stumped, you must drink."
           },
           {
-              "rank": "J",
+              "rank": "11",
               "name": "I Never (Star Wars ed.)",
               "instructions": "Everyone raises three (or five) fingers and starts a game of 'Never Have I Ever'. All responses must contain a Star-Wars reference."
           },
           {
-              "rank": "Q",
+              "rank": "12",
               "name": "Princesses",
               "instructions": "You're in the hot seat for a round of 'Would You Rather'"
           },
           {
-              "rank": "K",
+              "rank": "13",
               "name": "Make a Rule",
               "instructions": "Make a global rule for the current game!"
           }

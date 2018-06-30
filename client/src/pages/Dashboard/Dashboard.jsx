@@ -42,7 +42,7 @@ class Dashboard extends Component {
         games,
         currentGame: games[0],
         rules: games[0].versions[0].rules,
-        kingRules: [{name:"blah", instructions:"foo", image:"bar"},{name:"blah", instructions:"foo", image:"bar"},{name:"blah", instructions:"foo", image:"bar"},{name:"blah", instructions:"foo", image:"bar"}],
+        kingRules: []
         // redirectTo: false
       });
     } else {
@@ -98,11 +98,140 @@ class Dashboard extends Component {
       kingRules:[]
     });
   }
+
+  renderHUD() {
+    
+    switch(this.state.currentCard.rank) {
+      case "2":
+      case "3":
+      case "4":
+      case "5":
+      case "6":
+      case "7":
+      case "8":
+      case "9":
+      case "10":
+      case "11":
+      case "12":
+        return (
+         
+          <div>
+            <h1>{this.state.currentRule.name}</h1>
+            <h3>{this.state.currentRule.instructions}</h3>
+          </div>
+        );
+      case "13":
+        return (
+          <form>
+          <p>Enter Rule Name:</p>
+          <input
+            type="text"
+            placeholder="name"
+            name="ruleName"
+            value={this.state.ruleName}
+            onChange={this.handleInputChange}
+          />
+          <p>Enter Instructions:</p>
+          <textarea
+            type="text"
+            placeholder="instructions"
+            name="ruleInstructions"
+            value={this.state.ruleInstructions}
+            onChange={this.handleInputChange}
+          />
+          <br />
+          <button 
+            onClick={this.handleFormSubmit}>Submit
+          </button>
+        </form>
+        )
+          break;
+      case "1":
+        return (
+          <form>
+          <p>Select Card to Replace</p>
+          <select value={this.state.replace} onChange={this.handleSelectChange}>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+            <option value="4">Four</option>
+            <option value="5">Five</option>
+            <option value="6">Six</option>
+            <option value="7">Seven</option>
+            <option value="8">Eight</option>
+            <option value="9">Nine</option>
+            <option value="10">Ten</option>
+            <option value="11">Jack</option>
+            <option value="12">Queen</option>
+        </select>  
+          <p>Enter Rule Name:</p>
+          <input
+            type="text"
+            placeholder="name"
+            name="ruleName"
+            value={this.state.ruleName}
+            onChange={this.handleInputChange}
+          />
+          <p>Enter Instructions:</p>
+          <textarea
+            type="text"
+            placeholder="intsructions"
+            name="ruleInstructions"
+            value={this.state.ruleInstructions}
+            onChange={this.handleInputChange}
+          /><br/>
+          <button 
+            onClick={this.handleFormSubmit}>Submit
+          </button>
+        </form>
+        );
+    }
+  }
+
+    // handle any changes to the input fields
+    handleInputChange = event => {
+      // Pull the name and value properties off of the event.target (the element which triggered the event)
+      const { name, value } = event.target;
+  
+      // Set the state for the appropriate input field
+      this.setState({
+        [name]: value
+      });
+    };
+
+    handleSelectChange = event => {
+      this.setState({"replace": event.target.value})
+    }
+  
+    // When the form is submitted, prevent the default event and alert the username and password
+    handleFormSubmit = event => {
+      event.preventDefault();
+      this.setRule(this.state.ruleName, this.state.ruleInstructions, this.state.currentCard.rank, this.state.replace);
+      this.setState({ ruleName: "", ruleInstructions: "" });
+    };
  
-  sendRule(name) {
-    const blah = this.state.kingRules;
-    blah.push({"name": name});
-    this.setState({kingRules: blah});
+  setRule(name, instructions, rank, replace) {
+    if (rank == "13") {
+      const kings = this.state.kingRules;
+      kings.push({
+        name,
+        instructions,
+        image: this.state.currentCard.image
+      });
+      this.setState({kingRules: kings}); // update later for any rank
+    }
+    else if (rank == "1") {
+      console.log(replace);
+      const newRules = this.state.rules.filter(rule => rule.rank !== replace);
+      newRules.push({
+        rank: replace, 
+        name, 
+        instructions
+      });
+      newRules.sort((a, b) => a.rank - b.rank);
+      // push newRule into newRules
+      this.setState({rules: newRules})
+    }
+
   }
 
   loadGamesFromDB() {
@@ -129,6 +258,7 @@ class Dashboard extends Component {
       
       this.setState({
         currentCard: card,
+        currentRule: this.state.rules[card.rank - 1],
         burnedCards: newBurn
       });
     }
@@ -141,6 +271,7 @@ class Dashboard extends Component {
       const newCards = this.state.cards;
       newCards.push(card);
       this.setState({
+        currentRule: this.state.rules[this.state.currentCard.rank - 2],
         currentCard: newCurrentCard,
         cards: newCards,
         deckEmpty: false
@@ -159,7 +290,7 @@ class Dashboard extends Component {
   render() {
     return (
       <React.Fragment>
-
+        
         <Nav games={this.state.games} loadGame={this.loadGame}/>
 
         <div className="wrapper">
@@ -193,7 +324,7 @@ class Dashboard extends Component {
           
           <div className="game-rules">
             <div className="title">Game Rules</div>
-            {this.state.rules.map(rule=>(
+            {this.state.rules.slice(1).map(rule=>(
               <GameRule rank={rule.rank} name={rule.name} instructions={rule.instructions}/>
             ))}
           </div>
@@ -206,7 +337,7 @@ class Dashboard extends Component {
           </div>
 
           <div className="HUD">
-            <HUD sendRule={() => this.sendRule()}/>
+            {this.renderHUD()}
           </div>
           
         </div>
