@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import Nav from "../../components/Nav";
 import CurrentCard from "../../components/CurrentCard";
-import API from "../../utils/API";
-import { Link } from "react-router-dom";
+// import API from "../../utils/API";
 import cards from "./cards.json";
 import games from "./games.json";
 import "./Dashboard.css";
@@ -10,21 +9,6 @@ import GameRule from "../../components/GameRule";
 import KingRule from "../../components/KingRule";
 
 class Dashboard extends Component {
-  // trying to:
-  // save game state across pages in session storage (how many cards have been drawn, etc.)
-  // save version state (subset of game state) in local storage (what the rule set is for each game)
-
-  // it seems like the page mounts before the session storage can finish
-  // and the data is only moving from dashboard to createpage, and not vice-versa
-  // ^^ except for the first time, which is really strange to me
-
-  // redux?  
-  //
-  // NEVERMIND! I got this to work by repeating this code twice in each page (strangely and not super DRY):
-  // 
-  //  var sessionObject = sessionStorage.getItem('gameState');
-  //  this.setState(JSON.parse(sessionObject));
-  // ==========================================================================================
 
   // ==============
   // Initialization
@@ -61,7 +45,6 @@ class Dashboard extends Component {
   }
 
   componentWillUnmount() {
-    // this.setState({redirectTo: false});
     sessionStorage.setItem('gameState', JSON.stringify(this.state));
   }
 
@@ -70,21 +53,19 @@ class Dashboard extends Component {
   // ==============
 
   loadGame = selectedGame => {
-    console.log(this.state.burnedCards);
-    console.log(this.state.cards);
 
     let rules;
+
     if (!selectedGame) {
       selectedGame = games[0]; 
       rules = games[0].rules;
     }
-    console.log(this.state.usedKAs.length);
+    
     if (this.state.usedKAs.length > 0 && (this.state.currentGame)) {
       if (window.confirm(`Save current rule changes to ${this.state.currentGame.gameName || selectedGame.gameName}?`)) {
         localStorage.setItem(`versionState: ${this.state.currentGame.gameName || selectedGame.gameName}`, JSON.stringify(this.state.rules));
       }
     }
-
     
     if (localStorage.getItem(`versionState: ${selectedGame.gameName}`)) {
       if (window.confirm(`Load previous rule changes to ${selectedGame.gameName}?`)) {
@@ -92,6 +73,7 @@ class Dashboard extends Component {
         rules = localObject;
       }
     }
+
     this.setState({
       redirectTo: false,
       cards: this.shuffleArray(this.state.cards.concat(this.state.burnedCards || {})),
@@ -104,10 +86,10 @@ class Dashboard extends Component {
       rules: rules || selectedGame.versions[0].rules,
       kingRules:[],
       usedKAs: [],
-      replace: "2", // temporary solution
+      replace: "", // temporary solution to <select>
       
     });
-    setTimeout(() => console.log("loaded game", this.state.currentGame), 2000);
+    // setTimeout(() => console.log("loaded game", this.state.currentGame), 2000);
   }
 
   renderHUD() {
@@ -152,6 +134,7 @@ class Dashboard extends Component {
           <h3>Chase and Replace!</h3>
           <h6>Pick which card to change (indefinitely!)</h6>
           <select value={this.state.replace} onChange={this.handleSelectChange}>
+            <option value="" disabled selected>Choose a rank...</option>
             {
               ['Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 
               'Eight', 'Nine', 'Ten', 'Jack', 'Queen'].map((word, index) => {
@@ -190,9 +173,7 @@ class Dashboard extends Component {
     }
   }
 
-    // handle any changes to the input fields
   handleInputChange = event => {
-    // Pull the name and value properties off of the event.target (the element which triggered the event)
     const { name, value } = event.target;
     this.setState({
       [name]: value
@@ -205,13 +186,15 @@ class Dashboard extends Component {
     setTimeout(() => console.log(this.state.replace), 1000);
   }
 
-  // When the form is submitted, prevent the default event and alert the username and password
   handleFormSubmit = event => {
     event.preventDefault();
     const {ruleName, ruleInstructions, currentCard, replace} = this.state;
-    console.log(replace);
-    this.setRule(ruleName, ruleInstructions, currentCard.rank, replace);
-    this.setState({ ruleName: "", ruleInstructions: "" });
+    if (replace || currentCard.rank === "13") {
+      this.setRule(ruleName, ruleInstructions, currentCard.rank, replace);
+      this.setState({ ruleName: "", ruleInstructions: "" });
+    } else if (currentCard.rank === "1") {
+      alert("choose bitch");
+    }
   };
  
   setRule(name, instructions, rank, replace) {
@@ -300,7 +283,6 @@ class Dashboard extends Component {
 
         <div className="wrapper">
           
-          {/* <div className="app-title">App Title</div> */}
           <div className="game-title">Game Title<br/>{this.state.currentGame.gameName}</div>
           <div className="author">Author</div>
           <div className="version">Version</div>
@@ -308,12 +290,10 @@ class Dashboard extends Component {
           <div className="decks">
             <img src={this.state.deckEmpty ? "./images/empty.png" : "./images/deck.png"} 
                  className="deck" 
-                 onClick={()=>this.drawCard()}
-            />
+                 onClick={()=>this.drawCard()}/>
           </div>
           
           <div className="current-cards">
-            {/* <CurrentCard rank={this.state.currentCard.rank} image={this.state.currentCard.image} className="current-card"/> */}
             <img alt={this.state.currentCard.rank} 
                  src={this.state.currentCard.image} 
                  onClick={() => this.undo()}

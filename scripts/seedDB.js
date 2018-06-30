@@ -12,7 +12,7 @@ const gameSeed = [
   {
     gameName: "Classic_Kings_rwest88",
     admin: "rwest88",
-    forkedFrom: "Chase_Replacenson",
+    forkedFrom: "Original",
     created: new Date(Date.now()),
     ratings: [2, 5, 4, 5],
     saved: true,  // users collection
@@ -22,6 +22,9 @@ const gameSeed = [
         versionName: "init",
         date: new Date(Date.now()),
         rules: [
+          {
+            "rank": "1"
+          },
           {
               "rank": "2",
               "name": "You",
@@ -68,178 +71,20 @@ const gameSeed = [
               "instructions": "Pick a category. Say a thing belonging to that category. Play continues clockwise blah blah blah blah blah blah blah."
           },
           {
-              "rank": "J",
+              "rank": "11",
               "name": "I Never",
               "instructions": "Everyone raises three (or five) fingers and starts a game of 'Never Have I Ever'."
           },
           {
-              "rank": "Q",
+              "rank": "12",
               "name": "Questions",
               "instructions": "klasjd kadsjf ;lakdsjf ;laskdjf ;ladsjf;l aksjdf;lka sdfk;ljasd ;lkjadsf;lk jasdfk;lj lskdjflaskdjf?"
           },
           {
-              "rank": "K",
+              "rank": "13",
               "name": "Make a Rule",
               "instructions": "Make a global rule for the current game!"
           },
-          {
-              "rank": "A",
-              "name": "Chase and Replace",
-              "instructions": "Everybody drinks! If anyone is feeling bold, take a shot and a chaser. Then, choose a rank (other than King and Ace) and change the rule for that card."
-          }
-        ]
-      }
-    ]
-  },
-  {
-    gameName: "Variation_Kings_rwest88",
-    admin: "rwest88",
-    forkedFrom: "Chase_Replacenson",
-    created: new Date(Date.now()),
-    ratings: [1, 2, 1, 1, 1, 3, 1, 1, 5],
-    saved: false,  // users collection
-    public: false,
-    versions: [
-      {
-        versionName: "init",
-        date: new Date(Date.now()),
-        rules: [
-          {
-              "rank": "2",
-              "name": "Poo",
-              "instructions": "Throw poo."
-          },
-          {
-              "rank": "3",
-              "name": "Pee",
-              "instructions": "Throw pee."
-          },
-          {
-              "rank": "4",
-              "name": "Score",
-              "instructions": "And seven years ago."
-          },
-          {
-              "rank": "5",
-              "name": "Hive",
-              "instructions": "Find a beehive and eat it."
-          },
-          {
-              "rank": "6",
-              "name": "Dicks",
-              "instructions": "Eat a bag of dicks."
-          },
-          {
-              "rank": "7",
-              "name": "Seven-Eleven",
-              "instructions": "Leave the game and get more beer."
-          },
-          {
-              "rank": "8",
-              "name": "Cate",
-              "instructions": "Cate must drink."
-          },
-          {
-              "rank": "9",
-              "name": "Stein",
-              "instructions": "Chug 32 oz of beer."
-          },
-          {
-              "rank": "10",
-              "name": "Win",
-              "instructions": "You win! Drink."
-          },
-          {
-              "rank": "J",
-              "name": "asdfasdf",
-              "instructions": "asdf"
-          },
-          {
-              "rank": "Q",
-              "name": "lkjalk",
-              "instructions": "kla;lj lskdjflaskdjf?"
-          },
-          {
-              "rank": "K",
-              "name": "Make a Rule",
-              "instructions": "Make a global rule for the current game!"
-          },
-          {
-              "rank": "A",
-              "name": "Chase and Replace",
-              "instructions": "Everybody drinks! If anyone is feeling bold, take a shot and a chaser. Then, choose a rank (other than King and Ace) and change the rule for that card."
-          }
-        ]
-      },
-      {
-        versionName: "piss",
-        date: new Date(Date.now()),
-        rules: [
-          {
-              "rank": "2",
-              "name": "piss",
-              "instructions": "piss"
-          },
-          {
-              "rank": "3",
-              "name": "Pee",
-              "instructions": "piss"
-          },
-          {
-              "rank": "4",
-              "name": "Urinate",
-              "instructions": "piss"
-          },
-          {
-              "rank": "5",
-              "name": "Hive",
-              "instructions": "piss on a beehive"
-          },
-          {
-              "rank": "6",
-              "name": "Dicks",
-              "instructions": "piss"
-          },
-          {
-              "rank": "7",
-              "name": "Spring a Leak",
-              "instructions": "piss"
-          },
-          {
-              "rank": "8",
-              "name": "Cate",
-              "instructions": "piss on Cate"
-          },
-          {
-              "rank": "9",
-              "name": "Wine",
-              "instructions": "pee in a wine glass"
-          },
-          {
-              "rank": "10",
-              "name": "I dunno",
-              "instructions": "hmm."
-          },
-          {
-              "rank": "J",
-              "name": "Jack-o-Lantern",
-              "instructions": "pee in a pumpkin"
-          },
-          {
-              "rank": "Q",
-              "name": "Queen Pee",
-              "instructions": "pee in a dress"
-          },
-          {
-              "rank": "K",
-              "name": "Make a Rule",
-              "instructions": "Make a global rule for the current game!"
-          },
-          {
-              "rank": "A",
-              "name": "Chase and Replace",
-              "instructions": "Everybody drinks! If anyone is feeling bold, take a shot and a chaser. Then, choose a rank (other than King and Ace) and change the rule for that card."
-          }
         ]
       }
     ]
@@ -247,6 +92,7 @@ const gameSeed = [
   {
     gameName: "Star Wars",
     admin: "n8morton",
+    forkedFrom: "Original",
     created: new Date(Date.now()),
     ratings: [5, 5, 4, 5, 5, 2, 1, 4, 5, 3, 5, 5, 4, 5],
     saved: true,  // users collection
@@ -331,11 +177,6 @@ const gameSeed = [
 
 const userSeed = [
   {
-    userName: "Chase_Replacenson",
-    email: "chase@yahoo.com",
-    password: "password"
-  },
-  {
     userName: "n8morton",
     email: "n8morton@nate.com",
     password: "password"
@@ -363,21 +204,34 @@ db.User
     .then(() => db.Game.insertMany(gameSeed))
     .then(data => {
       console.log(data.length + " records inserted into Game collection!");
+
+      //grab all games that are "original" and put them in an array
+      db.Game.find({"forkedFrom": "Original"}).then((data) => {
+        const gameIDs = data.map(game => game._id)
+
+        
       
-      for (let i in data) {
-        db.User
-          .update({"userName": data[i].admin}, { $push: { games: data[i]._id }, }, {new: true} )
-          .then(() => {
-              console.log(`${data[i]._id} inserted into ${data[i].admin}'s games!`);
-              if (i == data.length - 1) {
-                process.exit(0);
-              }
-          })
-          .catch(err => {
-              console.error(err);
-              process.exit(1);
-          });
-      }
+        //loop through all users to add any games created by them or any default/original games
+        for (let i in data) {
+          // create array of games containing any games mathcing userename as well as all default games and remove any duplicatres
+          let gamesToAdd = [data[i]._id, ...gameIDs.filter(id => id !== data[i]._id)]
+          db.User
+          //push created array into users games
+            .update({"userName": data[i].admin}, { $push: { games: { $each: gamesToAdd } } }, {new: true} )
+
+            .then(() => {
+                console.log(`${data[i]._id} inserted into ${data[i].admin}'s games!`);
+                if (i == data.length - 1) {
+                  process.exit(0);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                process.exit(1);
+            });
+        }
+      });
+    
     })
     .catch(err => {
       console.error(err);
@@ -390,6 +244,9 @@ db.User
     process.exit(1);
   });
 
+
+
+ 
 // what a damn doozy that was!
 
 

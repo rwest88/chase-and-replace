@@ -48,7 +48,7 @@
           {
               "rank": "9",
               "name": "Bust a Rhyme",
-              "instructions": "Say a word. Play continues clockwise blah blah blah"
+              "instructions": "Say a word. Play continues clockwise. Whoever gets stumped on rhyming must drink."
           },
           {
               "rank": "10",
@@ -62,8 +62,8 @@
           },
           {
               "rank": "12",
-              "name": "Questions",
-              "instructions": "klasjd kadsjf ;lakdsjf ;laskdjf ;ladsjf;l aksjdf;lka sdfk;ljasd ;lkjadsf;lk jasdfk;lj lskdjflaskdjf?"
+              "name": "Question Master",
+              "instructions": "You are the Question Master! Anytime you ask somebody a question, if he/she fails to respond with a question, he/she must drink."
           },
           {
               "rank": "13",
@@ -132,13 +132,13 @@
           },
           {
               "rank": "11",
-              "name": "asdfasdf",
-              "instructions": "asdf"
+              "name": "Snack",
+              "instructions": "Grab a snack."
           },
           {
               "rank": "12",
-              "name": "lkjalk",
-              "instructions": "kla;lj lskdjflaskdjf?"
+              "name": "Questions",
+              "instructions": "Ask someone a question. That person must then ask another player a question, and so on. Whoever messes up drinks."
           },
           {
               "rank": "13",
@@ -167,8 +167,8 @@
           },
           {
               "rank": "3",
-              "name": "Me",
-              "instructions": "Drink. Yeah, you."
+              "name": "C3PO",
+              "instructions": "You must remain as C3PO until another three is drawn. (Accent must stay and arms may not break position. Whenever they do, you drink.)"
           },
           {
               "rank": "4",
@@ -187,8 +187,8 @@
           },
           {
               "rank": "7",
-              "name": "Heaven",
-              "instructions": "Last person to raise both hands in the air must drink."
+              "name": "Methods (js)",
+              "instructions": "Proceeding clockwise, list off JavaScript methods (of a chosen topic: Strings, Arrays, Objects, the Math module, etc. He who gets stumped must drink."
           },
           {
               "rank": "8",
