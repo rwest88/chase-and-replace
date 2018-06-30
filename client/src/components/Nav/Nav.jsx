@@ -8,7 +8,7 @@ class Nav extends React.Component {
 
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-green">
-        <a className="navbar-brand" href="/dashboard">Chase and Replace</a>
+        <Link to="/" className="navbar-brand">Chase and Replace</Link>
         
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span className="navbar-toggler-icon"></span>

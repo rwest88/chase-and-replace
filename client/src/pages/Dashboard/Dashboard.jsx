@@ -8,7 +8,6 @@ import games from "./games.json";
 import "./Dashboard.css";
 import GameRule from "../../components/GameRule";
 import KingRule from "../../components/KingRule";
-import HUD from "../../components/HUD";
 
 class Dashboard extends Component {
   // trying to:
@@ -27,6 +26,12 @@ class Dashboard extends Component {
   //  this.setState(JSON.parse(sessionObject));
   // ==========================================================================================
 
+  // ==============
+  // Initialization
+  // ==============
+
+  state = { cards, games, usedKAs: [], burnedCards: [] };
+
   // ===================
   // Life Cycle Methods:
   // ===================
@@ -34,29 +39,13 @@ class Dashboard extends Component {
   componentWillMount() {
     if (!sessionStorage.getItem('gameState')) {
       console.log('no session data');
-      this.setState({
-        cards,
-        burnedCards: [],
-        currentCard: {},
-        currentRule: {},
-        games,
-        currentGame: games[0],
-        rules: games[0].versions[0].rules,
-        kingRules: []
-        // redirectTo: false
-      });
+      this.loadGame();
     } else {
       console.log('yes session data');
-      // this.setState({redirectTo: false});
-      // sessionStorage.removeItem('gameState');
-      var sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
-      // // sessionObject.redirectTo = false;
+      const sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
+      sessionObject.redirectTo = false;
       this.setState(sessionObject);
     }
-      
-    // var sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
-    // // sessionObject.redirectTo = false;
-    // this.setState(sessionObject);
   }
 
   componentDidMount() {
@@ -66,9 +55,6 @@ class Dashboard extends Component {
       this.setState(sessionObject);
       sessionStorage.removeItem('gameState');
     }
-
-
-    this.shuffleArray(cards);
       // To Do:
       // if (authenticated) setState games to db query result (User.games) 
       // .then query result ({games._id} && {saved: true} [and slice versions array for latest version])
@@ -77,104 +63,114 @@ class Dashboard extends Component {
   componentWillUnmount() {
     // this.setState({redirectTo: false});
     sessionStorage.setItem('gameState', JSON.stringify(this.state));
-
   }
 
   // ==============
   // Custom Methods
   // ==============
 
-  loadGame = game => {
-    // sessionStorage.removeItem('gameState');
-    console.log("loaded game");
+  loadGame = selectedGame => {
+    console.log(this.state.burnedCards);
+    console.log(this.state.cards);
+
+    let rules;
+    if (!selectedGame) {
+      selectedGame = games[0]; 
+      rules = games[0].rules;
+    }
+    console.log(this.state.usedKAs.length);
+    if (this.state.usedKAs.length > 0 && (this.state.currentGame)) {
+      if (window.confirm(`Save current rule changes to ${this.state.currentGame.gameName || selectedGame.gameName}?`)) {
+        localStorage.setItem(`versionState: ${this.state.currentGame.gameName || selectedGame.gameName}`, JSON.stringify(this.state.rules));
+      }
+    }
+
+    
+    if (localStorage.getItem(`versionState: ${selectedGame.gameName}`)) {
+      if (window.confirm(`Load previous rule changes to ${selectedGame.gameName}?`)) {
+        const localObject = JSON.parse(localStorage.getItem(`versionState: ${selectedGame.gameName}`));
+        rules = localObject;
+      }
+    }
     this.setState({
-      cards: this.shuffleArray(this.state.cards.concat(this.state.burnedCards)),
+      redirectTo: false,
+      cards: this.shuffleArray(this.state.cards.concat(this.state.burnedCards || {})),
       burnedCards: [],
       currentRule: {},
       currentCard: {},
+      games,
       deckEmpty: false,
-      currentGame: game,
-      rules: game.versions[0].rules,
-      kingRules:[]
+      currentGame: selectedGame,
+      rules: rules || selectedGame.versions[0].rules,
+      kingRules:[],
+      usedKAs: [],
+      replace: "2", // temporary solution
+      
     });
+    setTimeout(() => console.log("loaded game", this.state.currentGame), 2000);
   }
 
   renderHUD() {
-    
-    switch(this.state.currentCard.rank) {
-      case "2":
-      case "3":
-      case "4":
-      case "5":
-      case "6":
-      case "7":
-      case "8":
-      case "9":
-      case "10":
-      case "11":
-      case "12":
-        return (
-         
-          <div>
-            <h1>{this.state.currentRule.name}</h1>
-            <h3>{this.state.currentRule.instructions}</h3>
-          </div>
-        );
+    const {currentCard, currentRule, usedKAs} = this.state;
+
+    if (usedKAs && !(usedKAs.indexOf(currentCard.id) === -1)) {
+      return <h1>Rule Changed!</h1>;
+    }
+
+    switch(currentCard.rank) {
       case "13":
         return (
           <form>
-          <p>Enter Rule Name:</p>
-          <input
-            type="text"
-            placeholder="name"
-            name="ruleName"
-            value={this.state.ruleName}
-            onChange={this.handleInputChange}
-          />
-          <p>Enter Instructions:</p>
-          <textarea
-            type="text"
-            placeholder="instructions"
-            name="ruleInstructions"
-            value={this.state.ruleInstructions}
-            onChange={this.handleInputChange}
-          />
-          <br />
-          <button 
-            onClick={this.handleFormSubmit}>Submit
-          </button>
-        </form>
+            <h3>Make a Rule!</h3>
+            <small>This will be a global rule for the current game.</small>
+            <h6>Enter Name:</h6>
+            <input
+              type="text"
+              placeholder="e.g., 'Wink'"
+              name="ruleName"
+              value={this.state.ruleName}
+              onChange={this.handleInputChange}
+            />
+            <h6>Enter Instructions:</h6>
+            <textarea
+              type="text"
+              placeholder="e.g., 'If you get winked at during eye contact, you must drink.'"
+              name="ruleInstructions"
+              value={this.state.ruleInstructions}
+              onChange={this.handleInputChange}
+            />
+            <br />
+            <button 
+              onClick={this.handleFormSubmit}>Submit
+            </button>
+          </form>
         )
-          break;
+        break;
       case "1":
         return (
           <form>
-          <p>Select Card to Replace</p>
+          <h3>Chase and Replace!</h3>
+          <h6>Pick which card to change (indefinitely!)</h6>
           <select value={this.state.replace} onChange={this.handleSelectChange}>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-            <option value="4">Four</option>
-            <option value="5">Five</option>
-            <option value="6">Six</option>
-            <option value="7">Seven</option>
-            <option value="8">Eight</option>
-            <option value="9">Nine</option>
-            <option value="10">Ten</option>
-            <option value="11">Jack</option>
-            <option value="12">Queen</option>
-        </select>  
-          <p>Enter Rule Name:</p>
+            {
+              ['Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 
+              'Eight', 'Nine', 'Ten', 'Jack', 'Queen'].map((word, index) => {
+                return <option key={word} value={index + 2}>{word}</option>
+              })
+            }
+          </select>  
+          <h6>Enter Rule Name:</h6>
           <input
             type="text"
-            placeholder="name"
+            placeholder="(rhyming is usually a good idea)"
             name="ruleName"
             value={this.state.ruleName}
             onChange={this.handleInputChange}
           />
-          <p>Enter Instructions:</p>
+          <h6>Enter Instructions:</h6>
           <textarea
             type="text"
-            placeholder="intsructions"
+            placeholder="Be creative!"
             name="ruleInstructions"
             value={this.state.ruleInstructions}
             onChange={this.handleInputChange}
@@ -184,32 +180,42 @@ class Dashboard extends Component {
           </button>
         </form>
         );
+      default:
+        return (
+          <div>
+            <h1>{currentRule.name}</h1>
+            <h3>{currentRule.instructions}</h3>
+          </div>
+        );
     }
   }
 
     // handle any changes to the input fields
-    handleInputChange = event => {
-      // Pull the name and value properties off of the event.target (the element which triggered the event)
-      const { name, value } = event.target;
-  
-      // Set the state for the appropriate input field
-      this.setState({
-        [name]: value
-      });
-    };
+  handleInputChange = event => {
+    // Pull the name and value properties off of the event.target (the element which triggered the event)
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
 
-    handleSelectChange = event => {
-      this.setState({"replace": event.target.value})
-    }
-  
-    // When the form is submitted, prevent the default event and alert the username and password
-    handleFormSubmit = event => {
-      event.preventDefault();
-      this.setRule(this.state.ruleName, this.state.ruleInstructions, this.state.currentCard.rank, this.state.replace);
-      this.setState({ ruleName: "", ruleInstructions: "" });
-    };
+  handleSelectChange = event => {
+    console.log(event.target.value);
+    this.setState({"replace": event.target.value});
+    setTimeout(() => console.log(this.state.replace), 1000);
+  }
+
+  // When the form is submitted, prevent the default event and alert the username and password
+  handleFormSubmit = event => {
+    event.preventDefault();
+    const {ruleName, ruleInstructions, currentCard, replace} = this.state;
+    console.log(replace);
+    this.setRule(ruleName, ruleInstructions, currentCard.rank, replace);
+    this.setState({ ruleName: "", ruleInstructions: "" });
+  };
  
   setRule(name, instructions, rank, replace) {
+    console.log(name);
     if (rank == "13") {
       const kings = this.state.kingRules;
       kings.push({
@@ -217,28 +223,29 @@ class Dashboard extends Component {
         instructions,
         image: this.state.currentCard.image
       });
-      this.setState({kingRules: kings}); // update later for any rank
+      this.setState({kingRules: kings});
     }
     else if (rank == "1") {
-      console.log(replace);
-      const newRules = this.state.rules.filter(rule => rule.rank !== replace);
+      const oldRules = this.state.rules;
+      const newRules = oldRules.filter(rule => rule.rank !== replace);
       newRules.push({
-        rank: replace, 
         name, 
-        instructions
+        instructions,
+        rank: replace
       });
       newRules.sort((a, b) => a.rank - b.rank);
-      // push newRule into newRules
       this.setState({rules: newRules})
     }
-
+    const usedKAs = this.state.usedKAs || [];
+    usedKAs.push(this.state.currentCard.id);
+    this.setState({usedKAs});
   }
 
   loadGamesFromDB() {
     // if (authenticated)
   }
 
-  saveRule() {
+  saveRules() {
     // local storage
   }
 
@@ -248,18 +255,16 @@ class Dashboard extends Component {
   }
 
   drawCard() {
-    if (this.state.cards.length === 1) {
-      this.setState({deckEmpty: true});
-    }
     if (this.state.cards.length > 0) {
+      const rules = this.state.rules;
       const card = this.state.cards.pop();
       const newBurn = this.state.burnedCards;
       newBurn.push(card);
-      
       this.setState({
         currentCard: card,
-        currentRule: this.state.rules[card.rank - 1],
-        burnedCards: newBurn
+        currentRule: rules[card.rank - 1],
+        burnedCards: newBurn,
+        deckEmpty: (this.state.cards.length === 0)
       });
     }
   }
@@ -271,7 +276,7 @@ class Dashboard extends Component {
       const newCards = this.state.cards;
       newCards.push(card);
       this.setState({
-        currentRule: this.state.rules[this.state.currentCard.rank - 2],
+        currentRule: this.state.rules[newCurrentCard.rank - 1] || {},
         currentCard: newCurrentCard,
         cards: newCards,
         deckEmpty: false
