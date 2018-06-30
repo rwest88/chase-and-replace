@@ -4,7 +4,7 @@ import LandingLogin from "./pages/LandingLogin";
 import Dashboard from "./pages/Dashboard";
 import CreateEditGame from "./pages/CreateEditGame";
 import SearchGames from "./pages/SearchGames";
-import NoMatch from "./pages/NoMatch_old";
+// import NoMatch from "./pages/NoMatch_old";
 
 
 const App = () => (

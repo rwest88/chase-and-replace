@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Nav from "../../components/Nav";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import "./CreateEditGame.css";
 import cards from "../Dashboard/cards.json";
 import games from "../Dashboard/games.json";
