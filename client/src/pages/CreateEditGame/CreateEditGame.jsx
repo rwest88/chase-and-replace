@@ -7,24 +7,17 @@ import games from "../Dashboard/games.json";
 
 class CreateEditGame extends Component {
 
+  state = { cards, games };
+
   componentWillMount() {
     if (!sessionStorage.getItem('gameState')) {
       console.log('no session data');
-      this.setState({
-        cards,
-        burnedCards: [],
-        currentCard: {},
-        currentRule: {},
-        games,
-        currentGame: games[0],
-        rules: games[0].versions[0].rules,
-        kingRules: []
-      });
     } else {
       console.log('yes session data');
+      const sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
+      sessionObject.redirectTo = false;
+      this.setState(sessionObject);
     }
-    var sessionObject = sessionStorage.getItem('gameState');
-    this.setState(JSON.parse(sessionObject));
   }
 
   componentDidMount() {
@@ -36,20 +29,45 @@ class CreateEditGame extends Component {
     sessionStorage.setItem('gameState', JSON.stringify(this.state));
   }
 
-  loadGame = game => {
-    sessionStorage.removeItem('gameState');
-    console.log(game);
+  loadGame = selectedGame => {
+    console.log(this.state.burnedCards);
+    console.log(this.state.cards);
+
+    let rules;
+    if (!selectedGame) {
+      selectedGame = games[0]; 
+      rules = games[0].rules;
+    }
+    console.log(this.state.usedKAs.length);
+    if (this.state.usedKAs.length > 0 && (this.state.currentGame)) {
+      if (window.confirm(`Save current rule changes to ${this.state.currentGame.gameName || selectedGame.gameName}?`)) {
+        localStorage.setItem(`versionState: ${this.state.currentGame.gameName || selectedGame.gameName}`, JSON.stringify(this.state.rules));
+      }
+    }
+
+    
+    if (localStorage.getItem(`versionState: ${selectedGame.gameName}`)) {
+      if (window.confirm(`Load previous rule changes to ${selectedGame.gameName}?`)) {
+        const localObject = JSON.parse(localStorage.getItem(`versionState: ${selectedGame.gameName}`));
+        rules = localObject;
+      }
+    }
     this.setState({
-      cards: this.shuffleArray(this.state.cards.concat(this.state.burnedCards)),
+      redirectTo: "/dashboard",
+      cards: this.shuffleArray(this.state.cards.concat(this.state.burnedCards || {})),
       burnedCards: [],
       currentRule: {},
       currentCard: {},
+      games,
       deckEmpty: false,
-      currentGame: game,
-      rules: game.versions[0].rules,
-      kingRules: [],
-      redirectTo: '/dashboard',
+      currentGame: selectedGame,
+      rules: rules || selectedGame.versions[0].rules,
+      kingRules:[],
+      usedKAs: [],
+      replace: "2", // temporary solution
+      
     });
+    setTimeout(() => console.log("loaded game", this.state.currentGame), 2000);
   }
 
   shuffleArray = (array) => {

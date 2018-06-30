@@ -4,7 +4,7 @@ import "./KingRule.css";
 const KingRule = props=>(
 <div className="game-rule dropdown">
       <img src={props.image}/>
-      <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{props.name}
+      <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       {props.name}
       </button>
       <div class="dropdown-menu">
