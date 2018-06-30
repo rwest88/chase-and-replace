@@ -1,314 +1,314 @@
 [
   {
     "id": 1,
-    "rank": "ace",
+    "rank": "1",
     "suit": "hearts",
     "image": "./images/1h.png"
   },
   {
     "id": 2,
-    "rank": "two",
+    "rank": "2",
     "suit": "hearts",
     "image": "./images/2h.png"
   },
   {
     "id": 3,
-    "rank": "three",
+    "rank": "3",
     "suit": "hearts",
     "image": "./images/3h.png"
   },
   {
     "id": 4,
-    "rank": "four",
+    "rank": "4",
     "suit": "hearts",
     "image": "./images/4h.png"
   },
   {
     "id": 5,
-    "rank": "five",
+    "rank": "5",
     "suit": "hearts",
     "image": "./images/5h.png"
   },
   {
     "id": 6,
-    "rank": "six",
+    "rank": "6",
     "suit": "hearts",
     "image": "./images/6h.png"
   },
   {
     "id": 7,
-    "rank": "seven",
+    "rank": "7",
     "suit": "hearts",
     "image": "./images/7h.png"
   },
   {
     "id": 8,
-    "rank": "eight",
+    "rank": "8",
     "suit": "hearts",
     "image": "./images/8h.png"
   },
   {
     "id": 9,
-    "rank": "nine",
+    "rank": "9",
     "suit": "hearts",
     "image": "./images/9h.png"
   },
   {
     "id": 10,
-    "rank": "ten",
+    "rank": "10",
     "suit": "hearts",
     "image": "./images/10h.png"
   },
   {
     "id": 11,
-    "rank": "jack",
+    "rank": "11",
     "suit": "hearts",
-    "image": "./images/Jh.png"
+    "image": "./images/11h.png"
   },
   {
     "id": 12,
-    "rank": "queen",
+    "rank": "12",
     "suit": "hearts",
-    "image": "./images/Qh.png"
+    "image": "./images/12h.png"
   },
   {
     "id": 13,
-    "rank": "king",
+    "rank": "13",
     "suit": "hearts",
-    "image": "./images/Kh.png"
+    "image": "./images/13h.png"
   },
   {
     "id": 14,
-    "rank": "ace",
+    "rank": "1",
     "suit": "clubs",
     "image": "./images/1c.png"
   },
   {
     "id": 15,
-    "rank": "two",
+    "rank": "2",
     "suit": "clubs",
     "image": "./images/2c.png"
   },
   {
     "id": 16,
-    "rank": "three",
+    "rank": "3",
     "suit": "clubs",
     "image": "./images/3c.png"
   },
   {
     "id": 17,
-    "rank": "four",
+    "rank": "4",
     "suit": "clubs",
     "image": "./images/4c.png"
   },
   {
     "id": 18,
-    "rank": "five",
+    "rank": "5",
     "suit": "clubs",
     "image": "./images/5c.png"
   },
   {
     "id": 19,
-    "rank": "six",
+    "rank": "6",
     "suit": "clubs",
     "image": "./images/6c.png"
   },
   {
     "id": 20,
-    "rank": "seven",
+    "rank": "7",
     "suit": "clubs",
     "image": "./images/7c.png"
   },
   {
     "id": 21,
-    "rank": "eight",
+    "rank": "8",
     "suit": "clubs",
     "image": "./images/8c.png"
   },
   {
     "id": 22,
-    "rank": "nine",
+    "rank": "9",
     "suit": "clubs",
     "image": "./images/9c.png"
   },
   {
     "id": 23,
-    "rank": "ten",
+    "rank": "10",
     "suit": "clubs",
     "image": "./images/10c.png"
   },
   {
     "id": 24,
-    "rank": "jack",
+    "rank": "11",
     "suit": "clubs",
-    "image": "./images/Jc.png"
+    "image": "./images/11c.png"
   },
   {
     "id": 25,
-    "rank": "queen",
+    "rank": "12",
     "suit": "clubs",
-    "image": "./images/Qc.png"
+    "image": "./images/12c.png"
   },
   {
     "id": 26,
-    "rank": "king",
+    "rank": "13",
     "suit": "clubs",
-    "image": "./images/Kc.png"
+    "image": "./images/13c.png"
   },
   {
     "id": 27,
-    "rank": "ace",
+    "rank": "1",
     "suit": "diamonds",
     "image": "./images/1d.png"
   },
   {
     "id": 28,
-    "rank": "two",
+    "rank": "2",
     "suit": "diamonds",
     "image": "./images/2d.png"
   },
   {
     "id": 29,
-    "rank": "three",
+    "rank": "3",
     "suit": "diamonds",
     "image": "./images/3d.png"
   },
   {
     "id": 30,
-    "rank": "four",
+    "rank": "4",
     "suit": "diamonds",
     "image": "./images/4d.png"
   },
   {
     "id": 31,
-    "rank": "five",
+    "rank": "5",
     "suit": "diamonds",
     "image": "./images/5d.png"
   },
   {
     "id": 32,
-    "rank": "six",
+    "rank": "6",
     "suit": "diamonds",
     "image": "./images/6d.png"
   },
   {
     "id": 33,
-    "rank": "seven",
+    "rank": "7",
     "suit": "diamonds",
     "image": "./images/7d.png"
   },
   {
     "id": 34,
-    "rank": "eight",
+    "rank": "8",
     "suit": "diamonds",
     "image": "./images/8d.png"
   },
   {
     "id": 35,
-    "rank": "nine",
+    "rank": "9",
     "suit": "diamonds",
     "image": "./images/9d.png"
   },
   {
     "id": 36,
-    "rank": "ten",
+    "rank": "10",
     "suit": "diamonds",
     "image": "./images/10d.png"
   },
   {
     "id": 37,
-    "rank": "jack",
+    "rank": "11",
     "suit": "diamonds",
-    "image": "./images/Jd.png"
+    "image": "./images/11d.png"
   },
   {
     "id": 38,
-    "rank": "queen",
+    "rank": "12",
     "suit": "diamonds",
-    "image": "./images/Qd.png"
+    "image": "./images/12d.png"
   },
   {
     "id": 39,
-    "rank": "king",
+    "rank": "13",
     "suit": "diamonds",
-    "image": "./images/Kd.png"
+    "image": "./images/13d.png"
   },
   {
     "id": 40,
-    "rank": "ace",
+    "rank": "1",
     "suit": "spades",
     "image": "./images/1s.png"
   },
   {
     "id": 41,
-    "rank": "two",
+    "rank": "2",
     "suit": "spades",
     "image": "./images/2s.png"
   },
   {
     "id": 42,
-    "rank": "three",
+    "rank": "3",
     "suit": "spades",
     "image": "./images/3s.png"
   },
   {
     "id": 43,
-    "rank": "four",
+    "rank": "4",
     "suit": "spades",
     "image": "./images/4s.png"
   },
   {
     "id": 44,
-    "rank": "five",
+    "rank": "5",
     "suit": "spades",
     "image": "./images/5s.png"
   },
   {
     "id": 45,
-    "rank": "six",
+    "rank": "6",
     "suit": "spades",
     "image": "./images/6s.png"
   },
   {
     "id": 46,
-    "rank": "seven",
+    "rank": "7",
     "suit": "spades",
     "image": "./images/7s.png"
   },
   {
     "id": 47,
-    "rank": "eight",
+    "rank": "8",
     "suit": "spades",
     "image": "./images/8s.png"
   },
   {
     "id": 48,
-    "rank": "nine",
+    "rank": "9",
     "suit": "spades",
     "image": "./images/9s.png"
   },
   {
     "id": 49,
-    "rank": "ten",
+    "rank": "10",
     "suit": "spades",
     "image": "./images/10s.png"
   },
   {
     "id": 50,
-    "rank": "jack",
+    "rank": "11",
     "suit": "spades",
-    "image": "./images/Js.png"
+    "image": "./images/11s.png"
   },
   {
     "id": 51,
-    "rank": "queen",
+    "rank": "12",
     "suit": "spades",
-    "image": "./images/Qs.png"
+    "image": "./images/12s.png"
   },
   {
     "id": 52,
-    "rank": "king",
+    "rank": "13",
     "suit": "spades",
-    "image": "./images/Ks.png"
+    "image": "./images/13s.png"
   }
 ]
