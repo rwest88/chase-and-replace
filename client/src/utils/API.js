@@ -1,9 +1,12 @@
 import axios from "axios";
 
 export default {
+  saveNewGame: function(gameData) {
+    return axios.post("/api/games", gameData);
+  },
   // Gets all books
-  getBooks: function() {
-    return axios.get("/api/books");
+  getUserGames: function() {
+    return axios.get("/api/games");
   },
   // Gets the book with the given id
   getBook: function(id) {

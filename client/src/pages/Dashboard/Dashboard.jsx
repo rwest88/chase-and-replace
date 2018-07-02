@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import Nav from "../../components/Nav";
 import CurrentCard from "../../components/CurrentCard";
-// import API from "../../utils/API";
+import API from "../../utils/API";
 import cards from "./cards.json";
 import games from "./games.json";
+import newGameRules from "./newGameRules.json";
 import "./Dashboard.css";
 import GameRule from "../../components/GameRule";
 import KingRule from "../../components/KingRule";
@@ -14,7 +15,8 @@ class Dashboard extends Component {
   // Initialization
   // ==============
 
-  state = { cards, games, usedKAs: [], burnedCards: [] };
+  state = { cards, games, usedKAs: [], burnedCards: [],
+   };
 
   // ===================
   // Life Cycle Methods:
@@ -39,6 +41,17 @@ class Dashboard extends Component {
       this.setState(sessionObject);
       sessionStorage.removeItem('gameState');
     }
+    else {
+
+    API.getUserGames()
+      .then(res => this.setState({games: res.data}))
+      .then(this.loadGame())
+      .catch(err => console.log(err));
+    
+    }
+    // this.setState({
+    //   games: meow
+    // })
       // To Do:
       // if (authenticated) setState games to db query result (User.games) 
       // .then query result ({games._id} && {saved: true} [and slice versions array for latest version])
@@ -57,8 +70,8 @@ class Dashboard extends Component {
     let rules;
 
     if (!selectedGame) {
-      selectedGame = games[0]; 
-      rules = games[0].rules;
+      selectedGame = this.state.games[0]; 
+      rules = this.state.games[0].rules;
     }
     
     if (this.state.usedKAs.length > 0 && (this.state.currentGame)) {
@@ -80,14 +93,14 @@ class Dashboard extends Component {
       burnedCards: [],
       currentRule: {},
       currentCard: {},
-      games,
+      // games,
       deckEmpty: false,
       currentGame: selectedGame,
       rules: rules || selectedGame.versions[0].rules,
       kingRules:[],
       usedKAs: [],
-      replace: "", // temporary solution to <select>
-      
+      // replace: "2",
+      newGameRules
     });
     // setTimeout(() => console.log("loaded game", this.state.currentGame), 2000);
   }
@@ -183,7 +196,6 @@ class Dashboard extends Component {
   handleSelectChange = event => {
     console.log(event.target.value);
     this.setState({"replace": event.target.value});
-    setTimeout(() => console.log(this.state.replace), 1000);
   }
 
   handleFormSubmit = event => {
