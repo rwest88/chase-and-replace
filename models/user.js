@@ -82,6 +82,10 @@ var UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  seeded: {
+    type: Boolean,
+    default: false,
+  },
   games: [
         // {
         //   type: Schema.Types.ObjectId,

@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const gameSchema = new Schema({
+  _id: String,
   gameName: { type: String, required: true }, // unique?
   admin: { type: String, required: true },
   forkedFrom: { type: String },

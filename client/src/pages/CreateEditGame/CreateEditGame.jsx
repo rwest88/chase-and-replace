@@ -4,29 +4,25 @@ import { Redirect } from "react-router-dom";
 import "./CreateEditGame.css";
 import cards from "../Dashboard/cards.json";
 import games from "../Dashboard/games.json";
+import newGameTemplate from "../Dashboard/newGameTemplate.json";
 import API from "../../utils/API";
 
 class CreateEditGame extends Component {
 
   state = { 
-    cards, 
-    games
+    cards,
+    games,
+    newGameRules: newGameTemplate,
+    usedKAs: [],
+    createdNew: false,
   };
-
-  componentWillMount() {
-    if (!sessionStorage.getItem('gameState')) {
-      console.log('no session data');
-    } else {
-      console.log('yes session data');
-      const sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
-      sessionObject.redirectTo = false;
-      this.setState(sessionObject);
-    }
-  }
 
   componentDidMount() {
     var sessionObject = sessionStorage.getItem('gameState');
     this.setState(JSON.parse(sessionObject));
+    API.getUserGames()
+      .then(res => this.setState({games: res.data, initialized: true}))
+      .catch(err => console.log(err));
   }
 
   componentWillUnmount() {
@@ -34,10 +30,9 @@ class CreateEditGame extends Component {
   }
 
   loadGame = selectedGame => {
-    console.log(this.state.burnedCards);
-    console.log(this.state.cards);
 
     let rules;
+
     if (!selectedGame) {
       selectedGame = games[0]; 
       rules = games[0].rules;
@@ -55,6 +50,7 @@ class CreateEditGame extends Component {
         rules = localObject;
       }
     }
+
     this.setState({
       redirectTo: "/dashboard",
       cards: this.shuffleArray(this.state.cards.concat(this.state.burnedCards || {})),
@@ -69,7 +65,6 @@ class CreateEditGame extends Component {
       usedKAs: [],
       replace: ""
     });
-    setTimeout(() => console.log("loaded game", this.state.currentGame), 2000);
   }
 
   shuffleArray = (array) => {
@@ -96,8 +91,8 @@ class CreateEditGame extends Component {
     const {newGameRules} = this.state;
     this.setState({
       replace: value,
-      ruleName: newGameRules[value - 2].name,
-      ruleInstructions: newGameRules[value - 2].instructions
+      ruleName: newGameRules[value - 1].name,
+      ruleInstructions: newGameRules[value - 1].instructions
     });
   }
 
@@ -120,7 +115,7 @@ class CreateEditGame extends Component {
     event.preventDefault();
     const {newGameRules} = this.state;
     const errors = [];
-    for (let i in newGameRules) {
+    for (let i = 1; i < newGameRules.length - 1; i++) {
       if (!newGameRules[i].name) errors.push(`${newGameRules[i].rank}: name`);
       if (!newGameRules[i].instructions) errors.push(`${newGameRules[i].rank}: instructions`);
     }
@@ -142,6 +137,13 @@ class CreateEditGame extends Component {
           }
         ]
       });
+      this.setState({
+        createdNew: true, 
+        newGameRules: newGameTemplate, 
+        replace: "",
+        ruleName: "",
+        ruleInstructions: "",
+      });
     }
   };
 
@@ -154,7 +156,7 @@ class CreateEditGame extends Component {
         <Nav games={this.state.games} loadGame={this.loadGame}/>
         <h1>Create Edit Page</h1>
         <form>
-          <h3>New Game</h3>
+          <h3>{this.state.createdNew ? "SAVED!" : "New Game"}</h3>
           <h6>Enter Game Name:</h6>
           <input
             type="text"

@@ -2,4 +2,7 @@ const router = require("express").Router();
 const usersController = require("../../controllers/usersController");
 
 router.route("/")
-  .get(usersController.findAll)
+  .post(usersController.findOrCreate)
+  .put(usersController.updateUserAsSeeded)
+
+module.exports = router;

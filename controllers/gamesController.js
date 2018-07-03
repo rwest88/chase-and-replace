@@ -4,10 +4,25 @@ const db = require("../models");
 module.exports = {
   findUserGames: function(req, res) {
     db.Game
-      .find({})
+      .find({forkedFrom: "Original"})
       .sort({ created: -1 })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
+  },
+  saveClones: function(req, res) {
+    console.log(req.body);
+    db.Game
+      .insertMany(req.body.games)
+      .then(dbModel => {
+        console.log(dbModel);
+        let gameIDs = dbModel.map(game => game._id);
+        console.log(gameIDs);
+        db.User.update({userName: req.body.user_name}, { $push: { games: { $each: gameIDs } } }, {new: true} )
+          .then(res => console.log("meowmeow"))
+          .catch(err => console.log(err));
+        res.json(dbModel);
+      })
+      .catch(err => console.log(err));
   },
   findById: function(req, res) {
     db.Game
@@ -21,9 +36,12 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-  update: function(req, res) {
+  pushVersion: function(req, res) {
+    console.log(req.body);
+    console.log(req.body);
+    console.log(req.body);
     db.Game
-      .findOneAndUpdate({ _id: req.params.id }, req.body)
+      .update({gameName : req.body.game }, { $push : { versions : req.body.version } } )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
