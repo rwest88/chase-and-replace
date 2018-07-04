@@ -2,9 +2,9 @@ const db = require("../models");
 
 // Defining methods for the gamesController
 module.exports = {
-  findUserGames: function(req, res) {
+  getDefaultGames: function(req, res) {
     db.Game
-      .find({forkedFrom: "Original"})
+      .find({admin: "Chase_Replacenson"})
       .sort({ created: -1 })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
@@ -24,6 +24,13 @@ module.exports = {
       })
       .catch(err => console.log(err));
   },
+  getGamesByUser: function(req, res) {
+    db.Game
+      .find( { _id: { $in: req.body.gameIDs } } )
+      .sort({ created: -1 })
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
   findById: function(req, res) {
     db.Game
       .findById(req.params.id)
@@ -41,7 +48,7 @@ module.exports = {
     console.log(req.body);
     console.log(req.body);
     db.Game
-      .update({gameName : req.body.game }, { $push : { versions : req.body.version } } )
+      .update({_id : req.body.gameID }, { $push : { versions : req.body.version } } )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },

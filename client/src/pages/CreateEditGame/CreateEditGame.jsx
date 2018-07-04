@@ -20,9 +20,6 @@ class CreateEditGame extends Component {
   componentDidMount() {
     var sessionObject = sessionStorage.getItem('gameState');
     this.setState(JSON.parse(sessionObject));
-    API.getUserGames()
-      .then(res => this.setState({games: res.data, initialized: true}))
-      .catch(err => console.log(err));
   }
 
   componentWillUnmount() {

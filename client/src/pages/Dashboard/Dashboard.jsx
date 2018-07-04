@@ -33,11 +33,15 @@ class Dashboard extends Component {
   // ===================
 
   componentWillMount() {
-    if (!this.state.username) {
+    if (!localStorage.getItem('username')) {
       const username = window.prompt("Enter your username: (Pretend this is logging in. Hit cancel for no login.")
       this.setState({username})
-      console.log(username);
+      localStorage.setItem('username', username);
+    } else {
+      this.setState({username: localStorage.username})
     }
+    
+    
   }
 
   componentDidMount() {
@@ -239,19 +243,20 @@ class Dashboard extends Component {
     
     if (this.state.username) { // IF AUTHENTICATED / SIGNED IN
       console.log("loading games from DB");
-      API.getUser({user_name: this.state.username})
+      API.getUser({user_name: this.state.username}) // retrieves user obj
         .then(response => {
-          // if (response.data[0].seeded) {
-            API.getUserGames()
+          if (!response.data[0].seeded) {
+            API.getDefaultGames()  // retrieves forkedfrom: original
               .then(res => {
-                if (!response.data[0].seeded) {
+                if (!response.data[0].seeded) {  // if this hasn't been done yet
                   let clones = [];
                   for (let i in res.data) {
                     let clone = res.data[i];
+                    clone._id = clone._id + "_" + this.state.username;
                     clone.admin = this.state.username;
                     clone.forkedFrom = this.state.username;
                     clone.created = new Date(Date.now());
-                    clones.push(clone);
+                    clones.push(clone);  
                   }
                   API.saveClones({user_name: this.state.username, games: clones})
                     .then(res => {
@@ -262,10 +267,15 @@ class Dashboard extends Component {
                 } 
                 else this.setState({games: res.data})
               }).catch(err => console.log(err));
-            // }
-            // else {
-            //   // API.addGamesToUser()
-            // }
+          }
+          else {
+            API.getGamesByUser({gameIDs: response.data[0].games})
+              .then(resp => {
+                console.log(resp.data);
+                this.setState({games: resp.data})
+              })
+              .catch(err => console.log(err));
+          }
         }).catch(err => console.log(err));
     }
     else {
@@ -289,7 +299,7 @@ class Dashboard extends Component {
           date: new Date(Date.now()),
           rules: this.state.rules
         }
-        API.pushVersion({game: this.state.currentGame.gameName, version: version})
+        API.pushVersion({gameID: this.state.currentGame._id, version: version})
           .then(res => {
             this.loadGamesFromDB();
             localStorage.removeItem(`versionState: ${this.state.currentGame.gameName}`);

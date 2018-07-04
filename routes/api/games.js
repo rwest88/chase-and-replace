@@ -7,10 +7,13 @@ router.route("/")
   .post(gamesController.create);
 
 router.route("/seed")
-  .post(gamesController.findUserGames);
+  .post(gamesController.getDefaultGames);
 
 router.route("/clone")
   .post(gamesController.saveClones);
+
+router.route("/user")
+  .post(gamesController.getGamesByUser);
 
 
 // // Matches with "/api/books/:id"

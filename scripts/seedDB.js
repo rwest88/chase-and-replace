@@ -10,9 +10,9 @@ mongoose.connect(
 
 const gameSeed = [
   {
-    gameName: "Classic_Kings",
-    admin: "rwest88",
-    forkedFrom: "rwest88",
+    gameName: "Classic Kings",
+    admin: "Chase_Replacenson",
+    forkedFrom: "",
     created: new Date(Date.now()),
     ratings: [2, 5, 4, 5],
     saved: true,  // users collection
@@ -175,8 +175,8 @@ const gameSeed = [
   },
   {
     gameName: "Kings_Variation",
-    admin: "everyone",
-    forkedFrom: "Original",
+    admin: "a",
+    forkedFrom: "",
     created: new Date(Date.now()),
     ratings: [],
     saved: true,  // users collection
@@ -257,8 +257,8 @@ const gameSeed = [
   },
   {
     gameName: "Custom",
-    admin: "everyone",
-    forkedFrom: "Original",
+    admin: "Chase_Replacenson",
+    forkedFrom: "",
     created: new Date(Date.now()),
     ratings: [],
     saved: true,  // users collection

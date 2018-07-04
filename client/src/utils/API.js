@@ -5,7 +5,7 @@ export default {
     return axios.post("/api/games", gameData);
   },
   // Gets all books
-  getUserGames: function(dataObj) {
+  getDefaultGames: function(dataObj) {
     console.log(dataObj)
     return axios.post("/api/games/seed", dataObj);
   },
@@ -21,6 +21,10 @@ export default {
 
   updateUserAsSeeded: function(dataObj) {
     return axios.put("/api/users", dataObj);
+  },
+
+  getGamesByUser: function(dataObj) {
+    return axios.post("/api/games/user", dataObj);
   },
   // Gets the book with the given id
   // getBook: function(id) {
