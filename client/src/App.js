@@ -4,15 +4,19 @@ import LandingLogin from "./pages/LandingLogin";
 import Dashboard from "./pages/Dashboard";
 import CreateEditGame from "./pages/CreateEditGame";
 import SearchGames from "./pages/SearchGames";
+import API from "./utils/API";
 // import NoMatch from "./pages/NoMatch_old";
 
 
-const App = () => (
+class App extends React.Component {
+
+  render() {
+    return (
   <Router>
     <div>
       
       <Switch>
-        <Route exact path="/" component={LandingLogin} />
+        <Route exact path="/" component={Dashboard} />
         <Route exact path="/dashboard" component={Dashboard} />
         <Route exact path="/edit" component={CreateEditGame} />
         <Route exact path="/search" component={SearchGames} />
@@ -20,6 +24,8 @@ const App = () => (
       </Switch>
     </div>
   </Router>
-);
+    )
+  }
+};
 
 export default App;

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Nav from "../../components/Nav";
 import CurrentCard from "../../components/CurrentCard";
-// import API from "../../utils/API";
+import API from "../../utils/API";
 import cards from "./cards.json";
 import games from "./games.json";
 import "./Dashboard.css";
@@ -14,31 +14,51 @@ class Dashboard extends Component {
   // Initialization
   // ==============
 
-  state = { cards, games, usedKAs: [], burnedCards: [] };
+  state = { 
+    cards, 
+    games, 
+    usedKAs: [], 
+    burnedCards: [], 
+    currentGame: {}, 
+    currentVersion: {},
+    currentCard: {}, 
+    kingRules: [], 
+    rules: [], 
+    currentRule: {},
+    createdNew: false
+  };
 
   // ===================
   // Life Cycle Methods:
   // ===================
 
   componentWillMount() {
-    if (!sessionStorage.getItem('gameState')) {
-      console.log('no session data');
-      this.loadGame();
+    if (!localStorage.getItem('username')) {
+      const username = window.prompt("Enter your username: (Pretend this is logging in. Hit cancel for no login.")
+      this.setState({username})
+      localStorage.setItem('username', username);
     } else {
-      console.log('yes session data');
-      const sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
-      sessionObject.redirectTo = false;
-      this.setState(sessionObject);
+      this.setState({username: localStorage.username})
     }
+    
+    
   }
 
   componentDidMount() {
     var sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
     if (sessionObject) {
       sessionObject.redirectTo = false;
+      sessionObject.createdNew = false;
       this.setState(sessionObject);
-      sessionStorage.removeItem('gameState');
     }
+    
+    this.loadGamesFromDB();
+    
+    
+    
+    // this.setState({
+    //   games: meow
+    // })
       // To Do:
       // if (authenticated) setState games to db query result (User.games) 
       // .then query result ({games._id} && {saved: true} [and slice versions array for latest version])
@@ -56,13 +76,8 @@ class Dashboard extends Component {
 
     let rules;
 
-    if (!selectedGame) {
-      selectedGame = games[0]; 
-      rules = games[0].rules;
-    }
-    
-    if (this.state.usedKAs.length > 0 && (this.state.currentGame)) {
-      if (window.confirm(`Save current rule changes to ${this.state.currentGame.gameName || selectedGame.gameName}?`)) {
+    if (this.state.newAce === true && (this.state.currentGame)) {
+      if (window.confirm(`Save current rule changes to ${this.state.currentGame.gameName || selectedGame.gameName}?  \n\n(Note: This will not add a new version. Click 'Save Current as Version' when you are happy with the set of rules.)`)) {
         localStorage.setItem(`versionState: ${this.state.currentGame.gameName || selectedGame.gameName}`, JSON.stringify(this.state.rules));
       }
     }
@@ -80,14 +95,14 @@ class Dashboard extends Component {
       burnedCards: [],
       currentRule: {},
       currentCard: {},
-      games,
+      // games,
       deckEmpty: false,
       currentGame: selectedGame,
-      rules: rules || selectedGame.versions[0].rules,
+      currentVersion: selectedGame.versions[selectedGame.versions.length - 1],
+      rules: rules || selectedGame.versions[selectedGame.versions.length - 1].rules,
       kingRules:[],
       usedKAs: [],
-      replace: "", // temporary solution to <select>
-      
+      newAce: false
     });
     // setTimeout(() => console.log("loaded game", this.state.currentGame), 2000);
   }
@@ -183,7 +198,6 @@ class Dashboard extends Component {
   handleSelectChange = event => {
     console.log(event.target.value);
     this.setState({"replace": event.target.value});
-    setTimeout(() => console.log(this.state.replace), 1000);
   }
 
   handleFormSubmit = event => {
@@ -193,7 +207,7 @@ class Dashboard extends Component {
       this.setRule(ruleName, ruleInstructions, currentCard.rank, replace);
       this.setState({ ruleName: "", ruleInstructions: "" });
     } else if (currentCard.rank === "1") {
-      alert("choose bitch");
+      alert("choose a card rank!");
     }
   };
  
@@ -217,28 +231,92 @@ class Dashboard extends Component {
         rank: replace
       });
       newRules.sort((a, b) => a.rank - b.rank);
-      this.setState({rules: newRules})
+      this.setState({rules: newRules, replace: "", newAce: true})
     }
     const usedKAs = this.state.usedKAs || [];
     usedKAs.push(this.state.currentCard.id);
     this.setState({usedKAs});
+    sessionStorage.setItem('gameState', JSON.stringify(this.state));
   }
 
   loadGamesFromDB() {
-    // if (authenticated)
-  }
+    
+    if (this.state.username) { // IF AUTHENTICATED / SIGNED IN
+      console.log("loading games from DB");
+      API.getUser({user_name: this.state.username}) // retrieves user obj
+        .then(response => {
+          if (!response.data[0].seeded) {
+            API.getDefaultGames()  // retrieves forkedfrom: original
+              .then(res => {
+                if (!response.data[0].seeded) {  // if this hasn't been done yet
+                  let clones = [];
+                  for (let i in res.data) {
+                    let clone = res.data[i];
+                    clone._id = clone._id + "_" + this.state.username;
+                    clone.admin = this.state.username;
+                    clone.forkedFrom = this.state.username;
+                    clone.created = new Date(Date.now());
+                    clones.push(clone);  
+                  }
+                  API.saveClones({user_name: this.state.username, games: clones})
+                    .then(res => {
+                      this.setState({games: res.data})
+                      API.updateUserAsSeeded({user_name: this.state.username})
+                        .then(res => console.log(res.data))
+                    }).catch(err => console.log(err));
+                } 
+                else this.setState({games: res.data})
+              }).catch(err => console.log(err));
+          }
+          else {
+            API.getGamesByUser({gameIDs: response.data[0].games})
+              .then(resp => {
+                console.log(resp.data);
+                this.setState({games: resp.data})
+              })
+              .catch(err => console.log(err));
+          }
+        }).catch(err => console.log(err));
+    }
+    else {
+      console.log("loading basic games from DB");
+      API.getUserGames()
+        .then(res => this.setState({games: res.data}))
+        .then(console.log(this.state.games))
+        .catch(err => console.log(err));
+    }
 
-  saveRules() {
-    // local storage
   }
 
   saveVersion() {
     // local storage
     // db (authenticated)
+    if (this.state.newAce || localStorage.getItem(`versionState: ${this.state.currentGame.gameName}`)) {
+      const name = window.prompt("Enter a name for this version:");
+      if (name) {
+        const version = {
+          versionName: name,
+          date: new Date(Date.now()),
+          rules: this.state.rules
+        }
+        API.pushVersion({gameID: this.state.currentGame._id, version: version})
+          .then(res => {
+            this.loadGamesFromDB();
+            localStorage.removeItem(`versionState: ${this.state.currentGame.gameName}`);
+          })
+          .then(res => {
+            this.setState({
+              currentVersion: {versionName: name},
+              newAce: false
+            });
+          })
+          .catch(err => console.log(err));
+      }
+    }
   }
 
   drawCard() {
-    if (this.state.cards.length > 0) {
+    if (this.state.currentGame.gameName && this.state.cards.length > 0) {
       const rules = this.state.rules;
       const card = this.state.cards.pop();
       const newBurn = this.state.burnedCards;
@@ -253,7 +331,7 @@ class Dashboard extends Component {
   }
 
   undo() {
-    if (this.state.cards.length < 52) {
+    if (this.state.currentGame.gameName && this.state.cards.length < 52) {
       const card = this.state.burnedCards.pop();
       const newCurrentCard = this.state.burnedCards[this.state.burnedCards.length - 1] || {};
       const newCards = this.state.cards;
@@ -283,9 +361,20 @@ class Dashboard extends Component {
 
         <div className="wrapper">
           
-          <div className="game-title">Game Title<br/>{this.state.currentGame.gameName}</div>
-          <div className="author">Author</div>
-          <div className="version">Version</div>
+          <div className="game-title">
+            <strong>{this.state.currentGame.gameName || "Nothing loaded!"}</strong>
+            <div>{this.state.currentGame.forkedFrom !== this.state.username ? 
+              <div><small>cloned from: </small><a href="/search">{this.state.currentGame.forkedFrom}</a></div> :
+              <div><small>by: </small><a href="/edit">{this.state.currentGame.admin}</a></div>}
+            </div>
+          </div>
+          <div className="author">{`Version: ${this.state.currentVersion.versionName || "none!"}\n\n`}</div>
+          <div className="version">
+          {(this.state.newAce || localStorage.getItem(`versionState: ${this.state.currentGame.gameName}`)) ? 
+              <button className="btn btn-secondary" onClick={() => this.saveVersion()}>Save Current as Version</button> : 
+              <div>Version Up to Date</div>}
+          </div>
+          
           
           <div className="decks">
             <img src={this.state.deckEmpty ? "./images/empty.png" : "./images/deck.png"} 

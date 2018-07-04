@@ -1,10 +1,9 @@
 const router = require("express").Router();
-const bookRoutes = require("./books");
-const fetch = require("./fetch");
+const gameRoutes = require("./games");
+const userRoutes = require("./users");
 
-// Book routes
-router.use("/books", bookRoutes);
-
-// router.use("/fetch", fetch); // just did this for practice
+// Game routes
+router.use("/games", gameRoutes);
+router.use("/users", userRoutes);
 
 module.exports = router;
