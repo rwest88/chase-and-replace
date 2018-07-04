@@ -40,7 +40,12 @@ module.exports = {
   create: function(req, res) {
     db.Game
       .create(req.body)
-      .then(dbModel => res.json(dbModel))
+      .then(dbModel => {
+        db.User.update({userName: dbModel.admin}, { $push: { games: dbModel._id } }, {new: true} )
+          .then(res => console.log(res))
+          .catch(err => console.log(err));
+        res.json(dbModel)
+      })
       .catch(err => res.status(422).json(err));
   },
   pushVersion: function(req, res) {
