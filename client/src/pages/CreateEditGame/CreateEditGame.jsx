@@ -119,9 +119,10 @@ class CreateEditGame extends Component {
     if (errors.length > 0) alert("Missing fields: \n" + errors.join("\n"));
     else {
       API.saveNewGame({
+        _id: this.state.gameName + "_" + this.state.username,
         gameName: this.state.gameName,
-        admin: "rwest88",
-        forkedFrom: "Original",
+        admin: this.state.username,
+        forkedFrom: this.state.username,
         created: new Date(Date.now()),
         ratings: [],
         saved: true,
