@@ -15,8 +15,9 @@ class CreateEditGame extends Component {
     newGameRules: newGameTemplate,
     usedKAs: [],
     createdNew: false,
-    rules: newGameTemplate,
-    
+    rules: newGameTemplate, // prevent an error upon mapping
+    // vers: "(unnamed)",
+    // versions: []
   };
 
   componentDidMount() {
@@ -78,21 +79,25 @@ class CreateEditGame extends Component {
   ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-  handleInputChange = event => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value
-    });
-    
+  handleInputChange = (index) => (event) => {
+    const newRules = this.state.newGameRules;
+    newRules[index + 1][event.target.name] = event.target.value;
+    console.log(this.state.newGameRules);
+    this.setState({ newGameRules: newRules });
   };
 
   handleSelectChange = event => {
     const {value} = event.target;
     const {newGameRules} = this.state;
+
+    // if (this.state.newAce && (this.state.currentGame)) {
+    //   if (window.confirm(`Save current rule changes to ${this.state.currentGame.gameName || selectedGame.gameName}?`)) {
+    //     localStorage.setItem(`versionState: ${this.state.currentGame.gameName || selectedGame.gameName}`, JSON.stringify(this.state.rules));
+    //   }
+    // }
+
     this.setState({
-      replace: value,
-      ruleName: newGameRules[value - 1].name,
-      ruleInstructions: newGameRules[value - 1].instructions
+      vers: value,
     });
   }
 
@@ -150,34 +155,26 @@ class CreateEditGame extends Component {
 
   testFormSubmit = event =>{
     event.preventDefault()
-    const newVersionRules = [
-      {rank: "1"},
-      {rank: "2", name: this.state.rule2Name || this.state.rules[1], instructions: this.state.rule2instructions || this.state.rules[1]},
-      {rank: "3", name: this.state.rule3Name || this.state.rules[2], instructions: this.state.rule3instructions || this.state.rules[2]},
-      {rank: "4", name: this.state.rule4Name || this.state.rules[3], instructions: this.state.rule4instructions || this.state.rules[3]},
-      {rank: "5", name: this.state.rule5Name || this.state.rules[4], instructions: this.state.rule5instructions || this.state.rules[4]},
-      {rank: "6", name: this.state.rule6Name || this.state.rules[5], instructions: this.state.rule6instructions || this.state.rules[5]},
-      {rank: "7", name: this.state.rule7Name || this.state.rules[6], instructions: this.state.rule7instructions || this.state.rules[6]},
-      {rank: "8", name: this.state.rule8Name || this.state.rules[7], instructions: this.state.rule8instructions || this.state.rules[7]},
-      {rank: "9", name: this.state.rule9Name || this.state.rules[8], instructions: this.state.rule9instructions || this.state.rules[8]},
-      {rank: "10", name: this.state.rule10Name || this.state.rules[9], instructions: this.state.rule10instructions || this.state.rules[9]},
-      {rank: "11", name: this.state.rule11Name || this.state.rules[10], instructions: this.state.rule11instructions || this.state.rules[10]},
-      {rank: "12", name: this.state.rule12Name || this.state.rules[11], instructions: this.state.rule12instructions || this.state.rules[11]},
-      {rank: "13"},
-    ]
     this.setState({
-      rules: newVersionRules,
-      rule2Name: "",
-      rule3Name: ""
+      rules: this.state.newGameRules,
+      redirectTo: "/dashboard"
     });
     const newVersion = {
       versionName: this.state.versionName,
       date: new Date(Date.now()),
-      rules: newVersionRules
+      rules: this.state.newGameRules
     }
     API.pushVersion({gameID: this.state.currentGame._id, version: newVersion})
-      .then(blah => console.log(blah))
-      .catch(blah => console.log(blah));
+      .then(blah => {
+        this.loadGamesFromDB();
+        localStorage.removeItem(`versionState: ${this.state.currentGame.gameName}`);
+      })
+      .catch(blah => {
+        this.setState({
+          currentVersion: {versionName: this.state.versionName},
+          newAce: false
+        });
+      });
   }
 
   render() {
@@ -198,15 +195,15 @@ class CreateEditGame extends Component {
             value={this.state.gameName}
             onChange={this.handleInputChange}
           />
-          <h6>Pick which card to change (and click Save Rule)</h6>
-          <select value={this.state.replace} onChange={this.handleSelectChange}>
-            <option value="" disabled selected>Choose a card rank...</option>
+          <h6>Pick which version to change</h6>
+          <select value={this.state.vers} onChange={this.handleSelectChange}>
             {
-              ['Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 
-              'Eight', 'Nine', 'Ten', 'Jack', 'Queen'].map((word, index) => {
-                return <option key={word} value={parseInt(index + 2)}>{word}</option>
+              currentGame.versions.map((version, index) => {
+                return <option key={version.versionName} value={null}>{version.versionName}</option>
               })
             }
+            <option value="this.state.versionName" selected>(current)</option>
+            
           </select>  
           <h6>Enter Rule Name:</h6>
           <input
@@ -234,7 +231,20 @@ class CreateEditGame extends Component {
         <br />
         <br /> */}
         <form>
-          <h6>Current Game</h6>
+          <h6>{this.state.currentGame}</h6>
+          <h6>Pick which version to change</h6>
+
+
+          {/* <select value={this.state.vers} onChange={this.handleSelectChange}>
+            {
+              this.state.versions.map((version, index) => {
+                return <option key={version.versionName} value={null}>{version.versionName}</option>
+              })
+            }
+            <option value="this.state.versionName" selected>(current)</option>
+          </select>   */}
+
+
 
           <input
             type="text"
@@ -245,24 +255,36 @@ class CreateEditGame extends Component {
           />
 
           <br/><br/>
+
+
+
           
+          {this.state.rules.slice(1,12).map((rule, index) => (
+
+          <div>
+          {/* <img className="rule-card" src={`./images/${rule.rank}s.png`} /> */}
           <input
             type="text"
-            placeholder={this.state.rules[1].name}
-            name="rule2Name"
-            value={this.state.rule2Name}
-            onChange={this.handleInputChange}
+            placeholder={this.state.rules[index + 1].name}
+            name="name"
+            onChange={this.handleInputChange(index)}
           />
 
           <input
             type="text"
-            placeholder={this.state.rules[1].instructions}
-            name="rule2instructions"
-            value={this.state.rule2instructions}
-            onChange={this.handleInputChange}
+            placeholder={this.state.rules[index + 1].instructions}
+            name="instructions"
+            onChange={this.handleInputChange(index)}
           />
 
           <br/><br/>
+          </div>
+
+          ))}
+
+          
+
+
 
           <input
             type="text"
@@ -442,9 +464,6 @@ class CreateEditGame extends Component {
             onChange={this.handleInputChange}
           />
 
-          
-
-          
 
           <button onClick={
 

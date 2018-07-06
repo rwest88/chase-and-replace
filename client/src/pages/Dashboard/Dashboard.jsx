@@ -98,6 +98,7 @@ class Dashboard extends Component {
       // games,
       deckEmpty: false,
       currentGame: selectedGame,
+      versions: selectedGame.versions,
       currentVersion: selectedGame.versions[selectedGame.versions.length - 1],
       rules: rules || selectedGame.versions[selectedGame.versions.length - 1].rules,
       kingRules:[],
