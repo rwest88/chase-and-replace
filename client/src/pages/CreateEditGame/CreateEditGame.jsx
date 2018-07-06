@@ -9,7 +9,7 @@ import API from "../../utils/API";
 
 class CreateEditGame extends Component {
 
-  state = { 
+  state = { // SHRINK THIS?
     cards,
     games,
     newGameRules: newGameTemplate,
@@ -22,7 +22,7 @@ class CreateEditGame extends Component {
     z: "z"
   };
 
-  componentDidMount() {
+  componentDidMount() {  // SHRINK THIS
     const sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
     console.log(sessionObject);
     const rules = sessionObject.rules;
@@ -106,7 +106,7 @@ class CreateEditGame extends Component {
     this.setState({ newGameRules: newRules });
   };
 
-  handleSelectChange = event => {
+  handleSelectChange = event => {  // SHRINK THIS
     let {value} = event.target;
     let arr;
     let num = value;
