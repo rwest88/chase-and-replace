@@ -284,40 +284,40 @@ class CreateEditGame extends Component {
           
           {this.state.newGameRules.slice(1,12).map((rule, index) => (
 
-          <div>
-            <img className="rule-card" alt={rule.rank} style={{height: 15 + 'vh'}} src={`./images/${rule.rank}s.png`} />
-
-            <div className="input-group mb-1">
-              <div className="input-group-prepend">
-                <span className="input-group-text" id="inputGroup-sizing-default">Rule Name</span>
-              </div>
-              <input type="text" 
-                className="form-control" 
-                aria-label="Default" 
-                aria-describedby="inputGroup-sizing-default"
-                placeholder={rule.name}
-                name="name"
-                onChange={this.handleInputChange(index)}
-              />
+          <div style={{clear: 'both '}}>
+            <div style={{float: 'left'}}>
+              <img className="rule-card" alt={rule.rank} style={{height: 16 + 'vh'}} src={`./images/${rule.rank}s.png`} />
             </div>
-            
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span className="input-group-text">Instructions</span>
+            <div style={{float: 'left'}}>
+              <div className="input-group mb-1">
+                <div className="input-group-prepend">
+                  <span className="input-group-text" id="inputGroup-sizing-default">Rule Name</span>
+                </div>
+                <input type="text" 
+                  className="form-control" 
+                  // aria-label="Default" 
+                  // aria-describedby="inputGroup-sizing-default"
+                  placeholder={rule.name}
+                  name="name"
+                  onChange={this.handleInputChange(index)}
+                />
               </div>
-              <textarea
-                type="text"
-                className="form-control"
-                placeholder={rule.instructions}
-                name="instructions"
-                onChange={this.handleInputChange(index)}
-              />
+                
+              <div className="input-group">
+                <div className="input-group-prepend">
+                  <span className="input-group-text">Instructions</span>
+                </div>
+                <textarea
+                  type="text"
+                  className="form-control"
+                  placeholder={rule.instructions}
+                  name="instructions"
+                  onChange={this.handleInputChange(index)}
+                />
+              </div>
             </div>
-
             <br/>
           </div>
-
-
 
           ))}
 
