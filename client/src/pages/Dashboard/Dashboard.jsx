@@ -269,6 +269,7 @@ class Dashboard extends Component {
               }).catch(err => console.log(err));
           }
           else {
+            console.log("ass");
             API.getGamesByUser({gameIDs: response.data[0].games})
               .then(resp => {
                 console.log(resp.data);
