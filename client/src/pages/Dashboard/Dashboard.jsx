@@ -25,7 +25,9 @@ class Dashboard extends Component {
     kingRules: [], 
     rules: [], 
     currentRule: {},
-    createdNew: false
+    createdNew: false,
+    // versions: [],
+    z: "z"
   };
 
   // ===================
@@ -73,12 +75,12 @@ class Dashboard extends Component {
   // ==============
 
   loadGame = selectedGame => {
-
+    if (!this.state.currentGame) console.log("piss");
     let rules;
 
     if (this.state.newAce === true && (this.state.currentGame)) {
-      if (window.confirm(`Save current rule changes to ${this.state.currentGame.gameName || selectedGame.gameName}?  \n\n(Note: This will not add a new version. Click 'Save Current as Version' when you are happy with the set of rules.)`)) {
-        localStorage.setItem(`versionState: ${this.state.currentGame.gameName || selectedGame.gameName}`, JSON.stringify(this.state.rules));
+      if (window.confirm(`Save current rule changes to ${this.state.currentGame.gameName}?  \n\n(Note: This will not add a new version. Click 'Save Current as Version' when you are happy with the set of rules.)`)) {
+        localStorage.setItem(`versionState: ${this.state.currentGame.gameName}`, JSON.stringify(this.state.rules));
       }
     }
     
@@ -266,7 +268,9 @@ class Dashboard extends Component {
                         .then(res => console.log(res.data))
                     }).catch(err => console.log(err));
                 } 
-                else this.setState({games: res.data})
+                else this.setState({
+                  games: res.data,
+                })
               }).catch(err => console.log(err));
           }
           else {
@@ -274,7 +278,9 @@ class Dashboard extends Component {
             API.getGamesByUser({gameIDs: response.data[0].games})
               .then(resp => {
                 console.log(resp.data);
-                this.setState({games: resp.data})
+                this.setState({
+                  games: resp.data,
+                })
               })
               .catch(err => console.log(err));
           }
@@ -287,6 +293,8 @@ class Dashboard extends Component {
         .then(console.log(this.state.games))
         .catch(err => console.log(err));
     }
+
+    setTimeout(()=>console.log(this.state.currentGame), 5000);
 
   }
 
@@ -370,7 +378,7 @@ class Dashboard extends Component {
               <div><small>by: </small><a href="/edit">{this.state.currentGame.admin}</a></div>}
             </div>
           </div>
-          <div className="author">{`Version: ${this.state.currentVersion.versionName || "none!"}\n\n`}</div>
+          <div className="author">{`Version: ${this.state.versionName || this.state.currentVersion.versionName || "none!"}\n\n`}</div>
           <div className="version">
           {(this.state.newAce || localStorage.getItem(`versionState: ${this.state.currentGame.gameName}`)) ? 
               <button className="btn btn-secondary" onClick={() => this.saveVersion()}>Save Current as Version</button> : 

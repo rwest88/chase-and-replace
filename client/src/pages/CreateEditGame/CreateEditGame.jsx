@@ -15,14 +15,31 @@ class CreateEditGame extends Component {
     newGameRules: newGameTemplate,
     usedKAs: [],
     createdNew: false,
-    rules: newGameTemplate, // prevent an error upon mapping
-    // vers: "(unnamed)",
-    // versions: []
+    rules: newGameTemplate,
+    currentGame: {},
+    versions: [],
+    versionID: "",
+    z: "z"
   };
 
   componentDidMount() {
-    var sessionObject = sessionStorage.getItem('gameState');
-    this.setState(JSON.parse(sessionObject));
+    const sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
+    console.log(sessionObject);
+    const rules = sessionObject.rules;
+    let versions = sessionObject.versions;
+    let pee = {
+      _id: "",
+      versionName: "[UNNAMED] (current)",
+      rules
+    };
+    let vs = versions.filter(version => version.versionName !== "[UNNAMED] (current)");
+    vs.push(pee);
+    console.log(vs);
+    sessionObject.versions = vs;
+    sessionObject.vers = vs.length - 1;
+    this.setState(sessionObject);
+    console.log("tits");
+    this.setState({newGameRules: rules});
   }
 
   componentWillUnmount() {
@@ -30,17 +47,12 @@ class CreateEditGame extends Component {
   }
 
   loadGame = selectedGame => {
-
+    if (!this.state.currentGame) console.log("piss");
     let rules;
 
-    if (!selectedGame) {
-      selectedGame = games[0]; 
-      rules = games[0].rules;
-    }
-
-    if (this.state.usedKAs.length > 0 && (this.state.currentGame)) {
-      if (window.confirm(`Save current rule changes to ${this.state.currentGame.gameName || selectedGame.gameName}?`)) {
-        localStorage.setItem(`versionState: ${this.state.currentGame.gameName || selectedGame.gameName}`, JSON.stringify(this.state.rules));
+    if (this.state.newAce === true && (this.state.currentGame)) {
+      if (window.confirm(`Save current rule changes to ${this.state.currentGame.gameName}?  \n\n(Note: This will not add a new version. Click 'Save Current as Version' when you are happy with the set of rules.)`)) {
+        localStorage.setItem(`versionState: ${this.state.currentGame.gameName}`, JSON.stringify(this.state.rules));
       }
     }
     
@@ -57,14 +69,17 @@ class CreateEditGame extends Component {
       burnedCards: [],
       currentRule: {},
       currentCard: {},
-      games,
+      // games,
       deckEmpty: false,
       currentGame: selectedGame,
-      rules: rules || selectedGame.versions[0].rules,
+      versions: selectedGame.versions,
+      currentVersion: selectedGame.versions[selectedGame.versions.length - 1],
+      rules: rules || selectedGame.versions[selectedGame.versions.length - 1].rules,
       kingRules:[],
       usedKAs: [],
-      replace: ""
+      newAce: false
     });
+    // setTimeout(() => console.log("loaded game", this.state.currentGame), 2000);
   }
 
   shuffleArray = (array) => {
@@ -78,26 +93,35 @@ class CreateEditGame extends Component {
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
+  handleNameChange = event => {
+    const {name, value} = event.target;
+    this.setState({
+      [name]: value
+    });
+  }
 
   handleInputChange = (index) => (event) => {
     const newRules = this.state.newGameRules;
     newRules[index + 1][event.target.name] = event.target.value;
-    console.log(this.state.newGameRules);
     this.setState({ newGameRules: newRules });
   };
 
   handleSelectChange = event => {
-    const {value} = event.target;
-    const {newGameRules} = this.state;
-
-    // if (this.state.newAce && (this.state.currentGame)) {
-    //   if (window.confirm(`Save current rule changes to ${this.state.currentGame.gameName || selectedGame.gameName}?`)) {
-    //     localStorage.setItem(`versionState: ${this.state.currentGame.gameName || selectedGame.gameName}`, JSON.stringify(this.state.rules));
-    //   }
-    // }
-
+    let {value} = event.target;
+    let arr;
+    let num = value;
+    console.log(this.state.versions.length)
+    if (num === this.state.versions.length) {
+      arr = this.state.rules;
+      num--;
+    }
+    console.log(num);
     this.setState({
       vers: value,
+      // versionID: this.state.versions[value]._id,
+      // versionName: this.state.versions[value].versionName,
+      // rules: this.state.versions[value].rules,
+      newGameRules: arr || this.state.versions[num].rules
     });
   }
 
@@ -155,6 +179,8 @@ class CreateEditGame extends Component {
 
   testFormSubmit = event =>{
     event.preventDefault()
+    console.log(this.state.newGameRules);
+
     this.setState({
       rules: this.state.newGameRules,
       redirectTo: "/dashboard"
@@ -165,15 +191,15 @@ class CreateEditGame extends Component {
       rules: this.state.newGameRules
     }
     API.pushVersion({gameID: this.state.currentGame._id, version: newVersion})
-      .then(blah => {
-        this.loadGamesFromDB();
+      .then(res => {
         localStorage.removeItem(`versionState: ${this.state.currentGame.gameName}`);
-      })
-      .catch(blah => {
         this.setState({
           currentVersion: {versionName: this.state.versionName},
           newAce: false
         });
+      })
+      .catch(err => {
+        console.log(err);
       });
   }
 
@@ -195,15 +221,15 @@ class CreateEditGame extends Component {
             value={this.state.gameName}
             onChange={this.handleInputChange}
           />
-          <h6>Pick which version to change</h6>
-          <select value={this.state.vers} onChange={this.handleSelectChange}>
+          <h6>Select which version to change</h6>
+          <select value={this.state.versionName} onChange={this.handleSelectChange}>
+            
             {
-              currentGame.versions.map((version, index) => {
-                return <option key={version.versionName} value={null}>{version.versionName}</option>
+              this.state.versions.map((version, index) => {
+                return <option key={version.versionName} value={version.versionName}>{version.versionName}</option>
               })
             }
-            <option value="this.state.versionName" selected>(current)</option>
-            
+            <option value="(this.state.versionName)" selected>(current)</option>
           </select>  
           <h6>Enter Rule Name:</h6>
           <input
@@ -231,239 +257,71 @@ class CreateEditGame extends Component {
         <br />
         <br /> */}
         <form>
-          <h6>{this.state.currentGame}</h6>
-          <h6>Pick which version to change</h6>
+          <h6>{this.state.currentGame.gameName}</h6>
 
 
-          {/* <select value={this.state.vers} onChange={this.handleSelectChange}>
+
+          <select value={this.state.vers} onChange={this.handleSelectChange}>
             {
               this.state.versions.map((version, index) => {
-                return <option key={version.versionName} value={null}>{version.versionName}</option>
+                return <option key={version.versionName} value={index}>{version.versionName}</option>
               })
             }
-            <option value="this.state.versionName" selected>(current)</option>
-          </select>   */}
+          </select>  
+
+
 
 
 
           <input
             type="text"
-            placeholder={"enter version name"}
+            placeholder={"Rename here..."}
             name="versionName"
-            value={this.state.versionName}
-            onChange={this.handleInputChange}
+            onChange={this.handleNameChange}
           />
 
           <br/><br/>
-
-
-
           
-          {this.state.rules.slice(1,12).map((rule, index) => (
+          {this.state.newGameRules.slice(1,12).map((rule, index) => (
 
           <div>
-          {/* <img className="rule-card" src={`./images/${rule.rank}s.png`} /> */}
-          <input
-            type="text"
-            placeholder={this.state.rules[index + 1].name}
-            name="name"
-            onChange={this.handleInputChange(index)}
-          />
+            <img className="rule-card" alt={rule.rank} style={{height: 15 + 'vh'}} src={`./images/${rule.rank}s.png`} />
 
-          <input
-            type="text"
-            placeholder={this.state.rules[index + 1].instructions}
-            name="instructions"
-            onChange={this.handleInputChange(index)}
-          />
+            <div className="input-group mb-1">
+              <div className="input-group-prepend">
+                <span className="input-group-text" id="inputGroup-sizing-default">Rule Name</span>
+              </div>
+              <input type="text" 
+                className="form-control" 
+                aria-label="Default" 
+                aria-describedby="inputGroup-sizing-default"
+                placeholder={rule.name}
+                name="name"
+                onChange={this.handleInputChange(index)}
+              />
+            </div>
+            
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span className="input-group-text">Instructions</span>
+              </div>
+              <textarea
+                type="text"
+                className="form-control"
+                placeholder={rule.instructions}
+                name="instructions"
+                onChange={this.handleInputChange(index)}
+              />
+            </div>
 
-          <br/><br/>
+            <br/>
           </div>
+
+
 
           ))}
 
           
-
-
-
-          <input
-            type="text"
-            placeholder={this.state.rules[2].name}
-            name="rule3Name"
-            value={this.state.rule3Name}
-            onChange={this.handleInputChange}
-          />
-
-          <input
-            type="text"
-            placeholder={this.state.rules[2].instructions}
-            name="rule3instructions"
-            value={this.state.rule3instructions}
-            onChange={this.handleInputChange}
-          />
-
-          <br/><br/>
-
-          <input
-            type="text"
-            placeholder={this.state.rules[3].name}
-            name="rule4Name"
-            value={this.state.rule4Name}
-            onChange={this.handleInputChange}
-          />
-
-          <input
-            type="text"
-            placeholder={this.state.rules[3].instructions}
-            name="rule4instructions"
-            value={this.state.rule4instructions}
-            onChange={this.handleInputChange}
-          />
-
-          <br/><br/>
-
-          <input
-            type="text"
-            placeholder={this.state.rules[4].name}
-            name="rule5Name"
-            value={this.state.rule5Name}
-            onChange={this.handleInputChange}
-          />
-
-          <input
-            type="text"
-            placeholder={this.state.rules[4].instructions}
-            name="rule5instructions"
-            value={this.state.rule5instructions}
-            onChange={this.handleInputChange}
-          />
-
-          <br/><br/>
-
-          <input
-            type="text"
-            placeholder={this.state.rules[5].name}
-            name="rule6Name"
-            value={this.state.rule6Name}
-            onChange={this.handleInputChange}
-          />
-
-          <input
-            type="text"
-            placeholder={this.state.rules[5].instructions}
-            name="rule6instructions"
-            value={this.state.rule6instructions}
-            onChange={this.handleInputChange}
-          />
-
-          <br/><br/>
-
-          <input
-            type="text"
-            placeholder={this.state.rules[6].name}
-            name="rule7Name"
-            value={this.state.rule7Name}
-            onChange={this.handleInputChange}
-          />
-
-          <input
-            type="text"
-            placeholder={this.state.rules[6].instructions}
-            name="rule7instructions"
-            value={this.state.rule7instructions}
-            onChange={this.handleInputChange}
-          />
-
-          <br/><br/>
-
-          <input
-            type="text"
-            placeholder={this.state.rules[7].name}
-            name="rule8Name"
-            value={this.state.rule8Name}
-            onChange={this.handleInputChange}
-          />
-
-          <input
-            type="text"
-            placeholder={this.state.rules[7].instructions}
-            name="rule8instructions"
-            value={this.state.rule8instructions}
-            onChange={this.handleInputChange}
-          />
-
-          <br/><br/>
-
-          <input
-            type="text"
-            placeholder={this.state.rules[8].name}
-            name="rule9Name"
-            value={this.state.rule9Name}
-            onChange={this.handleInputChange}
-          />
-
-          <input
-            type="text"
-            placeholder={this.state.rules[8].instructions}
-            name="rule9instructions"
-            value={this.state.rule9instructions}
-            onChange={this.handleInputChange}
-          />
-
-          <br/><br/>
-
-          <input
-            type="text"
-            placeholder={this.state.rules[9].name}
-            name="rule10Name"
-            value={this.state.rule10Name}
-            onChange={this.handleInputChange}
-          />
-
-          <input
-            type="text"
-            placeholder={this.state.rules[9].instructions}
-            name="rule10instructions"
-            value={this.state.rule10instructions}
-            onChange={this.handleInputChange}
-          />
-
-          <br/><br/>
-
-          <input
-            type="text"
-            placeholder={this.state.rules[10].name}
-            name="rule11Name"
-            value={this.state.rule11Name}
-            onChange={this.handleInputChange}
-          />
-
-          <input
-            type="text"
-            placeholder={this.state.rules[10].instructions}
-            name="rule11instructions"
-            value={this.state.rule11instructions}
-            onChange={this.handleInputChange}
-          />
-
-          <br/><br/>
-
-          <input
-            type="text"
-            placeholder={this.state.rules[11].name}
-            name="rule12Name"
-            value={this.state.rule12Name}
-            onChange={this.handleInputChange}
-          />
-
-          <input
-            type="text"
-            placeholder={this.state.rules[11].instructions}
-            name="rule12instructions"
-            value={this.state.rule12instructions}
-            onChange={this.handleInputChange}
-          />
-
 
           <button onClick={
 
