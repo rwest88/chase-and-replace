@@ -49,9 +49,6 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   pushVersion: function(req, res) {
-    console.log(req.body);
-    console.log(req.body);
-    console.log(req.body);
     db.Game
       .update({_id : req.body.gameID }, { $push : { versions : req.body.version } } )
       .then(dbModel => res.json(dbModel))
