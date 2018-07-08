@@ -311,14 +311,11 @@ class Dashboard extends Component {
         }
         API.pushVersion({gameID: this.state.currentGame._id, version: version})
           .then(res => {
-            this.loadGamesFromDB();
             localStorage.removeItem(`versionState: ${this.state.currentGame.gameName}`);
-          })
-          .then(res => {
-            this.setState({
-              currentVersion: {versionName: name},
-              newAce: false
-            });
+            API.getGame(this.state.currentGame._id).then(res => this.setState({
+              versions: res.data.versions, 
+              currentVersion: res.data.versions[res.data.versions.length - 1],
+              newAce: false}))
           })
           .catch(err => console.log(err));
       }

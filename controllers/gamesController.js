@@ -31,7 +31,7 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-  findById: function(req, res) {
+  getGame: function(req, res) {
     db.Game
       .findById(req.params.id)
       .then(dbModel => res.json(dbModel))
@@ -41,7 +41,8 @@ module.exports = {
     db.Game
       .create(req.body)
       .then(dbModel => {
-        db.User.update({userName: dbModel.admin}, { $push: { games: dbModel._id } }, {new: true} )
+        db.User
+          .update({userName: dbModel.admin}, { $push: { games: dbModel._id } }, {new: true} )
           .then(res => console.log(res))
           .catch(err => console.log(err));
         res.json(dbModel)
@@ -50,14 +51,13 @@ module.exports = {
   },
   pushVersion: function(req, res) {
     db.Game
-      .update({_id : req.body.gameID }, { $push : { versions : req.body.version } } )
+      .update({ _id : req.body.gameID }, { $push : { versions : req.body.version } } )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-  remove: function(req, res) {
+  pullVersion: function(req, res) {
     db.Game
-      .findById({ _id: req.params.id })
-      .then(dbModel => dbModel.remove())
+      .update({ _id: req.body.gameID }, { $pull: { versions: { _id: req.body.versionID } } } )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   }

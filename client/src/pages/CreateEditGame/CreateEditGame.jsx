@@ -15,9 +15,10 @@ class CreateEditGame extends Component {
     newGameRules: newGameTemplate,
     usedKAs: [],
     createdNew: false,
-    rules: newGameTemplate,
+    // rules: newGameTemplate,
+    oldRules: newGameTemplate,
     currentGame: {},
-    versions: [],
+    versions: [{rules: newGameTemplate}],
     versionID: "",
     z: "z"
   };
@@ -101,27 +102,18 @@ class CreateEditGame extends Component {
   }
 
   handleInputChange = (index) => (event) => {
-    const newRules = this.state.newGameRules;
+    let newRules = this.state.newGameRules;
     newRules[index + 1][event.target.name] = event.target.value;
     this.setState({ newGameRules: newRules });
+    console.log(this.state.oldRules[1].name)
   };
 
-  handleSelectChange = event => {  // SHRINK THIS
+  handleSelectChange = event => {
     let {value} = event.target;
-    let arr;
-    let num = value;
-    console.log(this.state.versions.length)
-    if (num === this.state.versions.length) {
-      arr = this.state.rules;
-      num--;
-    }
-    console.log(num);
     this.setState({
       vers: value,
-      // versionID: this.state.versions[value]._id,
-      // versionName: this.state.versions[value].versionName,
-      // rules: this.state.versions[value].rules,
-      newGameRules: arr || this.state.versions[num].rules
+      versionName: "",
+      newGameRules: this.state.versions[value].rules
     });
   }
 
@@ -140,67 +132,84 @@ class CreateEditGame extends Component {
     });
   }
 
-  handleFormSubmit = event => {
+  // handleFormSubmit = event => {
+  //   event.preventDefault();
+  //   const {newGameRules} = this.state;
+  //   const errors = [];
+  //   for (let i = 1; i < newGameRules.length - 1; i++) {
+  //     if (!newGameRules[i].name) errors.push(`${newGameRules[i].rank}: name`);
+  //     if (!newGameRules[i].instructions) errors.push(`${newGameRules[i].rank}: instructions`);
+  //   }
+  //   if (errors.length > 0) alert("Missing fields: \n" + errors.join("\n"));
+  //   else {
+  //     API.saveNewGame({
+  //       _id: this.state.gameName + "_" + this.state.username,
+  //       gameName: this.state.gameName,
+  //       admin: this.state.username,
+  //       forkedFrom: this.state.username,
+  //       created: new Date(Date.now()),
+  //       ratings: [],
+  //       saved: true,
+  //       public: false,
+  //       versions: [
+  //         {
+  //           versionName: "init",
+  //           date: new Date(Date.now()),
+  //           rules: newGameRules
+  //         }
+  //       ]
+  //     });
+  //     this.setState({
+  //       createdNew: true, 
+  //       newGameRules: newGameTemplate, 
+  //       replace: "",
+  //       ruleName: "",
+  //       ruleInstructions: "",
+  //     });
+  //   }
+  // };
+
+  deleteVersion = event => {
     event.preventDefault();
-    const {newGameRules} = this.state;
-    const errors = [];
-    for (let i = 1; i < newGameRules.length - 1; i++) {
-      if (!newGameRules[i].name) errors.push(`${newGameRules[i].rank}: name`);
-      if (!newGameRules[i].instructions) errors.push(`${newGameRules[i].rank}: instructions`);
+    const {currentGame, versions, vers} = this.state;
+    console.log(vers);
+    if (vers > 0) {
+      console.log("running delete");
+      API.deleteVersion({gameID: currentGame._id, versionID: versions[vers]._id})
+        .then(res => API.getGame(currentGame._id)
+          .then(res => this.setState({
+            newGameRules: newGameTemplate,
+            versions: res.data.versions,
+            vers: (res.data.versions.length < 2) ? 0 : vers,
+          }))
+        )
+        .catch(err => console.log(err))
     }
-    if (errors.length > 0) alert("Missing fields: \n" + errors.join("\n"));
-    else {
-      API.saveNewGame({
-        _id: this.state.gameName + "_" + this.state.username,
-        gameName: this.state.gameName,
-        admin: this.state.username,
-        forkedFrom: this.state.username,
-        created: new Date(Date.now()),
-        ratings: [],
-        saved: true,
-        public: false,
-        versions: [
-          {
-            versionName: "init",
-            date: new Date(Date.now()),
-            rules: newGameRules
-          }
-        ]
-      });
-      this.setState({
-        createdNew: true, 
-        newGameRules: newGameTemplate, 
-        replace: "",
-        ruleName: "",
-        ruleInstructions: "",
-      });
-    }
-  };
+  }
 
-  testFormSubmit = event =>{
+  updateVersion = event =>{
     event.preventDefault()
-    console.log(this.state.newGameRules);
+    const {newGameRules, versionName, currentGame, versions, vers} = this.state;
 
-    this.setState({
-      rules: this.state.newGameRules,
-      redirectTo: "/dashboard"
-    });
-    const newVersion = {
-      versionName: this.state.versionName,
+    const version = {
+      versionName: versionName,
       date: new Date(Date.now()),
-      rules: this.state.newGameRules
+      rules: newGameRules
     }
-    API.pushVersion({gameID: this.state.currentGame._id, version: newVersion})
-      .then(res => {
-        localStorage.removeItem(`versionState: ${this.state.currentGame.gameName}`);
-        this.setState({
-          currentVersion: {versionName: this.state.versionName},
+
+    API.pushVersion({gameID: this.state.currentGame._id, version})
+    .then(res => {
+      localStorage.removeItem(`versionState: ${this.state.currentGame.gameName}`);
+      console.log(res.data);
+      API.getGame(this.state.currentGame._id)
+        .then(res => this.setState({
+          versions: res.data.versions,
+          currentVersion: res.data.versions[res.data.versions.length - 1],
           newAce: false
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+        })
+      );
+    })
+    .catch(err => console.log(err));
   }
 
   render() {
@@ -264,7 +273,7 @@ class CreateEditGame extends Component {
           <select value={this.state.vers} onChange={this.handleSelectChange}>
             {
               this.state.versions.map((version, index) => {
-                return <option key={version.versionName} value={index}>{version.versionName}</option>
+                return <option key={version.versionName} value={index}>{version.versionName} (Created: {version.date})</option>
               })
             }
           </select>  
@@ -275,10 +284,14 @@ class CreateEditGame extends Component {
 
           <input
             type="text"
-            placeholder={"Rename here..."}
+            placeholder={this.state.oldRules[1].name}
             name="versionName"
+            value={this.state.versionName}
             onChange={this.handleNameChange}
           />
+
+          <button onClick={this.updateVersion}>Update</button>
+          <button onClick={this.deleteVersion}>Delete</button>
 
           <br/><br/>
           
@@ -297,7 +310,8 @@ class CreateEditGame extends Component {
                   className="form-control" 
                   // aria-label="Default" 
                   // aria-describedby="inputGroup-sizing-default"
-                  placeholder={rule.name}
+                  placeholder={this.state.oldRules[index + 1].name}
+                  value={rule.name} // this can be optional
                   name="name"
                   onChange={this.handleInputChange(index)}
                 />
@@ -310,7 +324,8 @@ class CreateEditGame extends Component {
                 <textarea
                   type="text"
                   className="form-control"
-                  placeholder={rule.instructions}
+                  placeholder={this.state.oldRules[index + 1].instructions}
+                  value={rule.instructions} // this can be optional
                   name="instructions"
                   onChange={this.handleInputChange(index)}
                 />
@@ -321,12 +336,6 @@ class CreateEditGame extends Component {
 
           ))}
 
-          
-
-          <button onClick={
-
-            this.testFormSubmit
-            }>save</button>
           
         </form>
         
