@@ -9,19 +9,25 @@ import API from "../../utils/API";
 
 class CreateEditGame extends Component {
 
+  // ==============
+  // Initialization
+  // ==============
+
   state = { // SHRINK THIS?
     cards,
     games,
     newGameRules: newGameTemplate,
     usedKAs: [],
-    createdNew: false,
     // rules: newGameTemplate,
     oldRules: newGameTemplate,
     currentGame: {},
     versions: [{rules: newGameTemplate}],
-    versionID: "",
-    z: "z"
+    versionID: ""
   };
+
+  // ==================
+  // Life Cycle Methods
+  // ==================
 
   componentDidMount() {
     const sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
@@ -32,23 +38,12 @@ class CreateEditGame extends Component {
     sessionStorage.setItem('gameState', JSON.stringify(this.state));
   }
 
-  pushBlankVersion = obj => {
-    const rules = obj.rules || this.state.oldRules;
-    let versions = obj.versions.filter(version => version.versionName !== "[NEW]");
-    let blank = {
-      _id: "",
-      versionName: "[NEW]",
-      rules
-    };
-    versions.push(blank);
-    obj.versions = versions;
-    obj.vers = versions.length - 1;
-    obj.newGameRules = rules;
-    return obj;
-  }
+  // =============================
+  // Functions related to Gameplay
+  // =============================
 
   loadGame = selectedGame => {
-    if (!this.state.currentGame) console.log("piss");
+
     let rules;
 
     if (this.state.newAce === true && (this.state.currentGame)) {
@@ -70,17 +65,17 @@ class CreateEditGame extends Component {
       burnedCards: [],
       currentRule: {},
       currentCard: {},
-      // games,
+      games: this.state.games.concat(selectedGame),
       deckEmpty: false,
       currentGame: selectedGame,
       versions: selectedGame.versions,
+      vers: selectedGame.versions.length - 1,
       currentVersion: selectedGame.versions[selectedGame.versions.length - 1],
       rules: rules || selectedGame.versions[selectedGame.versions.length - 1].rules,
       kingRules:[],
       usedKAs: [],
       newAce: false
     });
-    // setTimeout(() => console.log("loaded game", this.state.currentGame), 2000);
   }
 
   shuffleArray = (array) => {
@@ -91,8 +86,9 @@ class CreateEditGame extends Component {
     return array;
   }
 
-
-  ///////////////////////////////////////////////////////////////////////////////////////////////////////
+  // ==============
+  // Form Functions
+  // ==============
 
   handleNameChange = event => {
     const {name, value} = event.target;
@@ -117,88 +113,106 @@ class CreateEditGame extends Component {
     });
   }
 
-  setRule = event => {
-    event.preventDefault()
-    const oldRules = this.state.newGameRules;
-    const newRules = oldRules.filter(rule => rule.rank !== this.state.replace);
-    newRules.push({
-      rank: this.state.replace,
-      name: this.state.ruleName,
-      instructions: this.state.ruleInstructions
-    });
-    newRules.sort((a, b) => a.rank - b.rank);
-    this.setState({
-      newGameRules: newRules
-    });
-  }
+  // setRule = event => {
+  //   event.preventDefault()
+  //   const oldRules = this.state.newGameRules;
+  //   const newRules = oldRules.filter(rule => rule.rank !== this.state.replace);
+  //   newRules.push({
+  //     rank: this.state.replace,
+  //     name: this.state.ruleName,
+  //     instructions: this.state.ruleInstructions
+  //   });
+  //   newRules.sort((a, b) => a.rank - b.rank);
+  //   this.setState({
+  //     newGameRules: newRules
+  //   });
+  // }
 
-  // handleFormSubmit = event => {
-  //   event.preventDefault();
-  //   const {newGameRules} = this.state;
-  //   const errors = [];
-  //   for (let i = 1; i < newGameRules.length - 1; i++) {
-  //     if (!newGameRules[i].name) errors.push(`${newGameRules[i].rank}: name`);
-  //     if (!newGameRules[i].instructions) errors.push(`${newGameRules[i].rank}: instructions`);
-  //   }
-  //   if (errors.length > 0) alert("Missing fields: \n" + errors.join("\n"));
-  //   else {
-  //     API.saveNewGame({
-  //       _id: this.state.gameName + "_" + this.state.username,
-  //       gameName: this.state.gameName,
-  //       admin: this.state.username,
-  //       forkedFrom: this.state.username,
-  //       created: new Date(Date.now()),
-  //       ratings: [],
-  //       saved: true,
-  //       public: false,
-  //       versions: [
-  //         {
-  //           versionName: "init",
-  //           date: new Date(Date.now()),
-  //           rules: newGameRules
-  //         }
-  //       ]
-  //     });
-  //     this.setState({
-  //       createdNew: true, 
-  //       newGameRules: newGameTemplate, 
-  //       replace: "",
-  //       ruleName: "",
-  //       ruleInstructions: "",
-  //     });
-  //   }
-  // };
+  // =====================
+  // Create/Edit Functions
+  // =====================
 
-  deleteVersion = event => {
+  createNewGame = event => {
     event.preventDefault();
-    const {currentGame, versions, vers} = this.state;
+    const {newGameRules, versionName, username} = this.state;
+    const errors = [];
+    for (let i = 1; i < newGameRules.length - 1; i++) {
+      if (!newGameRules[i].name) errors.push(`${newGameRules[i].rank}: name`);
+      if (!newGameRules[i].instructions) errors.push(`${newGameRules[i].rank}: instructions`);
+    }
+    if (errors.length > 0) alert("Missing fields: \n" + errors.join("\n"));
+    else {
+      API.saveNewGame({
+        _id: versionName + " " + username + " " + Math.floor(Math.random() * 1000000),
+        gameName: versionName,
+        admin: username,
+        forkedFrom: username,
+        created: new Date(Date.now()),
+        ratings: [],
+        saved: true,
+        public: false,
+        versions: [{
+          versionName: "init",
+          date: new Date(Date.now()),
+          rules: newGameRules
+        }]
+      }).then(res => {
+          this.setState({newGameRules: res.data.versions[0].rules}, () => {
+            if (window.confirm("New game created! Play now?")) this.loadGame(res.data);
+          });
+        }
+      ).catch(err => console.log(err));
+    }
+  };
 
-    if (vers < 1) return window.alert("You cannot delete the original version!");
-    if (vers === versions.length - 1) return window.alert("Nothing to delete!");
-  
-    console.log("running delete");
-    API.deleteVersion({gameID: currentGame._id, versionID: versions[vers]._id})
-      .then(res => API.getGame(currentGame._id)
-        .then(res => this.setState({
-          versions: res.data.versions,
-          vers: (res.data.versions.length < 2) ? 0 : vers,
-        }))
-      ).catch(err => console.log(err))
-  }
-
-  updateVersion = event =>{
+  loadTemplate = event => {
     event.preventDefault();
 
+  }
+
+  clearFields = event => {
+    event.preventDefault();
+    
+  }
+
+  pushBlankVersion = obj => {
+    const rules = obj.rules || this.state.rules;
+    if (obj.newAce || this.state.newAce || (localStorage.getItem(`versionState: ${obj.gameName}`))) {
+      
+      let versions = obj.versions.filter(version => version.versionName !== "[NEW]");
+      let blank = {
+        _id: "",
+        versionName: "[NEW]",
+        rules
+      };
+      versions.push(blank);
+      obj.versions = versions;
+      obj.vers = obj.versions.length - 1;
+      
+    }
+    obj.newGameRules = rules;
+    return obj;
+  }
+
+  loadVersion = event => {
+    event.preventDefault();
+
+  }
+
+  updateVersion = event => {
+    event.preventDefault();
+    const {newGameRules, versionName, currentGame, currentVersion, versions, vers} = this.state;
+    
     if (vers < 1) return window.alert("You cannot overwrite the original version!");
 
-    const {newGameRules, versionName, currentGame, versions, vers} = this.state;
     let version = {
-      versionName: versionName,
+      versionName,
       date: new Date(Date.now()),
       rules: newGameRules
     }
-
-    if (vers !== versions.length - 1) {
+    // console.log(versions.length - 1, vers);
+    // console.log(currentVersion.versionName, versions[vers].versionName)
+    if (parseInt(vers) !== versions.length - 1 || currentVersion.versionName === versions[vers].versionName) {
       console.log("updating");
       version._id = versions[vers]._id;
       version.date = versions[vers].date;
@@ -206,7 +220,10 @@ class CreateEditGame extends Component {
         .then(res => API.pushVersion({gameID: currentGame._id, version})
           .then(res => API.getGame(currentGame._id)
             .then(res => this.setState({
-              versions: this.pushBlankVersion(res.data).versions
+              currentVersion: res.data.versions[res.data.versions.length - 1],
+              rules: res.data.versions[res.data.versions.length - 1].rules,
+              versions: this.pushBlankVersion(res.data).versions,
+              versionName: ""
             }))
           )
         ).catch(err => console.log(err))
@@ -220,12 +237,32 @@ class CreateEditGame extends Component {
             currentVersion: res.data.versions[res.data.versions.length - 1],
             rules: res.data.versions[res.data.versions.length - 1].rules,
             oldRules: res.data.versions[res.data.versions.length - 1].rules,
+            versionName: "",
             newAce: false
           }))
         ).catch(err => console.log(err));
     }
 
     localStorage.removeItem(`versionState: ${currentGame.gameName}`);
+  }
+
+  deleteVersion = event => {
+    event.preventDefault();
+    const {currentGame, currentVersion, versions, vers} = this.state;
+
+    if (vers < 1) return window.alert("You cannot delete the original version!");
+    if (versions[vers].versionName === "[NEW]") return window.alert("You can't delete what isn't saved!");
+    if (currentVersion.versionName === versions[vers].versionName) {
+      if (!window.confirm("Are you sure? This version is in progress!")) return false;
+    }
+    console.log("running delete");
+    API.deleteVersion({gameID: currentGame._id, versionID: versions[vers]._id})
+      .then(res => API.getGame(currentGame._id)
+        .then(res => this.setState({
+          versions: this.pushBlankVersion(res.data).versions,
+          vers: (res.data.versions.length < 2) ? 0 : vers,
+        }))
+      ).catch(err => console.log(err))
   }
 
   // ==================
@@ -238,57 +275,13 @@ class CreateEditGame extends Component {
     }
     return (
       <React.Fragment>
+
         <Nav games={this.state.games} loadGame={this.loadGame}/>
+
         <h1>Create Edit Page</h1>
-        {/* <form>
-          <h3>{this.state.createdNew ? "SAVED!" : "New Game"}</h3>
-          <h6>Enter Game Name:</h6>
-          <input
-            type="text"
-            placeholder={"enter something"}
-            name="gameName"
-            value={this.state.gameName}
-            onChange={this.handleInputChange}
-          />
-          <h6>Select which version to change</h6>
-          <select value={this.state.versionName} onChange={this.handleSelectChange}>
-            
-            {
-              this.state.versions.map((version, index) => {
-                return <option key={version.versionName} value={version.versionName}>{version.versionName}</option>
-              })
-            }
-            <option value="(this.state.versionName)" selected>(current)</option>
-          </select>  
-          <h6>Enter Rule Name:</h6>
-          <input
-            type="text"
-            placeholder={"enter something"}
-            name="ruleName"
-            value={this.state.ruleName}
-            onChange={this.handleInputChange}
-          />
-          <h6>Enter Instructions:</h6>
-          <textarea
-            type="text"
-            placeholder={"enter something"}
-            name="ruleInstructions"
-            value={this.state.ruleInstructions}
-            onChange={this.handleInputChange}
-          /><br/>
-          <button 
-            onClick={this.setRule}>Save Rule
-          </button>
-          <button 
-            onClick={this.handleFormSubmit}>Create Game
-          </button>
-        </form>
-        <br />
-        <br /> */}
+        
         <form>
           <h6>{this.state.currentGame.gameName}</h6>
-
-
 
           <select value={this.state.vers} onChange={this.handleSelectChange}>
             {
@@ -304,10 +297,6 @@ class CreateEditGame extends Component {
             }
           </select>  
 
-
-
-
-
           <input
             type="text"
             placeholder="rename here..."
@@ -315,50 +304,57 @@ class CreateEditGame extends Component {
             value={this.state.versionName}
             onChange={this.handleNameChange}
           />
+          
+          <br />
 
-          <button onClick={this.updateVersion}>Update</button>
-          <button onClick={this.deleteVersion}>Delete</button>
+          <button onClick={this.createNewGame}>Save As New Game</button>
+          <button onClick={this.loadTemplate}>Load Kings Template</button>
+          <button onClick={this.clearFields}>Clear All Fields</button>
+          <br />
+          <button onClick={this.loadVersion}>Load This Version</button>
+          <button onClick={this.updateVersion}>Update Version</button>
+          <button onClick={this.deleteVersion}>Delete Version</button>
 
           <br/><br/>
           
           {this.state.newGameRules.slice(1,12).map((rule, index) => (
 
-          <div style={{clear: 'both '}}>
-            <div style={{float: 'left'}}>
-              <img className="rule-card" alt={rule.rank} style={{height: 16 + 'vh'}} src={`./images/${rule.rank}s.png`} />
-            </div>
-            <div style={{float: 'left'}}>
-              <div className="input-group mb-1">
-                <div className="input-group-prepend">
-                  <span className={rule.name ? "input-group-text" : "input-group-text bg-warning"} id="inputGroup-sizing-default">Rule Name</span>
-                </div>
-                <input type="text" 
-                  className="form-control"
-                  // aria-label="Default" 
-                  // aria-describedby="inputGroup-sizing-default"
-                  placeholder={this.state.oldRules[index + 1].name}
-                  value={rule.name} // this can be optional
-                  name="name"
-                  onChange={this.handleInputChange(index)}
-                />
+            <div style={{clear: 'both '}}>
+              <div style={{float: 'left'}}>
+                <img className="rule-card" alt={rule.rank} style={{height: 16 + 'vh'}} src={`./images/${rule.rank}s.png`} />
               </div>
-                
-              <div className="input-group">
-                <div className="input-group-prepend">
-                <span className={rule.instructions ? "input-group-text" : "input-group-text bg-warning"} id="inputGroup-sizing-default">Rule Name</span>
+              <div style={{float: 'left'}}>
+                <div className="input-group mb-1">
+                  <div className="input-group-prepend">
+                    <span className={rule.name ? "input-group-text" : "input-group-text bg-warning"} id="inputGroup-sizing-default">Rule Name</span>
+                  </div>
+                  <input type="text" 
+                    className="form-control"
+                    // aria-label="Default" 
+                    // aria-describedby="inputGroup-sizing-default"
+                    placeholder={this.state.oldRules[index + 1].name}
+                    value={rule.name} // this can be optional
+                    name="name"
+                    onChange={this.handleInputChange(index)}
+                  />
                 </div>
-                <textarea
-                  type="text"
-                  className="form-control"
-                  placeholder={this.state.oldRules[index + 1].instructions}
-                  value={rule.instructions} // this can be optional
-                  name="instructions"
-                  onChange={this.handleInputChange(index)}
-                />
+                  
+                <div className="input-group">
+                  <div className="input-group-prepend">
+                  <span className={rule.instructions ? "input-group-text" : "input-group-text bg-warning"} id="inputGroup-sizing-default">Rule Name</span>
+                  </div>
+                  <textarea
+                    type="text"
+                    className="form-control"
+                    placeholder={this.state.oldRules[index + 1].instructions}
+                    value={rule.instructions} // this can be optional
+                    name="instructions"
+                    onChange={this.handleInputChange(index)}
+                  />
+                </div>
               </div>
+              <br/>
             </div>
-            <br/>
-          </div>
 
           ))}
 

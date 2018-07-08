@@ -27,7 +27,7 @@ module.exports = {
   getGamesByUser: function(req, res) {
     db.Game
       .find( { _id: { $in: req.body.gameIDs } } )
-      .sort({ created: -1 })
+      .sort({ created: 1 })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
@@ -40,12 +40,12 @@ module.exports = {
   create: function(req, res) {
     db.Game
       .create(req.body)
-      .then(dbModel => {
+      .then(newGame => {
+        console.log(newGame);
         db.User
-          .update( {userName: dbModel.admin}, { $push: { games: dbModel._id } }, {new: true} )
-          .then(res => console.log(res))
+          .update( {userName: newGame.admin}, { $push: { games: newGame._id } }, {new: true} )
+          .then(result => res.json(newGame))
           .catch(err => console.log(err));
-        res.json(dbModel)
       })
       .catch(err => res.status(422).json(err));
   },
