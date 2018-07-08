@@ -39,11 +39,10 @@ class Dashboard extends Component {
       const username = window.prompt("Enter your username: (Pretend this is logging in. Hit cancel for no login.")
       this.setState({username})
       localStorage.setItem('username', username);
+      // redirect to landing page, do this stuff there instead.
     } else {
       this.setState({username: localStorage.username})
     }
-    
-    
   }
 
   componentDidMount() {
@@ -55,9 +54,7 @@ class Dashboard extends Component {
     }
     
     this.loadGamesFromDB();
-    
-    
-    
+
     // this.setState({
     //   games: meow
     // })
@@ -361,6 +358,10 @@ class Dashboard extends Component {
     }
     return array;
   }
+
+  // ================
+  // Render Dashboard
+  // ================
 
   render() {
     return (

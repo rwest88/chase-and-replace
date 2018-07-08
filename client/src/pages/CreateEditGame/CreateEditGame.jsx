@@ -30,10 +30,10 @@ class CreateEditGame extends Component {
     let versions = sessionObject.versions;
     let pee = {
       _id: "",
-      versionName: "[UNNAMED] (current)",
+      versionName: "[NEW]",
       rules
     };
-    let vs = versions.filter(version => version.versionName !== "[UNNAMED] (current)");
+    let vs = versions.filter(version => version.versionName !== "[NEW]");
     vs.push(pee);
     console.log(vs);
     sessionObject.versions = vs;
@@ -173,18 +173,18 @@ class CreateEditGame extends Component {
     event.preventDefault();
     const {currentGame, versions, vers} = this.state;
     console.log(vers);
-    if (vers > 0) {
-      console.log("running delete");
-      API.deleteVersion({gameID: currentGame._id, versionID: versions[vers]._id})
-        .then(res => API.getGame(currentGame._id)
-          .then(res => this.setState({
-            newGameRules: newGameTemplate,
-            versions: res.data.versions,
-            vers: (res.data.versions.length < 2) ? 0 : vers,
-          }))
-        )
-        .catch(err => console.log(err))
-    }
+    if (vers === versions.length - 1) return window.alert("Nothing to delete!");
+    if (vers < 1) return window.alert("You cannot delete the original version!");
+  
+    console.log("running delete");
+    API.deleteVersion({gameID: currentGame._id, versionID: versions[vers]._id})
+      .then(res => API.getGame(currentGame._id)
+        .then(res => this.setState({
+          versions: res.data.versions,
+          vers: (res.data.versions.length < 2) ? 0 : vers,
+        }))
+      )
+      .catch(err => console.log(err))
   }
 
   updateVersion = event =>{
@@ -275,7 +275,13 @@ class CreateEditGame extends Component {
           <select value={this.state.vers} onChange={this.handleSelectChange}>
             {
               this.state.versions.map((version, index) => {
-                return <option key={version.versionName} value={index}>{version.versionName} (Created: {version.date})</option>
+                return (
+                  <option 
+                    key={version.versionName} 
+                    value={index}>
+                    {version.versionName} {version.versionName === "[NEW]" ? "" : `(Created: ${version.date})`}
+                  </option>
+                )
               })
             }
           </select>  
@@ -286,7 +292,7 @@ class CreateEditGame extends Component {
 
           <input
             type="text"
-            placeholder={this.state.oldRules[1].name}
+            placeholder="rename here..."
             name="versionName"
             value={this.state.versionName}
             onChange={this.handleNameChange}
@@ -306,10 +312,10 @@ class CreateEditGame extends Component {
             <div style={{float: 'left'}}>
               <div className="input-group mb-1">
                 <div className="input-group-prepend">
-                  <span className="input-group-text" id="inputGroup-sizing-default">Rule Name</span>
+                  <span className={rule.name ? "input-group-text" : "input-group-text bg-warning"} id="inputGroup-sizing-default">Rule Name</span>
                 </div>
                 <input type="text" 
-                  className="form-control" 
+                  className="form-control"
                   // aria-label="Default" 
                   // aria-describedby="inputGroup-sizing-default"
                   placeholder={this.state.oldRules[index + 1].name}
@@ -321,7 +327,7 @@ class CreateEditGame extends Component {
                 
               <div className="input-group">
                 <div className="input-group-prepend">
-                  <span className="input-group-text">Instructions</span>
+                <span className={rule.instructions ? "input-group-text" : "input-group-text bg-warning"} id="inputGroup-sizing-default">Rule Name</span>
                 </div>
                 <textarea
                   type="text"
