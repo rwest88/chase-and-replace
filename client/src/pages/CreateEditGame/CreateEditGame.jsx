@@ -23,28 +23,28 @@ class CreateEditGame extends Component {
     z: "z"
   };
 
-  componentDidMount() {  // SHRINK THIS
+  componentDidMount() {
     const sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
-    console.log(sessionObject);
-    const rules = sessionObject.rules;
-    let versions = sessionObject.versions;
-    let pee = {
-      _id: "",
-      versionName: "[NEW]",
-      rules
-    };
-    let vs = versions.filter(version => version.versionName !== "[NEW]");
-    vs.push(pee);
-    console.log(vs);
-    sessionObject.versions = vs;
-    sessionObject.vers = vs.length - 1;
-    this.setState(sessionObject);
-    console.log("tits");
-    this.setState({newGameRules: rules});
+    this.setState(this.pushBlankVersion(sessionObject));
   }
 
   componentWillUnmount() {
     sessionStorage.setItem('gameState', JSON.stringify(this.state));
+  }
+
+  pushBlankVersion = obj => {
+    const rules = obj.rules || this.state.oldRules;
+    let versions = obj.versions.filter(version => version.versionName !== "[NEW]");
+    let blank = {
+      _id: "",
+      versionName: "[NEW]",
+      rules
+    };
+    versions.push(blank);
+    obj.versions = versions;
+    obj.vers = versions.length - 1;
+    obj.newGameRules = rules;
+    return obj;
   }
 
   loadGame = selectedGame => {
@@ -206,7 +206,7 @@ class CreateEditGame extends Component {
         .then(res => API.pushVersion({gameID: currentGame._id, version})
           .then(res => API.getGame(currentGame._id)
             .then(res => this.setState({
-              versions: res.data.versions
+              versions: this.pushBlankVersion(res.data).versions
             }))
           )
         ).catch(err => console.log(err))
