@@ -19,7 +19,7 @@ class Dashboard extends Component {
     games, 
     usedKAs: [], 
     burnedCards: [], 
-    currentGame: {}, 
+    currentGame: false, 
     currentVersion: {},
     currentCard: {}, 
     kingRules: [], 
@@ -71,7 +71,7 @@ class Dashboard extends Component {
   // ==============
 
   loadGame = selectedGame => {
-    if (!this.state.currentGame) console.log("piss");
+    
     let rules;
 
     if (this.state.newAce === true && (this.state.currentGame)) {
@@ -96,7 +96,9 @@ class Dashboard extends Component {
       // games,
       deckEmpty: false,
       currentGame: selectedGame,
+      gameName: selectedGame.gameName,
       versions: selectedGame.versions,
+      vers: selectedGame.versions.length - 1,
       currentVersion: selectedGame.versions[selectedGame.versions.length - 1],
       rules: rules || selectedGame.versions[selectedGame.versions.length - 1].rules,
       oldRules: rules || selectedGame.versions[selectedGame.versions.length - 1].rules,
@@ -244,11 +246,12 @@ class Dashboard extends Component {
     if (this.state.username) { // IF AUTHENTICATED / SIGNED IN
       console.log("loading games from DB");
       API.getUser({user_name: this.state.username}) // retrieves user obj
-        .then(response => {
-          if (!response.data[0].seeded) {
-            API.getDefaultGames()  // retrieves forkedfrom: original
+        .then(userRes => {
+          if (!userRes.data[0].seeded) {
+            console.log("seeding user");
+            API.getDefaultGames()  // retrieves admin: Chase_Replacenson
               .then(res => {
-                if (!response.data[0].seeded) {  // if this hasn't been done yet
+                // if (!userRes.data[0].seeded) {  // if this hasn't been done yet
                   let clones = [];
                   for (let i in res.data) {
                     let clone = res.data[i];
@@ -259,25 +262,34 @@ class Dashboard extends Component {
                     clones.push(clone);  
                   }
                   API.saveClones({user_name: this.state.username, games: clones})
-                    .then(res => {
-                      this.setState({games: res.data})
+                    .then(clonesRes => {
                       API.updateUserAsSeeded({user_name: this.state.username})
-                        .then(res => console.log(res.data))
+                        .then(res => {
+                          this.setState({games: clonesRes.data}, () => {
+                            if (!this.state.currentGame) {
+                              console.log("gonna load");
+                              this.loadGame(clonesRes.data[0]);
+                            }
+                          })
+                        })
                     }).catch(err => console.log(err));
-                } 
-                else this.setState({
-                  games: res.data,
-                })
+                // } 
+                // else this.setState({ 
+                  // games: res.data,
+                // })
               }).catch(err => console.log(err));
           }
-          else {
-            console.log("ass");
-            API.getGamesByUser({gameIDs: response.data[0].games})
-              .then(resp => {
-                console.log(resp.data);
-                this.setState({
-                  games: resp.data,
-                })
+          else {     // if already seeded // need to grab created games
+            console.log("already seeded");
+            API.getGamesByUser({gameIDs: userRes.data[0].games})
+              .then(res => {
+                console.log(res.data);
+                this.setState({games: res.data}, () => {
+                  if (!this.state.currentGame) {
+                    console.log("gonna load");
+                    this.loadGame(res.data[0]);
+                  }
+                });
               })
               .catch(err => console.log(err));
           }
