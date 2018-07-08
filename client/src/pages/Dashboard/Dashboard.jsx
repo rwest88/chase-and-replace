@@ -26,7 +26,7 @@ class Dashboard extends Component {
     rules: [], 
     currentRule: {},
     createdNew: false,
-    // versions: [],
+    versions: [],
     z: "z"
   };
 
@@ -103,7 +103,8 @@ class Dashboard extends Component {
       versions: selectedGame.versions,
       currentVersion: selectedGame.versions[selectedGame.versions.length - 1],
       rules: rules || selectedGame.versions[selectedGame.versions.length - 1].rules,
-      kingRules:[],
+      oldRules: rules || selectedGame.versions[selectedGame.versions.length - 1].rules,
+      kingRules: [],
       usedKAs: [],
       newAce: false
     });
@@ -234,7 +235,7 @@ class Dashboard extends Component {
         rank: replace
       });
       newRules.sort((a, b) => a.rank - b.rank);
-      this.setState({rules: newRules, replace: "", newAce: true})
+      this.setState({rules: newRules, replace: "", newAce: true, oldRules: newRules});
     }
     const usedKAs = this.state.usedKAs || [];
     usedKAs.push(this.state.currentCard.id);
@@ -315,6 +316,7 @@ class Dashboard extends Component {
             API.getGame(this.state.currentGame._id).then(res => this.setState({
               versions: res.data.versions, 
               currentVersion: res.data.versions[res.data.versions.length - 1],
+              oldRules: res.data.versions[res.data.versions.length - 1].rules,
               newAce: false}))
           })
           .catch(err => console.log(err));
@@ -375,7 +377,7 @@ class Dashboard extends Component {
               <div><small>by: </small><a href="/edit">{this.state.currentGame.admin}</a></div>}
             </div>
           </div>
-          <div className="author">{`Version: ${this.state.versionName || this.state.currentVersion.versionName || "none!"}\n\n`}</div>
+          <div className="author">{`Version: ${this.state.currentVersion.versionName || "none!"}\n\n`}</div>
           <div className="version">
           {(this.state.newAce || localStorage.getItem(`versionState: ${this.state.currentGame.gameName}`)) ? 
               <button className="btn btn-secondary" onClick={() => this.saveVersion()}>Save Current as Version</button> : 

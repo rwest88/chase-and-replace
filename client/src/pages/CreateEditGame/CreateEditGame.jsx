@@ -40,7 +40,7 @@ class CreateEditGame extends Component {
     sessionObject.vers = vs.length - 1;
     this.setState(sessionObject);
     console.log("tits");
-    this.setState({newGameRules: rules});
+    this.setState({newGameRules: rules}); // suspect
   }
 
   componentWillUnmount() {
@@ -104,7 +104,7 @@ class CreateEditGame extends Component {
   handleInputChange = (index) => (event) => {
     let newRules = this.state.newGameRules;
     newRules[index + 1][event.target.name] = event.target.value;
-    this.setState({ newGameRules: newRules });
+    this.setState({ newGameRules: newRules, rules: this.state.oldRules });
     console.log(this.state.oldRules[1].name)
   };
 
@@ -205,6 +205,8 @@ class CreateEditGame extends Component {
         .then(res => this.setState({
           versions: res.data.versions,
           currentVersion: res.data.versions[res.data.versions.length - 1],
+          rules: res.data.versions[res.data.versions.length - 1].rules,
+          oldRules: res.data.versions[res.data.versions.length - 1].rules,
           newAce: false
         })
       );
