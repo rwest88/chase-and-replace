@@ -17,7 +17,7 @@ module.exports = {
         console.log(dbModel);
         let gameIDs = dbModel.map(game => game._id);
         console.log(gameIDs);
-        db.User.update({userName: req.body.user_name}, { $push: { games: { $each: gameIDs } } }, {new: true} )
+        db.User.update( {userName: req.body.user_name}, { $push: { games: { $each: gameIDs } } }, {new: true} )
           .then(res => console.log("meowmeow"))
           .catch(err => console.log(err));
         res.json(dbModel);
@@ -31,7 +31,7 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-  findById: function(req, res) {
+  getGame: function(req, res) {
     db.Game
       .findById(req.params.id)
       .then(dbModel => res.json(dbModel))
@@ -41,23 +41,29 @@ module.exports = {
     db.Game
       .create(req.body)
       .then(dbModel => {
-        db.User.update({userName: dbModel.admin}, { $push: { games: dbModel._id } }, {new: true} )
+        db.User
+          .update( {userName: dbModel.admin}, { $push: { games: dbModel._id } }, {new: true} )
           .then(res => console.log(res))
           .catch(err => console.log(err));
         res.json(dbModel)
       })
       .catch(err => res.status(422).json(err));
   },
+  // sortVersions: function(req, res) {
+  //   console.log("agg");
+  //   db.Game.aggregate( [ {$match: {_id: req.params.id}}, { $unwind: "$versions"}, { $sort: { "versions.date": -1 } } ] )
+  //   .then(dbm => res.json(dbm))
+  //   .catch(err => res.status(422).json(err));
+  // },
   pushVersion: function(req, res) {
     db.Game
-      .update({_id : req.body.gameID }, { $push : { versions : req.body.version } } )
+      .update( { _id : req.body.gameID }, { $push : { versions : { $each : [req.body.version], $sort : { date : 1 } } } } )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-  remove: function(req, res) {
+  pullVersion: function(req, res) {
     db.Game
-      .findById({ _id: req.params.id })
-      .then(dbModel => dbModel.remove())
+      .update({ _id: req.body.gameID }, { $pull: { versions: { _id: req.body.versionID } } } )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   }

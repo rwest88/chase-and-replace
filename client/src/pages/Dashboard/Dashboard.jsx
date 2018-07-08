@@ -26,8 +26,7 @@ class Dashboard extends Component {
     rules: [], 
     currentRule: {},
     createdNew: false,
-    // versions: [],
-    z: "z"
+    versions: [],
   };
 
   // ===================
@@ -39,11 +38,10 @@ class Dashboard extends Component {
       const username = window.prompt("Enter your username: (Pretend this is logging in. Hit cancel for no login.")
       this.setState({username})
       localStorage.setItem('username', username);
+      // redirect to landing page, do this stuff there instead.
     } else {
       this.setState({username: localStorage.username})
     }
-    
-    
   }
 
   componentDidMount() {
@@ -55,9 +53,7 @@ class Dashboard extends Component {
     }
     
     this.loadGamesFromDB();
-    
-    
-    
+
     // this.setState({
     //   games: meow
     // })
@@ -103,7 +99,8 @@ class Dashboard extends Component {
       versions: selectedGame.versions,
       currentVersion: selectedGame.versions[selectedGame.versions.length - 1],
       rules: rules || selectedGame.versions[selectedGame.versions.length - 1].rules,
-      kingRules:[],
+      oldRules: rules || selectedGame.versions[selectedGame.versions.length - 1].rules,
+      kingRules: [],
       usedKAs: [],
       newAce: false
     });
@@ -234,7 +231,7 @@ class Dashboard extends Component {
         rank: replace
       });
       newRules.sort((a, b) => a.rank - b.rank);
-      this.setState({rules: newRules, replace: "", newAce: true})
+      this.setState({rules: newRules, replace: "", newAce: true, oldRules: newRules});
     }
     const usedKAs = this.state.usedKAs || [];
     usedKAs.push(this.state.currentCard.id);
@@ -311,14 +308,12 @@ class Dashboard extends Component {
         }
         API.pushVersion({gameID: this.state.currentGame._id, version: version})
           .then(res => {
-            this.loadGamesFromDB();
             localStorage.removeItem(`versionState: ${this.state.currentGame.gameName}`);
-          })
-          .then(res => {
-            this.setState({
-              currentVersion: {versionName: name},
-              newAce: false
-            });
+            API.getGame(this.state.currentGame._id).then(res => this.setState({
+              versions: res.data.versions, 
+              currentVersion: res.data.versions[res.data.versions.length - 1],
+              oldRules: res.data.versions[res.data.versions.length - 1].rules,
+              newAce: false}))
           })
           .catch(err => console.log(err));
       }
@@ -363,6 +358,10 @@ class Dashboard extends Component {
     return array;
   }
 
+  // ================
+  // Render Dashboard
+  // ================
+
   render() {
     return (
       <React.Fragment>
@@ -378,7 +377,7 @@ class Dashboard extends Component {
               <div><small>by: </small><a href="/edit">{this.state.currentGame.admin}</a></div>}
             </div>
           </div>
-          <div className="author">{`Version: ${this.state.versionName || this.state.currentVersion.versionName || "none!"}\n\n`}</div>
+          <div className="author">{`Version: ${this.state.currentVersion.versionName || "none!"}\n\n`}</div>
           <div className="version">
           {(this.state.newAce || localStorage.getItem(`versionState: ${this.state.currentGame.gameName}`)) ? 
               <button className="btn btn-secondary" onClick={() => this.saveVersion()}>Save Current as Version</button> : 
@@ -389,7 +388,7 @@ class Dashboard extends Component {
           <div className="decks">
             <img src={this.state.deckEmpty ? "./images/empty.png" : "./images/deck.png"} 
                  className="deck" 
-                 onClick={()=>this.drawCard()}/>
+                 onClick={() => this.drawCard()}/>
           </div>
           
           <div className="current-cards">

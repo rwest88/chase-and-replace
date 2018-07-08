@@ -3,8 +3,14 @@ const gamesController = require("../../controllers/gamesController");
 
 // Matches with "/api/games"
 router.route("/")
-  .put(gamesController.pushVersion)
   .post(gamesController.create);
+  
+router.route("/versions")
+  .put(gamesController.pushVersion)
+  .post(gamesController.pullVersion);
+
+// router.route("/versions/:id")
+//   .get(gamesController.sortVersions);
 
 router.route("/seed")
   .post(gamesController.getDefaultGames);
@@ -15,6 +21,8 @@ router.route("/clone")
 router.route("/user")
   .post(gamesController.getGamesByUser);
 
+router.route("/:id")
+  .get(gamesController.getGame)
 
 // // Matches with "/api/books/:id"
 // router
