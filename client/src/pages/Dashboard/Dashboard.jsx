@@ -29,9 +29,9 @@ class Dashboard extends Component {
     versions: [],
   };
 
-  // ===================
-  // Life Cycle Methods:
-  // ===================
+  // ==================
+  // Life Cycle Methods
+  // ==================
 
   componentWillMount() {
     if (!localStorage.getItem('username')) {
@@ -48,18 +48,9 @@ class Dashboard extends Component {
     var sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
     if (sessionObject) {
       sessionObject.redirectTo = false;
-      sessionObject.createdNew = false;
       this.setState(sessionObject);
     }
-    
     this.loadGamesFromDB();
-
-    // this.setState({
-    //   games: meow
-    // })
-      // To Do:
-      // if (authenticated) setState games to db query result (User.games) 
-      // .then query result ({games._id} && {saved: true} [and slice versions array for latest version])
   }
 
   componentWillUnmount() {
@@ -106,7 +97,6 @@ class Dashboard extends Component {
       usedKAs: [],
       newAce: false
     });
-    // setTimeout(() => console.log("loaded game", this.state.currentGame), 2000);
   }
 
   renderHUD() {
