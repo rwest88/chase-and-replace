@@ -41,5 +41,8 @@ export default {
   pushVersion: function(gameData) {
     console.log(gameData);
     return axios.put("/api/games/versions", gameData);
-  }
+  },
+  // sortVersions: function(id) {
+  //   return axios.get("/api/games/versions/" + id);
+  // }
 };

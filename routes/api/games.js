@@ -9,6 +9,9 @@ router.route("/versions")
   .put(gamesController.pushVersion)
   .post(gamesController.pullVersion);
 
+// router.route("/versions/:id")
+//   .get(gamesController.sortVersions);
+
 router.route("/seed")
   .post(gamesController.getDefaultGames);
 

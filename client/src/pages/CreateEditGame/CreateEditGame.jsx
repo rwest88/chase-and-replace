@@ -40,7 +40,7 @@ class CreateEditGame extends Component {
     sessionObject.vers = vs.length - 1;
     this.setState(sessionObject);
     console.log("tits");
-    this.setState({newGameRules: rules}); // suspect
+    this.setState({newGameRules: rules});
   }
 
   componentWillUnmount() {
@@ -172,9 +172,9 @@ class CreateEditGame extends Component {
   deleteVersion = event => {
     event.preventDefault();
     const {currentGame, versions, vers} = this.state;
-    console.log(vers);
-    if (vers === versions.length - 1) return window.alert("Nothing to delete!");
+
     if (vers < 1) return window.alert("You cannot delete the original version!");
+    if (vers === versions.length - 1) return window.alert("Nothing to delete!");
   
     console.log("running delete");
     API.deleteVersion({gameID: currentGame._id, versionID: versions[vers]._id})
@@ -183,36 +183,54 @@ class CreateEditGame extends Component {
           versions: res.data.versions,
           vers: (res.data.versions.length < 2) ? 0 : vers,
         }))
-      )
-      .catch(err => console.log(err))
+      ).catch(err => console.log(err))
   }
 
   updateVersion = event =>{
-    event.preventDefault()
-    const {newGameRules, versionName, currentGame, versions, vers} = this.state;
+    event.preventDefault();
 
-    const version = {
+    if (vers < 1) return window.alert("You cannot overwrite the original version!");
+
+    const {newGameRules, versionName, currentGame, versions, vers} = this.state;
+    let version = {
       versionName: versionName,
       date: new Date(Date.now()),
       rules: newGameRules
     }
 
-    API.pushVersion({gameID: this.state.currentGame._id, version})
-    .then(res => {
-      localStorage.removeItem(`versionState: ${this.state.currentGame.gameName}`);
-      console.log(res.data);
-      API.getGame(this.state.currentGame._id)
-        .then(res => this.setState({
-          versions: res.data.versions,
-          currentVersion: res.data.versions[res.data.versions.length - 1],
-          rules: res.data.versions[res.data.versions.length - 1].rules,
-          oldRules: res.data.versions[res.data.versions.length - 1].rules,
-          newAce: false
-        })
-      );
-    })
-    .catch(err => console.log(err));
+    if (vers !== versions.length - 1) {
+      console.log("updating");
+      version._id = versions[vers]._id;
+      version.date = versions[vers].date;
+      API.deleteVersion({gameID: currentGame._id, versionID: version._id})
+        .then(res => API.pushVersion({gameID: currentGame._id, version})
+          .then(res => API.getGame(currentGame._id)
+            .then(res => this.setState({
+              versions: res.data.versions
+            }))
+          )
+        ).catch(err => console.log(err))
+
+    } else {
+      console.log("pushing");
+      API.pushVersion({gameID: currentGame._id, version})
+        .then(res => API.getGame(currentGame._id)
+          .then(res => this.setState({
+            versions: res.data.versions,
+            currentVersion: res.data.versions[res.data.versions.length - 1],
+            rules: res.data.versions[res.data.versions.length - 1].rules,
+            oldRules: res.data.versions[res.data.versions.length - 1].rules,
+            newAce: false
+          }))
+        ).catch(err => console.log(err));
+    }
+
+    localStorage.removeItem(`versionState: ${currentGame.gameName}`);
   }
+
+  // ==================
+  // Render Create/Edit
+  // ==================
 
   render() {
     if (this.state.redirectTo) {
@@ -279,7 +297,7 @@ class CreateEditGame extends Component {
                   <option 
                     key={version.versionName} 
                     value={index}>
-                    {version.versionName} {version.versionName === "[NEW]" ? "" : `(Created: ${version.date})`}
+                    {version.versionName} {version.versionName === "[NEW]" ? "(current progress)" : `(Created: ${version.date})`}
                   </option>
                 )
               })

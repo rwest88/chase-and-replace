@@ -27,7 +27,6 @@ class Dashboard extends Component {
     currentRule: {},
     createdNew: false,
     versions: [],
-    z: "z"
   };
 
   // ===================
@@ -389,7 +388,7 @@ class Dashboard extends Component {
           <div className="decks">
             <img src={this.state.deckEmpty ? "./images/empty.png" : "./images/deck.png"} 
                  className="deck" 
-                 onClick={()=>this.drawCard()}/>
+                 onClick={() => this.drawCard()}/>
           </div>
           
           <div className="current-cards">
