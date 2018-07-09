@@ -1,0 +1,14 @@
+.create-rule {
+    padding: .75%
+}
+.rule-instr {
+    float: left;
+    width: 23.6vw;
+}
+img {
+    width: 6vw;
+    padding-right: 4%;
+}
+.input-group-instr {
+    height: 5vw;
+}

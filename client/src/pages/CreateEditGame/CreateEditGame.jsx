@@ -278,6 +278,8 @@ class CreateEditGame extends Component {
 
         <Nav games={this.state.games} loadGame={this.loadGame}/>
 
+        <div className="container-fluid">
+          
         <h1>Create Edit Page</h1>
         
         <form>
@@ -317,49 +319,58 @@ class CreateEditGame extends Component {
 
           <br/><br/>
           
-          {this.state.newGameRules.slice(1,12).map((rule, index) => (
+          
+            
+            <div className='container-fluid'>
+            {this.state.newGameRules.slice(1,12).map((rule, index) => (
 
-            <div style={{clear: 'both '}}>
-              <div style={{float: 'left'}}>
-                <img className="rule-card" alt={rule.rank} style={{height: 16 + 'vh'}} src={`./images/${rule.rank}s.png`} />
-              </div>
-              <div style={{float: 'left'}}>
-                <div className="input-group mb-1">
-                  <div className="input-group-prepend">
-                    <span className={rule.name ? "input-group-text" : "input-group-text bg-warning"} id="inputGroup-sizing-default">Rule Name</span>
+              
+                <div className="create-rule" style={{float: 'left'}}>
+                  <div style={{float: 'left'}}>
+                    <img className="rule-card" alt={rule.rank} src={`./images/${rule.rank}s.png`} />
                   </div>
-                  <input type="text" 
-                    className="form-control"
-                    // aria-label="Default" 
-                    // aria-describedby="inputGroup-sizing-default"
-                    placeholder={this.state.oldRules[index + 1].name}
-                    value={rule.name} // this can be optional
-                    name="name"
-                    onChange={this.handleInputChange(index)}
-                  />
-                </div>
-                  
-                <div className="input-group">
-                  <div className="input-group-prepend">
-                  <span className={rule.instructions ? "input-group-text" : "input-group-text bg-warning"} id="inputGroup-sizing-default">Rule Name</span>
+                  <div className="rule-instr">
+                    <div className="input-group mb-1">
+                      <div className="input-group-prepend">
+                        <span className={rule.name ? "input-group-text" : "input-group-text bg-warning"} id="inputGroup-sizing-default">Rule Name</span>
+                      </div>
+                      <input type="text" 
+                        className="form-control"
+                        // aria-label="Default" 
+                        // aria-describedby="inputGroup-sizing-default"
+                        placeholder={this.state.oldRules[index + 1].name}
+                        //value={rule.name} // this can be optional
+                        name="name"
+                        onChange={this.handleInputChange(index)}
+                      />
+                    </div>
+                      
+                    <div className="input-group input-group-instr">
+                      <div className="input-group-prepend">
+                        <span className={rule.instructions ? "input-group-text" : "input-group-text bg-warning"} id="inputGroup-sizing-default">Instructions</span>
+                      </div>
+                      <textarea
+                        type="text"
+                        className="form-control"
+                        placeholder={this.state.oldRules[index + 1].instructions}
+                        //value={rule.instructions} // this can be optional
+                        name="instructions"
+                        onChange={this.handleInputChange(index)}
+                      />
+                    </div>
                   </div>
-                  <textarea
-                    type="text"
-                    className="form-control"
-                    placeholder={this.state.oldRules[index + 1].instructions}
-                    value={rule.instructions} // this can be optional
-                    name="instructions"
-                    onChange={this.handleInputChange(index)}
-                  />
+                  <br/>
                 </div>
-              </div>
-              <br/>
+              
+
+            ))}
             </div>
-
-          ))}
+          
 
           
         </form>
+
+        </div>
         
 
       </React.Fragment>
