@@ -12,3 +12,19 @@ img {
 .input-group-instr {
     height: 5vw;
 }
+@media screen and (max-width: 1200px) {
+    .rule-instr {
+        width: 38.5vw;
+    }
+}
+@media screen and (max-width: 930px) {
+    .rule-instr {
+        width: 70vw;
+    }
+    img {
+        width: 12vw;
+    }
+    .input-group-instr {
+        height: 100%;
+    }
+}
