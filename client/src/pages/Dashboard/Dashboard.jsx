@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import { Redirect } from "react-router-dom";
 import Nav from "../../components/Nav";
-import CurrentCard from "../../components/CurrentCard";
+// import CurrentCard from "../../components/CurrentCard";
 import API from "../../utils/API";
 import cards from "./cards.json";
 import games from "./games.json";
@@ -35,13 +36,14 @@ class Dashboard extends Component {
 
   componentWillMount() {
     if (!localStorage.getItem('username')) {
+      // redirect to landing page, move this block into there.
       const username = window.prompt("Enter your username: (Pretend this is logging in. Hit cancel for no login.")
-      this.setState({username})
-      localStorage.setItem('username', username);
-      // redirect to landing page, do this stuff there instead.
-    } else {
-      this.setState({username: localStorage.username})
-    }
+      if (username) {
+        localStorage.setItem('username', username)
+        this.setState({username})
+      }
+    } 
+    else this.setState({username: localStorage.username});
   }
 
   componentDidMount() {
@@ -134,7 +136,6 @@ class Dashboard extends Component {
             </button>
           </form>
         )
-        break;
       case "1":
         return (
           <form>
@@ -235,13 +236,15 @@ class Dashboard extends Component {
     
     if (this.state.username) { // IF AUTHENTICATED / SIGNED IN
       console.log("loading games from DB");
-      API.getUser({user_name: this.state.username}) // retrieves user obj
+      API.getUser(this.state.username) // retrieves user obj
         .then(userRes => {
-          if (!userRes.data[0].seeded) {
-            console.log("seeding user");
-            API.getDefaultGames()  // retrieves admin: Chase_Replacenson
-              .then(res => {
-                // if (!userRes.data[0].seeded) {  // if this hasn't been done yet
+          if (userRes.data.length > 0) {
+            console.log("user exists");
+            if (!userRes.data[0].seeded) {
+              console.log("seeding user");
+              API.getDefaultGames()  // retrieves admin: Chase_Replacenson
+                .then(res => {
+                  // if (!userRes.data[0].seeded) {  // if this hasn't been done yet
                   let clones = [];
                   for (let i in res.data) {
                     let clone = res.data[i];
@@ -263,33 +266,42 @@ class Dashboard extends Component {
                           })
                         })
                     }).catch(err => console.log(err));
-                // } 
-                // else this.setState({ 
-                  // games: res.data,
-                // })
-              }).catch(err => console.log(err));
+                }).catch(err => console.log(err));
+            }
+            else {     // if already seeded // need to grab created games
+              console.log("already seeded");
+              API.getGamesByUser({gameIDs: userRes.data[0].games})
+                .then(res => {
+                  console.log(res.data);
+                  this.setState({games: res.data}, () => {
+                    if (!this.state.currentGame) {
+                      console.log("gonna load");
+                      this.loadGame(res.data[0]);
+                    }
+                  });
+                })
+                .catch(err => console.log(err));
+            }
           }
-          else {     // if already seeded // need to grab created games
-            console.log("already seeded");
-            API.getGamesByUser({gameIDs: userRes.data[0].games})
-              .then(res => {
-                console.log(res.data);
-                this.setState({games: res.data}, () => {
-                  if (!this.state.currentGame) {
-                    console.log("gonna load");
-                    this.loadGame(res.data[0]);
-                  }
-                });
-              })
-              .catch(err => console.log(err));
+          else {
+            console.log("creating user");
+            API.createUser({
+              userName: this.state.username,
+              email: this.state.username + "@aol.com", // fake
+              password: "password",
+              seeded: false,
+              games: []
+            }).then(res => this.loadGamesFromDB())
+            .catch(err => console.log(err));
           }
         }).catch(err => console.log(err));
     }
     else {
       console.log("loading basic games from DB");
-      API.getUserGames()
-        .then(res => this.setState({games: res.data}))
-        .then(console.log(this.state.games))
+      API.getDefaultGames()
+        .then(res => this.setState({games: res.data}, () => {
+          this.loadGame(games[0]);
+        }))
         .catch(err => console.log(err));
     }
 
@@ -360,11 +372,18 @@ class Dashboard extends Component {
     return array;
   }
 
+  searchUser(searchTerm) {
+    this.setState({searchTerm, redirectTo: "/search"})
+  }
+
   // ================
   // Render Dashboard
   // ================
 
   render() {
+    if (this.state.redirectTo) {
+      return <Redirect to={this.state.redirectTo}/>;
+    }
     return (
       <React.Fragment>
         
@@ -375,9 +394,19 @@ class Dashboard extends Component {
           <div className="game-title">
             <strong>{this.state.currentGame.gameName || "Nothing loaded!"}</strong>
             <div>{this.state.currentGame.forkedFrom !== this.state.username ? 
-              <div><small>cloned from: </small><a href="/search">{this.state.currentGame.forkedFrom}</a></div> :
-              <div><small>by: </small><a href="/edit">{this.state.currentGame.admin}</a></div>}
-            </div>
+              <div>
+                <small>forked from: </small>
+                <button onClick={() => this.searchUser(this.state.currentGame.forkedFrom)}>
+                  {this.state.currentGame.forkedFrom}
+                </button>
+              </div> :
+              <div>
+                <small>by: </small>
+                <button onClick={() => this.searchUser(this.state.currentGame.admin)}>
+                  {this.state.currentGame.admin}
+                </button>
+              </div>
+            }</div>
           </div>
           <div className="author">{`Version: ${this.state.currentVersion.versionName || "none!"}\n\n`}</div>
           <div className="version">

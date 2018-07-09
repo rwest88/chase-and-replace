@@ -5,17 +5,19 @@ export default {
     return axios.post("/api/games", gameData);
   },
   // Gets all books
-  getDefaultGames: function(dataObj) {
-    console.log(dataObj)
-    return axios.post("/api/games/seed", dataObj);
+  getDefaultGames: function() {
+    return axios.get("/api/games/seed");
   },
 
   saveClones: function(dataObj) {
-    console.log(dataObj)
-    return axios.post("/api/games/clone", dataObj);
+    return axios.post("/api/games/seed", dataObj);
   },
 
-  getUser: function(dataObj) {
+  getUser: function(username) {
+    return axios.get("/api/users/" + username);
+  },
+
+  createUser: function(dataObj) {
     return axios.post("/api/users", dataObj);
   },
 

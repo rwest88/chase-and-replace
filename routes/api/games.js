@@ -13,9 +13,7 @@ router.route("/versions")
 //   .get(gamesController.sortVersions);
 
 router.route("/seed")
-  .post(gamesController.getDefaultGames);
-
-router.route("/clone")
+  .get(gamesController.getDefaultGames)
   .post(gamesController.saveClones);
 
 router.route("/user")

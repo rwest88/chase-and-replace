@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import Nav from "../../components/Nav";
 import { Redirect } from "react-router-dom";
+import API from "../../utils/API";
 import "./SearchGames.css";
 import cards from "../Dashboard/cards.json";
 import games from "../Dashboard/games.json";
 
 class SearchGames extends Component {
 
-  state = { cards, games };
+  state = { cards, games, gamesByUser: [] };
 
   componentWillMount() {
     if (!sessionStorage.getItem('gameState')) {
@@ -17,12 +18,15 @@ class SearchGames extends Component {
       const sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
       sessionObject.redirectTo = false;
       this.setState(sessionObject);
+      this.searchDB();
     }
   }
 
   componentDidMount() {
-    var sessionObject = sessionStorage.getItem('gameState');
-    this.setState(JSON.parse(sessionObject));
+    var sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
+    sessionObject.redirectTo = false;
+    this.setState(sessionObject);
+    this.searchDB();
   }
 
   componentWillUnmount() {
@@ -78,6 +82,45 @@ class SearchGames extends Component {
     return array;
   }
 
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({[name]: value}, () => {
+      if (value.length > 2) this.searchDB();
+      else this.setState({userResult: [], gamesByUser: []});
+    });
+    
+    // API.searchDB(this.state.searchTerm)
+    //   .then(searchResults => this.setState({searchResults}))
+    //   .catch(err => console.log(err));
+  }
+
+  searchDB = () => {
+    console.log("searching");
+    API.getUser(this.state.searchTerm)
+      .then(user => {
+        if (user.data.length > 0) {
+          API.getGamesByUser({gameIDs: user.data[0].games})
+            .then(res => this.setState({userResult: user.data[0].userName, gamesByUser: res.data}))
+            .catch(err => console.log(err));
+        } else {
+          this.setState({userResult: [], gamesByUser: []});
+        }
+      }).catch(err => console.log(err));
+  }
+
+  forkGame = id => {
+    API.getGame(id)
+      .then(game => {
+        game.data._id = `${game.data.gameName} ${this.state.username} from ${game.data.admin}`;
+        game.data.admin = this.state.username;
+        game.data.forkedFrom = game.data.admin;
+        API.saveNewGame(game.data)
+          .then(res => {
+            if (window.confirm("New game created! Play now?")) this.loadGame(res.data);
+          }).catch(err => console.log(err));
+      }).catch(err => console.log(err));
+  }
+
   render() {
     if (this.state.redirectTo) {
       return <Redirect to={this.state.redirectTo}/>;
@@ -85,7 +128,24 @@ class SearchGames extends Component {
     return (
       <React.Fragment>
         <Nav games={this.state.games} loadGame={this.loadGame}/>
+
         <h1>Search Page</h1>
+
+        <form>
+          <input 
+            type="text"
+            placeholder="search..."
+            name="searchTerm"
+            value={this.state.searchTerm}
+            onChange={this.handleInputChange}
+            onInput={this.handleInputChange}
+          />
+        </form>
+
+        <h3>{this.state.userResult}</h3>
+
+        <div>{this.state.gamesByUser.map(item => <button onClick={() => this.forkGame(item._id)}>{item.gameName}</button>)}</div>
+
       </React.Fragment>
     );
   }
