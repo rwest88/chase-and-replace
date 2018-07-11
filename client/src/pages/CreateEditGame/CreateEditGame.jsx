@@ -279,13 +279,21 @@ class CreateEditGame extends Component {
         <Nav games={this.state.games} loadGame={this.loadGame}/>
 
         <div className="container-fluid">
-          
-        <h1>Create Edit Page</h1>
         
         <form>
-          <h6>{this.state.currentGame.gameName}</h6>
+          
 
-          <select value={this.state.vers} onChange={this.handleSelectChange}>
+        
+          <div className="container-fluid create-menu">
+          <div class="row">
+          <div class="col">
+          
+          
+          
+          <button class="btn btn-light create-button">{this.state.currentGame.gameName}</button>
+          
+          <select class="form-control" value={this.state.vers} onChange={this.handleSelectChange}>
+          
             {
               this.state.versions.map((version, index) => {
                 return (
@@ -293,31 +301,68 @@ class CreateEditGame extends Component {
                     key={version.versionName} 
                     value={index}>
                     {version.versionName} {version.versionName === "[NEW]" ? "(current progress)" : `(Created: ${version.date})`}
+                  
                   </option>
                 )
               })
             }
           </select>  
-
-          <input
+          </div>
+          
+          {/* <input className="create-button"
             type="text"
             placeholder="rename here..."
             name="versionName"
             value={this.state.versionName}
             onChange={this.handleNameChange}
-          />
+          /> */}
           
-          <br />
+          
+          
+          
+          <div class="col">
+          <div class="dropdown">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Edit Game
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <button class="dropdown-item">Rename</button>
+              <button class="dropdown-item">Delete</button>
+              
+            </div>
+          </div>
+          <div class="dropdown">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Edit Version
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <button class="dropdown-item">Update</button>
+              <button class="dropdown-item">Delete</button>
+              
+            </div>
+          </div>
+          
+          
+          
+          </div>
 
-          <button onClick={this.createNewGame}>Save As New Game</button>
-          <button onClick={this.loadTemplate}>Load Kings Template</button>
-          <button onClick={this.clearFields}>Clear All Fields</button>
-          <br />
-          <button onClick={this.loadVersion}>Load This Version</button>
-          <button onClick={this.updateVersion}>Update Version</button>
-          <button onClick={this.deleteVersion}>Delete Version</button>
+          {/* <button className="btn btn-light create-button" onClick={this.updateVersion}>Update Version</button>
+          <button className="btn btn-light create-button" onClick={this.deleteVersion}>Delete Version</button> */}
+          
+          <div class="col">
+          </div>
+          
+          <div class="col new-game">
+          <button className="btn btn-light create-button" onClick={this.createNewGame}>Save As New Game</button>
+          <button className="btn btn-light create-button" onClick={this.clearFields}>Clear All Fields</button>
+          </div>
 
           <br/><br/>
+
+          
+          
+            </div>
+          </div>
           
           
             
