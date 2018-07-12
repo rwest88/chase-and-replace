@@ -435,6 +435,10 @@ class Dashboard extends Component {
           </div>
           
           <div className="king-rules">
+            <div className="scroll king">
+              <img alt="scroll" src="./images/scroll.png" />
+            </div>
+            <div className="color king"></div>
             <div className="title">King Rules</div>
             {this.state.kingRules.map(rule=>(
               <KingRule image={rule.image} name={rule.name} instructions={rule.instructions}/>
@@ -442,6 +446,10 @@ class Dashboard extends Component {
           </div>
           
           <div className="game-rules">
+            <div className="scroll game">
+              <img alt="scroll" src="./images/scroll.png" />
+            </div>
+            <div className="color game"></div>
             <div className="title">Game Rules</div>
             {this.state.rules.slice(1).map(rule=>(
               <GameRule rank={rule.rank} name={rule.name} instructions={rule.instructions}/>

@@ -1,18 +1,28 @@
-.bg-green {
-  background-color: green;
-}
 .navbar {
-  padding: 4px 16px;
+  background-color: #252829;
+  padding: 2px 16px;
   font-weight: 900;
   border-bottom: 1px solid black;
+}
+.navbar-brand {
+  font-family: 'Germania One', cursive;
+  font-size: 1.3rem;
+  font-weight: 500;
+  line-height: 0;
+  text-shadow: 1px 1px 1px gold;
+}
+.dropdown-menu {
+  background-color: #252829;
+}
+.dropdown-item {
+  color: #eee;
 }
 .hide {
   display: none;
 }
-.dropdown-menu, .lime {
+.lime {
   background-color: limegreen;
 }
 .versions {
-  position: absolute; transform: translate3d(160px, 0px, 0px); top: -37px; left: -9px; will-change: transform; float: left;
-  padding: 4px 0px;
+  position: absolute; transform: translate3d(160px, 0px, 0px); top: -41px; will-change: transform;
 }

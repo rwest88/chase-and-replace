@@ -1,60 +1,100 @@
-
-
-.btn {
+.btn-light {
   margin:.5%;
   padding: 0px 8px;
   border-radius: 1px;
 }
 html {
-  background-color: grey;
+  background-color: slategray;
+  background-image: url("/images/stone.png");
 }
 body {
-  background-color: gray;
+  background-color: slategray;
+  background-image: url("/images/stone.png");
 }
 .create-menu {
-  background-color: darkslategrey;
+  width: 95%;
+  background-color: #c9920e;  /* rgb(123, 112, 144); */
   padding:.5%;
-  border: .5rem solid black;
+  border: .5rem solid #252829;
   border-radius: 5px;
-  margin: 5px 0px;
+  box-shadow: 2px 2px 8px darkslategrey;
+  margin: 16px auto 8px;
+}
+.game-name {
+  font-family: 'Germania One', cursive;
+  font-size: 1.5rem;
+  color: brown;
+  text-shadow: 1px 1px 1px #fadf8d;
+  margin: 0;
+}
+.game-name.ver {
+  margin-left: 3%;
+}
+.select-version {
+  background-color: #fadf8d;
+  margin-left: 3%;
+  width: inherit;
+  border-radius: 3px;
+  padding: 1px 6px;
 }
 .col button {
-  background-color: rgb(211, 49, 20);
+  background-color: rgb(49, 49, 163);
+  color: #eee;
   /* border: inherit; */
+}
+.dropdown-menu {
+  z-index: 2000;
+}
+.dropdown-menu.edit {
+  padding: 1px;
+  padding-right: 3px;
+
 }
 .dropdown-item {
   text-align: left;
+  margin-bottom: 2px;
 }
 .create-rule {
   float: left;
-  background-color: green;
+  background-color: #e63329;
   padding: .75%;
-  border: .25rem solid black;
+  border: .25rem solid #252829;
   border-radius: 5px;
   box-shadow: 2px 2px 8px darkslategrey;
-  margin: .25rem;
+  margin: .5rem;
+}
+textarea {
+  resize: none;
 }
 .rule-input-group {
   float: left;
-  width: 24.25vw;
+  width: 23.4vw;
+  margin-left: 6px;
+}
+.rule-input-group > * {
+  box-shadow: 2px 2px 8px navy;
 }
 .rule-card {
-  width: 6vw;
-  padding-right: 7%;
+  box-shadow: 2px 2px 8px navy;
+  width: 5.55vw;
+  
 }
 .input-group-instr {
   height: 5vw;
 }
 .input-group-text {
-  background-color: rgb(154, 171, 179);
+  background-color: #fadf8d;
   font-size: .8em;
 }
 .del {
   position: absolute;
-  right: 1px;
+  top: 1px;
+  right: 3px;
   z-index: 1000;
   padding: 0px;
   line-height: 1;
+  color: lightgrey;
+  background-color: white;
 }
 @media screen and (max-width: 1200px) {
   .rule-instr {
