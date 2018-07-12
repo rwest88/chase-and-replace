@@ -176,8 +176,8 @@ class Dashboard extends Component {
         );
       default:
         return (
-          <div>
-            <h1>{currentRule.name}</h1>
+          <div className="current-rule">
+            <h1 className="current-rule">{currentRule.name}</h1>
             <h3>{currentRule.instructions}</h3>
           </div>
         );
@@ -471,6 +471,9 @@ class Dashboard extends Component {
           </div>
 
           <div className="HUD">
+            <div className={this.state.burnedCards.length ? "banner-turned" : "hide"}>
+              <img alt="banner" src="./images/regal6.png" />
+            </div>
             {this.renderHUD()}
           </div>
           

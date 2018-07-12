@@ -194,9 +194,43 @@ html {
   float: left;
 }
 .HUD {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-auto-rows:9vh;
   grid-column: 5/8;
   grid-row: 7/11;
-  /* background-color: seagreen; */
+  font-family: 'Germania One', cursive;
+  text-align: center;
+}
+.banner-turned {
+  grid-column: 1/3;
+  grid-row: 1/2;
+  /* margin: 0 auto; */
+  text-align: center;
+}
+.banner-turned > img {
+  position: relative;
+  top: -108%;
+  height: 291%;
+  transform: rotate(180deg);
+}
+.current-rule {
+  grid-column: 1/3;
+  grid-row: 1/2;
+  position: relative;
+  top: 4%;
+  text-align: center;
+  /* font-size: 1.5em; */
+}
+.current-rule > h1 {
+  font-size: 1.3em;
+  color: #ffd65f;
+  text-shadow: 2px 2px 2px black;
+}
+.current-rule > h3 {
+  position: relative;
+  top: 30%;
+  font-size: 1.3em;
 }
 
 @media screen and (max-aspect-ratio: 100/52) {
