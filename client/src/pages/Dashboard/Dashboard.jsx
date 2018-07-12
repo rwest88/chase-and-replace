@@ -114,26 +114,28 @@ class Dashboard extends Component {
     switch(currentCard.rank) {
       case "13":
         return (
-          <form>
-            <h3>Make a Rule!</h3>
-            <small>This will be a global rule for the current game.</small>
-            <h6>Enter Name:</h6>
+          <form className="current-rule">
+            <h1 className="king">Make a Rule!</h1>
+            <h3>This will be a global rule for the current game.</h3>
+            <br />
+            <div>
             <input
               type="text"
-              placeholder="e.g., 'Wink'"
+              placeholder="Enter name..."
               name="ruleName"
               value={this.state.ruleName}
               onChange={this.handleInputChange}
             />
-            <h6>Enter Instructions:</h6>
+            </div>
+            <div>
             <textarea
               type="text"
-              placeholder="e.g., 'If you get winked at during eye contact, you must drink.'"
+              placeholder="Enter instructions..."
               name="ruleInstructions"
               value={this.state.ruleInstructions}
               onChange={this.handleInputChange}
             />
-            <br />
+            </div>
             <button 
               onClick={this.handleFormSubmit}>Submit
             </button>
@@ -141,9 +143,9 @@ class Dashboard extends Component {
         )
       case "1":
         return (
-          <form>
-          <h3>Chase and Replace!</h3>
-          <h6>Pick which card to change (indefinitely!)</h6>
+          <form className="current-rule">
+          <h1 className="chase-replace">Chase and Replace!</h1>
+          <h3 className="change-card">Pick which card to change (indefinitely!)</h3>
           <select value={this.state.replace} onChange={this.handleSelectChange}>
             <option value="" disabled selected>Choose a rank...</option>
             {
@@ -153,22 +155,24 @@ class Dashboard extends Component {
               })
             }
           </select>  
-          <h6>Enter Rule Name:</h6>
+          <div>
           <input
             type="text"
-            placeholder="(rhyming is usually a good idea)"
+            placeholder="Enter name..."
             name="ruleName"
             value={this.state.ruleName}
             onChange={this.handleInputChange}
           />
-          <h6>Enter Instructions:</h6>
+          </div>
+          <div>
           <textarea
             type="text"
-            placeholder="Be creative!"
+            placeholder="Enter instructions..."
             name="ruleInstructions"
             value={this.state.ruleInstructions}
             onChange={this.handleInputChange}
-          /><br/>
+          />
+          </div>
           <button 
             onClick={this.handleFormSubmit}>Submit
           </button>
@@ -471,7 +475,9 @@ class Dashboard extends Component {
           </div>
 
           <div className="HUD">
-            <div className={this.state.burnedCards.length ? "banner-turned" : "hide"}>
+            <div className={this.state.burnedCards.length ? 
+              (this.state.currentCard.rank == 1) ? "banner-turned faded" : "banner-turned" 
+              : "hide"}>
               <img alt="banner" src="./images/regal6.png" />
             </div>
             {this.renderHUD()}
