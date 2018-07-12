@@ -396,9 +396,15 @@ class Dashboard extends Component {
 
         <div className="wrapper">
           
+          <div className="banner">
+            <img alt="banner" src="./images/regal2.png" />
+          </div>
           <div className="game-title">
-            <strong>{this.state.currentGame.gameName || "Nothing loaded!"}</strong>
-            <div>{this.state.currentGame.forkedFrom !== this.state.username ? 
+            <strong className="">{this.state.currentGame.gameName + " " || "Nothing loaded!"}</strong>
+          </div>
+          
+
+          {/* <div>{this.state.currentGame.forkedFrom !== this.state.username ? 
               <div>
                 <small>forked from: </small>
                 <button className="btn user" onClick={() => this.searchUser(this.state.currentGame.forkedFrom)}>
@@ -411,8 +417,9 @@ class Dashboard extends Component {
                   {this.state.currentGame.admin}
                 </button>
               </div>
-            }</div>
-          </div>
+            }</div> */}
+
+
           <div className="author">{`Version: ${this.state.currentVersion.versionName || "none!"}\n\n`}</div>
           <div className="version">
           {(this.state.newAce || localStorage.getItem(`versionState: ${this.state.currentGame.gameName}`)) ? 
