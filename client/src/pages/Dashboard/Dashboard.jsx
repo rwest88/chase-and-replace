@@ -63,7 +63,7 @@ class Dashboard extends Component {
   // Custom Methods
   // ==============
 
-  loadGame = selectedGame => {
+  loadGame = (selectedGame, selectedVersion) => {
     
     let rules;
 
@@ -80,6 +80,8 @@ class Dashboard extends Component {
       }
     }
 
+    if (selectedVersion === undefined) var selectedVersion = selectedGame.versions.length - 1;
+
     this.setState({
       redirectTo: false,
       cards: this.shuffleArray(this.state.cards.concat(this.state.burnedCards || {})),
@@ -91,10 +93,10 @@ class Dashboard extends Component {
       currentGame: selectedGame,
       gameName: selectedGame.gameName,
       versions: selectedGame.versions,
-      vers: selectedGame.versions.length - 1,
-      currentVersion: selectedGame.versions[selectedGame.versions.length - 1],
-      rules: rules || selectedGame.versions[selectedGame.versions.length - 1].rules,
-      oldRules: rules || selectedGame.versions[selectedGame.versions.length - 1].rules,
+      vers: selectedVersion,
+      currentVersion: selectedGame.versions[selectedVersion],
+      rules: rules || selectedGame.versions[selectedVersion].rules,
+      oldRules: rules || selectedGame.versions[selectedVersion].rules,
       kingRules: [],
       usedKAs: [],
       newAce: false
@@ -327,7 +329,9 @@ class Dashboard extends Component {
               versions: res.data.versions, 
               currentVersion: res.data.versions[res.data.versions.length - 1],
               oldRules: res.data.versions[res.data.versions.length - 1].rules,
-              newAce: false}))
+              newAce: false}, () => {
+                this.loadGamesFromDB();
+              }))
           })
           .catch(err => console.log(err));
       }
@@ -396,13 +400,13 @@ class Dashboard extends Component {
             <div>{this.state.currentGame.forkedFrom !== this.state.username ? 
               <div>
                 <small>forked from: </small>
-                <button onClick={() => this.searchUser(this.state.currentGame.forkedFrom)}>
+                <button className="btn user" onClick={() => this.searchUser(this.state.currentGame.forkedFrom)}>
                   {this.state.currentGame.forkedFrom}
                 </button>
               </div> :
               <div>
                 <small>by: </small>
-                <button onClick={() => this.searchUser(this.state.currentGame.admin)}>
+                <button className="btn user" onClick={() => this.searchUser(this.state.currentGame.admin)}>
                   {this.state.currentGame.admin}
                 </button>
               </div>
