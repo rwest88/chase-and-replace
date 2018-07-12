@@ -396,11 +396,11 @@ class Dashboard extends Component {
 
         <div className="wrapper">
           
-          <div className="banner">
-            <img alt="banner" src="./images/regal2.png" />
-          </div>
           <div className="game-title">
-            <strong className="">{this.state.currentGame.gameName + " " || "Nothing loaded!"}</strong>
+            <div className={this.state.burnedCards.length ? "banner raised" : "banner"}>
+              <img alt="banner" src={this.state.burnedCards.length ? "./images/regal6.png" : "./images/regal5.png"} />
+            </div>
+            <strong className={this.state.burnedCards.length ? "game-name raised" : "game-name"}>{this.state.currentGame.gameName || ""}</strong>
           </div>
           
 
