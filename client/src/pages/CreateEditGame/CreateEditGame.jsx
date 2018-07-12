@@ -22,7 +22,8 @@ class CreateEditGame extends Component {
     oldRules: newGameTemplate,
     currentGame: {},
     versions: [{rules: newGameTemplate}],
-    versionID: ""
+    versionID: "",
+    clearedFields: true,
   };
 
   // ==================
@@ -97,43 +98,30 @@ class CreateEditGame extends Component {
     });
   }
 
-  handleInputChange = (index) => (event) => {
+  handleInputChange = (index, property) => (event) => {
     let newRules = this.state.newGameRules;
-    newRules[index + 1][event.target.name] = event.target.value;
-    this.setState({ newGameRules: newRules, rules: this.state.oldRules });
-    console.log(this.state.oldRules[1].name)
+    newRules[index + 1][property || event.target.name] = property ? "" : event.target.value;
+    this.setState({ newGameRules: newRules, rules: this.state.oldRules});
   };
 
   handleSelectChange = event => {
     let {value} = event.target;
     this.setState({
       vers: value,
-      versionName: "",
+      versionName: this.state.versions[value].versionName,
       newGameRules: this.state.versions[value].rules
     });
   }
 
-  // setRule = event => {
-  //   event.preventDefault()
-  //   const oldRules = this.state.newGameRules;
-  //   const newRules = oldRules.filter(rule => rule.rank !== this.state.replace);
-  //   newRules.push({
-  //     rank: this.state.replace,
-  //     name: this.state.ruleName,
-  //     instructions: this.state.ruleInstructions
-  //   });
-  //   newRules.sort((a, b) => a.rank - b.rank);
-  //   this.setState({
-  //     newGameRules: newRules
-  //   });
-  // }
+  clearFields = () => {
+    this.setState({newGameRules: newGameTemplate});
+  }
 
   // =====================
   // Create/Edit Functions
   // =====================
 
-  createNewGame = event => {
-    event.preventDefault();
+  createNewGame = () => {
     const {newGameRules, versionName, username} = this.state;
     const errors = [];
     for (let i = 1; i < newGameRules.length - 1; i++) {
@@ -165,16 +153,6 @@ class CreateEditGame extends Component {
     }
   };
 
-  loadTemplate = event => {
-    event.preventDefault();
-
-  }
-
-  clearFields = event => {
-    event.preventDefault();
-    
-  }
-
   pushBlankVersion = obj => {
     const rules = obj.rules || this.state.rules;
     if (obj.newAce || this.state.newAce || (localStorage.getItem(`versionState: ${obj.gameName}`))) {
@@ -194,13 +172,7 @@ class CreateEditGame extends Component {
     return obj;
   }
 
-  loadVersion = event => {
-    event.preventDefault();
-
-  }
-
-  updateVersion = event => {
-    event.preventDefault();
+  updateVersion = () => {
     const {newGameRules, versionName, currentGame, currentVersion, versions, vers} = this.state;
     
     if (vers < 1) return window.alert("You cannot overwrite the original version!");
@@ -246,8 +218,7 @@ class CreateEditGame extends Component {
     localStorage.removeItem(`versionState: ${currentGame.gameName}`);
   }
 
-  deleteVersion = event => {
-    event.preventDefault();
+  deleteVersion = () => {
     const {currentGame, currentVersion, versions, vers} = this.state;
 
     if (vers < 1) return window.alert("You cannot delete the original version!");
@@ -278,146 +249,93 @@ class CreateEditGame extends Component {
 
         <Nav games={this.state.games} loadGame={this.loadGame}/>
 
-        <div className="container-fluid">
-        
-        <form>
-          
-
-        
-          <div className="container-fluid create-menu">
+        <div className="container-fluid create-menu">
           <div class="row">
-          <div class="col">
-          
-          
-          
-          <button class="btn btn-light create-button">{this.state.currentGame.gameName}</button>
-          
-          <select class="form-control" value={this.state.vers} onChange={this.handleSelectChange}>
-          
-            {
-              this.state.versions.map((version, index) => {
-                return (
-                  <option 
-                    key={version.versionName} 
-                    value={index}>
-                    {version.versionName} {version.versionName === "[NEW]" ? "(current progress)" : `(Created: ${version.date})`}
-                  
-                  </option>
-                )
-              })
-            }
-          </select>  
-          </div>
-          
-          {/* <input className="create-button"
-            type="text"
-            placeholder="rename here..."
-            name="versionName"
-            value={this.state.versionName}
-            onChange={this.handleNameChange}
-          /> */}
-          
-          
-          
-          
-          <div class="col">
-          <div class="dropdown">
-            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Edit Game
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <button class="dropdown-item">Rename</button>
-              <button class="dropdown-item">Delete</button>
-              
+            <div class="col d-flex align-items-center">
+              <p class="game-name ver">version:   </p>
+              <select class="select-version" value={this.state.vers} onChange={this.handleSelectChange}>
+                {this.state.versions.map((version, index) => {
+                  return (
+                    <option 
+                      key={version.versionName} 
+                      value={index}>
+                      {version.versionName} {version.versionName === "[NEW]" ? "(current progress)" : `(Created: ${version.date})`}
+                    </option>
+                  )
+                })}
+              </select>  
             </div>
-          </div>
-          <div class="dropdown">
-            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Edit Version
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <button class="dropdown-item">Update</button>
-              <button class="dropdown-item">Delete</button>
+            <div class="col d-flex justify-content-around align-items-center">
               
-            </div>
-          </div>
-          
-          
-          
-          </div>
-
-          {/* <button className="btn btn-light create-button" onClick={this.updateVersion}>Update Version</button>
-          <button className="btn btn-light create-button" onClick={this.deleteVersion}>Delete Version</button> */}
-          
-          <div class="col">
-          </div>
-          
-          <div class="col new-game">
-          <button className="btn btn-light create-button" onClick={this.createNewGame}>Save As New Game</button>
-          <button className="btn btn-light create-button" onClick={this.clearFields}>Clear All Fields</button>
-          </div>
-
-          <br/><br/>
-
-          
-          
-            </div>
-          </div>
-          
-          
-            
-            <div className='container-fluid'>
-            {this.state.newGameRules.slice(1,12).map((rule, index) => (
-
-              
-                <div className="create-rule" style={{float: 'left'}}>
-                  <div style={{float: 'left'}}>
-                    <img className="rule-card" alt={rule.rank} src={`./images/${rule.rank}s.png`} />
+              {/* <div class="row"> */}
+                <div class="dropdown">
+                  <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Edit Version
+                  </button>
+                  <div class="dropdown-menu edit" aria-labelledby="dropdownMenuButton">
+                    <button class="btn btn-light dropdown-item">Update</button>
+                    <button class="btn btn-light dropdown-item">Delete</button>
                   </div>
-                  <div className="rule-instr">
-                    <div className="input-group mb-1">
-                      <div className="input-group-prepend">
-                        <span className={rule.name ? "input-group-text" : "input-group-text bg-warning"} id="inputGroup-sizing-default">Rule Name</span>
-                      </div>
-                      <input type="text" 
-                        className="form-control"
-                        // aria-label="Default" 
-                        // aria-describedby="inputGroup-sizing-default"
-                        placeholder={this.state.oldRules[index + 1].name}
-                        //value={rule.name} // this can be optional
-                        name="name"
-                        onChange={this.handleInputChange(index)}
-                      />
-                    </div>
-                      
-                    <div className="input-group input-group-instr">
-                      <div className="input-group-prepend">
-                        <span className={rule.instructions ? "input-group-text" : "input-group-text bg-warning"} id="inputGroup-sizing-default">Instructions</span>
-                      </div>
-                      <textarea
-                        type="text"
-                        className="form-control"
-                        placeholder={this.state.oldRules[index + 1].instructions}
-                        //value={rule.instructions} // this can be optional
-                        name="instructions"
-                        onChange={this.handleInputChange(index)}
-                      />
-                    </div>
-                  </div>
-                  <br/>
                 </div>
-              
-
-            ))}
+                <p class="game-name">{this.state.currentGame.gameName}</p>
+                <div class="dropdown">
+                  <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Edit Game
+                  </button>
+                  <div class="dropdown-menu edit" aria-labelledby="dropdownMenuButton">
+                    <button class="btn btn-light dropdown-item">Rename</button>
+                    <button class="btn btn-light dropdown-item">Delete</button>
+                  </div>
+                </div>
+              {/* </div> */}
             </div>
-          
-
-          
-        </form>
-
+            <div class="col d-flex justify-content-end align-items-center new-game">
+              <button className="btn btn-light create-button" onClick={this.createNewGame}><i class="fas fa-plus"></i> Save As New Game</button>
+              <button className="btn btn-light create-button" onClick={() => this.clearFields()}>Clear All Fields</button>
+            </div>
+          </div>
         </div>
+            
+        {this.state.newGameRules.slice(1,12).map((rule, index) => (
         
+          <div className="create-rule">
 
+            <div style={{float: 'left'}}>
+              <img className="rule-card" alt={rule.rank} src={`./images/${rule.rank}s.png`} />
+            </div>
+
+            <div className="rule-input-group">
+              <div className="input-group mb-1">
+                <div className="input-group-prepend">
+                  <span className={rule.name ? "input-group-text" : "input-group-text bg-warning"}>Rule Name</span>
+                </div>
+                <button className="btn del" onClick={this.handleInputChange(index, "name")}><i class="fas fa-times"></i></button>
+                <input type="text"
+                  className="form-control"
+                  placeholder={rule.name || this.state.oldRules[index + 1].name + " [current rule]"}
+                  value={rule.name}
+                  name="name"
+                  onChange={this.handleInputChange(index)}
+                />
+              </div>
+              
+              <div className="input-group input-group-instr">
+                <div className="input-group-prepend">
+                  <span className={rule.instructions ? "input-group-text" : "input-group-text bg-warning"}>Instructions</span>
+                </div>
+                <button className="btn del" onClick={this.handleInputChange(index, "instructions")}><i class="fas fa-times"></i></button>
+                <textarea type="text"
+                  className="form-control"
+                  placeholder={rule.instructions || this.state.oldRules[index + 1].instructions}
+                  value={rule.instructions}
+                  name="instructions"
+                  onChange={this.handleInputChange(index)}
+                />
+              </div>
+            </div>
+          </div>
+        ))}
+        
       </React.Fragment>
     );
   }

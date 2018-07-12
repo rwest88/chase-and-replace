@@ -16,7 +16,7 @@ class Nav extends React.Component {
   render = ({games, loadGame} = this.props) => {
 
     return (
-      <nav className="navbar navbar-expand-lg navbar-light bg-green">
+      <nav className="navbar navbar-expand-lg navbar-dark">
         <Link to="/" className="navbar-brand">Chase and Replace</Link>
         
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,7 +47,7 @@ class Nav extends React.Component {
                     <button type="button" class="btn dropdown-item dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <span class="sr-only">Toggle Dropright</span>
                     </button>
-                    <div class="dropdown-menu dropdown-menu-right versions" x-placement="right-start">
+                    <div class="dropdown-menu dropdown-menu-right versions" >
                       <h6 class="dropdown-header">versions</h6>
                       {game.versions.map((version, index) => (
                         <button class="btn dropdown-item"
@@ -77,9 +77,9 @@ class Nav extends React.Component {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/edit"
+              <Link to="/dashboard"
                     className={
-                    window.location.pathname === "/edit" ? "nav-link active" : "nav-link"
+                    window.location.pathname === "/#" ? "nav-link active" : "nav-link"
               }>
                 Sign In / Register
               </Link>

@@ -1,44 +1,114 @@
-.btn{
-    margin-left:.5%;
+.btn-light {
+  margin:.5%;
+  padding: 0px 8px;
+  border-radius: 1px;
 }
-
-.create-menu{
-    background-color: lightslategray;
-    padding:.5%;
-    border: solid, black, 2rem;
+html {
+  background-color: slategray;
+  background-image: url("/images/stone.png");
 }
-
-.new-game{
-    display:inline-block;
-    text-align:right;
+body {
+  background-color: slategray;
+  background-image: url("/images/stone.png");
 }
+.create-menu {
+  width: 95%;
+  background-color: #c9920e;  /* rgb(123, 112, 144); */
+  padding:.5%;
+  border: .5rem solid #252829;
+  border-radius: 5px;
+  box-shadow: 2px 2px 8px darkslategrey;
+  margin: 16px auto 8px;
+}
+.game-name {
+  font-family: 'Germania One', cursive;
+  font-size: 1.5rem;
+  color: brown;
+  text-shadow: 1px 1px 1px #fadf8d;
+  margin: 0;
+}
+.game-name.ver {
+  margin-left: 3%;
+}
+.select-version {
+  background-color: #fadf8d;
+  margin-left: 3%;
+  width: inherit;
+  border-radius: 3px;
+  padding: 1px 6px;
+}
+.col button {
+  background-color: rgb(49, 49, 163);
+  color: #eee;
+  /* border: inherit; */
+}
+.dropdown-menu {
+  z-index: 2000;
+}
+.dropdown-menu.edit {
+  padding: 1px;
+  padding-right: 3px;
 
+}
+.dropdown-item {
+  text-align: left;
+  margin-bottom: 2px;
+}
 .create-rule {
-    padding: .75%
+  float: left;
+  background-color: #e63329;
+  padding: .75%;
+  border: .25rem solid #252829;
+  border-radius: 5px;
+  box-shadow: 2px 2px 8px darkslategrey;
+  margin: .5rem;
 }
-.rule-instr {
-    float: left;
-    width: 23.6vw;
-}.rule-card{
-    width: 6vw;
-    padding-right: 4%;
+textarea {
+  resize: none;
+}
+.rule-input-group {
+  float: left;
+  width: 23.4vw;
+  margin-left: 6px;
+}
+.rule-input-group > * {
+  box-shadow: 2px 2px 8px navy;
+}
+.rule-card {
+  box-shadow: 2px 2px 8px navy;
+  width: 5.55vw;
+  
 }
 .input-group-instr {
-    height: 5vw;
+  height: 5vw;
+}
+.input-group-text {
+  background-color: #fadf8d;
+  font-size: .8em;
+}
+.del {
+  position: absolute;
+  top: 1px;
+  right: 3px;
+  z-index: 1000;
+  padding: 0px;
+  line-height: 1;
+  color: lightgrey;
+  background-color: white;
 }
 @media screen and (max-width: 1200px) {
-    .rule-instr {
-        width: 38.5vw;
-    }
+  .rule-instr {
+    width: 38.5vw;
+  }
 }
 @media screen and (max-width: 930px) {
-    .rule-instr {
-        width: 70vw;
-    }
-    img {
-        width: 12vw;
-    }
-    .input-group-instr {
-        height: 100%;
-    }
+  .rule-instr {
+    width: 70vw;
+  }
+  .rule-card {
+    width: 12vw;
+  }
+  .input-group-instr {
+    height: 100%;
+  }
 }

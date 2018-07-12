@@ -1,9 +1,12 @@
 body {
   font-weight: 600;
-  background-color: green;
+  /* background-color: green; */
+}
+html {
+  /* background-color: green; */
 }
 .navbar {
-  background-color: green;
+  /* background-color: green; */
   height: 8% !important;
 }
 .wrapper {
@@ -19,25 +22,52 @@ body {
   background-color: forestgreen;
 } */
 .game-title {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-auto-rows:9vh;
   grid-column: 5/8;
-  background-color: seagreen;
-  font-size: 1.2em;
+  grid-row: 1/2;
+  font-family: 'Germania One', cursive;
+  font-size: 2em;
+  text-align: center;
+  /* position: relative; */
 }
-.game-title > strong, small {
-  display: inline;
-  /* float: left; */
-  /* color: red; */
+.banner {
+  grid-column: 1/3;
+  grid-row: 1/2;
+  /* margin: 0 auto; */
+  text-align: center;
+}
+.banner > img {
+  position: relative;
+  top: -20%;
+  height: 291%;
+}
+.banner.raised > img {
+  top: -82%;
+}
+.game-title > .game-name {
+  grid-column: 1/3;
+  grid-row: 1/2;
+  position: relative;
+  top: 79%;
+  font-size: 1em;
+  color: #ffd65f;
+  text-shadow: 3px 3px 3px black;
+}
+.game-title > .game-name.raised {
+  top: 19%;
 }
 .user {
   padding: 2px 10px;
 }
 .author {
   grid-column: 8/10;
-  background-color: darkolivegreen;
+  /* background-color: darkolivegreen; */
 }
 .version {
   grid-column: 10/12;
-  background-color: forestgreen;
+  /* background-color: forestgreen; */
 }
 .king-rules {
   display: grid;
@@ -45,57 +75,217 @@ body {
   grid-auto-rows:7.5vh;
   grid-column: 8/12;
   grid-row: 2/5;
-  background-color: lime;
+  text-align: center;
+  background-color: rgba(0, 255, 0, 0.693);
+  box-shadow: 0px 0px 27px 5px rgba(0, 255, 0, 0.8);
 }
 .king-rules > .title {
   grid-column: 1/3;
+  grid-row: 1/2;
+  margin: 1.4% auto;
+  z-index: 1000;
+  font-family: 'Germania One', cursive;
+  /* background-image: url(/images/scroll.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-size: contain;
+  background-position: center; */
 }
-
+.color.king {
+  grid-column: 1/3;
+  grid-row: 1/2;
+  padding: 0% 44%;
+  background-color: lime;
+  box-shadow: 0px 0px 15px 5px lime;
+  border: 5px outset rgba(0, 170, 0, 0.611);
+  /* box-shadow: 0px 0px 10px 10px lime; */
+}
+.scroll.king {
+  grid-column: 1/3;
+  grid-row: 1/2;
+  margin: 0 auto;
+}
+.scroll.king > img {
+  position: relative;
+  top: -20%;
+  height: 135%;
+  background-color: rgba(0, 255, 0, 0.7);
+  box-shadow: 0px 0px 25px 8px rgba(0, 255, 0, 0.7);
+  /* width: 30%; */
+}
+.king-rules > .game-rule > .btn {
+  box-shadow: 0px 0px 5px 2px lime;
+}
 .game-rules {
   display: grid;
   grid-template-columns: 50% 50%;
   grid-auto-rows:7.5vh;
   grid-column: 8/12;
   grid-row: 5/11;
-  background-color: darkgreen;
+  background-color: rgba(0, 100, 0, 0.693);
+  box-shadow: 0px 0px 30px 10px rgba(0, 100, 0, 0.8);
+  z-index: 1;
 }
 .game-rules > .title {
   grid-column: 1/3;
+  grid-row: 1/2;
+  margin: 1.2% auto;
+  z-index: 2;
+  font-family: 'Germania One', cursive;
+}
+.color.game {
+  grid-column: 1/3;
+  grid-row: 1/2;
+  padding: 0% 44%;
+  border: 5px outset rgba(0, 75, 0, 0.611);
+  background-color: darkgreen;
+  box-shadow: 0px 0px 10px 10px darkgreen;
+}
+.scroll.game {
+  grid-column: 1/3;
+  grid-row: 1/2;
+  margin: 0 auto;
+}
+.scroll.game > img {
+  position: relative;
+  z-index: 2;
+  top: -25%;
+  height: 140%;
+  /* border: 6px groove rgba(0, 131, 0, 0.666); */
+  background-color: rgba(0, 100, 0, 0.7);
+  box-shadow: 0px 0px 25px 10px rgba(0, 100, 0, 0.7);
+}
+.game-rule {
+  z-index: 3;
+}
+.game-rules > .game-rule > .btn {
+  box-shadow: 0px 0px 5px 2px lime;
+}
+.table {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-auto-rows:7.5vh;
+  grid-column: 1/5;
+  grid-row: 1/11;
+}
+.table > img {
+  grid-column: 1/3;
+  grid-row: 1/2;
+  position: relative;
+  top: -10%;
+  height: 100%;
+  width: 100%;
+}
+.table > img.stein {
+  grid-column: 1/3;
+  grid-row: 1/2;
+  position: relative;
+  top: 11%;
+  left: 6%;
+  z-index: 600;
+  height: 20%;
+  width: initial;
 }
 .decks {
   grid-column: 1/5;
   grid-row: 1/5;
   text-align: center;
-  background-color: lime;
+  /* background-color: lime; */
 }
 .deck {
-  height: 100%;
+  height: 80%;
+  position: relative;
+  top: 2%;
+  z-index: 100;
+  -webkit-transform: perspective(500px) rotateX(40deg);   
   cursor: pointer;
+  background-color: lime;
+  border-radius: 12px;
+  box-shadow: 6px 2px 5px  lime;
 }
 .current-cards {
   grid-column: 5/8;
   grid-row: 2/7;
   text-align: center;
-  background-color: green;
 }
 .current-card {
   height: 100%;
 }
 .burned-cards {
   grid-column: 1/5;
-  grid-row: 5/11;
-  background-color: darkgreen;
+  grid-row: 4/11;
+  /* background-color: darkgreen; */
   padding: 9vh 3% 3% 3%;
+  position: relative;
+  top: 100%;
+  -webkit-transform: perspective(650px) rotateX(40deg);   
+  background-color: red;
+  border: 5px outset rgba(0, 170, 0, 0.611);
 }
 .burned-card {
   margin: 0.2%;
-  height: 19%;
-  float: left;
+  position: relative;
+  top: -6%;
+  height: 17.5%;
+  float: right;
 }
 .HUD {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-auto-rows:9vh;
   grid-column: 5/8;
   grid-row: 7/11;
-  background-color: seagreen;
+  font-family: 'Germania One', cursive;
+  text-align: center;
+}
+.banner-turned {
+  grid-column: 1/3;
+  grid-row: 1/2;
+  /* margin: 0 auto; */
+  text-align: center;
+}
+.banner-turned > img {
+  position: relative;
+  top: -108%;
+  height: 291%;
+  transform: rotate(180deg);
+}
+.faded > img {
+  opacity: 0.5;
+}
+.current-rule {
+  grid-column: 1/3;
+  grid-row: 1/2;
+  position: relative;
+  top: 4%;
+  text-align: center;
+  /* font-size: 1.5em; */
+}
+.current-rule > h1 {
+  font-size: 1.3em;
+  color: #ffd65f;
+  text-shadow: 2px 2px 2px black;
+}
+.current-rule > h3 {
+  position: relative;
+  top: 30%;
+  font-size: 1.3em;
+}
+.current-rule > .chase-replace {
+  position: relative;
+  top: -10%;
+  font-size: 2.5em;
+  color: #ffd900;
+  /* text-decoration-color: darkred; */
+  text-shadow: 3px 3px 5px rgb(80, 5, 5);
+}
+.current-rule > .king {
+  position: relative;
+  font-size: 1.8em;
+}
+.current-rule > .change-card {
+  position: relative;
+  top: 0%;
 }
 
 @media screen and (max-aspect-ratio: 100/52) {

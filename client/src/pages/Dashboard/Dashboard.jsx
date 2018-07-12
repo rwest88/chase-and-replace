@@ -99,7 +99,8 @@ class Dashboard extends Component {
       oldRules: rules || selectedGame.versions[selectedVersion].rules,
       kingRules: [],
       usedKAs: [],
-      newAce: false
+      newAce: false,
+      clearedFields: false
     });
   }
 
@@ -113,26 +114,28 @@ class Dashboard extends Component {
     switch(currentCard.rank) {
       case "13":
         return (
-          <form>
-            <h3>Make a Rule!</h3>
-            <small>This will be a global rule for the current game.</small>
-            <h6>Enter Name:</h6>
+          <form className="current-rule">
+            <h1 className="king">Make a Rule!</h1>
+            <h3>This will be a global rule for the current game.</h3>
+            <br />
+            <div>
             <input
               type="text"
-              placeholder="e.g., 'Wink'"
+              placeholder="Enter name..."
               name="ruleName"
               value={this.state.ruleName}
               onChange={this.handleInputChange}
             />
-            <h6>Enter Instructions:</h6>
+            </div>
+            <div>
             <textarea
               type="text"
-              placeholder="e.g., 'If you get winked at during eye contact, you must drink.'"
+              placeholder="Enter instructions..."
               name="ruleInstructions"
               value={this.state.ruleInstructions}
               onChange={this.handleInputChange}
             />
-            <br />
+            </div>
             <button 
               onClick={this.handleFormSubmit}>Submit
             </button>
@@ -140,9 +143,9 @@ class Dashboard extends Component {
         )
       case "1":
         return (
-          <form>
-          <h3>Chase and Replace!</h3>
-          <h6>Pick which card to change (indefinitely!)</h6>
+          <form className="current-rule">
+          <h1 className="chase-replace">Chase and Replace!</h1>
+          <h3 className="change-card">Pick which card to change (indefinitely!)</h3>
           <select value={this.state.replace} onChange={this.handleSelectChange}>
             <option value="" disabled selected>Choose a rank...</option>
             {
@@ -152,22 +155,24 @@ class Dashboard extends Component {
               })
             }
           </select>  
-          <h6>Enter Rule Name:</h6>
+          <div>
           <input
             type="text"
-            placeholder="(rhyming is usually a good idea)"
+            placeholder="Enter name..."
             name="ruleName"
             value={this.state.ruleName}
             onChange={this.handleInputChange}
           />
-          <h6>Enter Instructions:</h6>
+          </div>
+          <div>
           <textarea
             type="text"
-            placeholder="Be creative!"
+            placeholder="Enter instructions..."
             name="ruleInstructions"
             value={this.state.ruleInstructions}
             onChange={this.handleInputChange}
-          /><br/>
+          />
+          </div>
           <button 
             onClick={this.handleFormSubmit}>Submit
           </button>
@@ -175,8 +180,8 @@ class Dashboard extends Component {
         );
       default:
         return (
-          <div>
-            <h1>{currentRule.name}</h1>
+          <div className="current-rule">
+            <h1 className="current-rule">{currentRule.name}</h1>
             <h3>{currentRule.instructions}</h3>
           </div>
         );
@@ -396,8 +401,14 @@ class Dashboard extends Component {
         <div className="wrapper">
           
           <div className="game-title">
-            <strong>{this.state.currentGame.gameName || "Nothing loaded!"}</strong>
-            <div>{this.state.currentGame.forkedFrom !== this.state.username ? 
+            <div className={this.state.burnedCards.length ? "banner raised" : "banner"}>
+              <img alt="banner" src={this.state.burnedCards.length ? "./images/regal6.png" : "./images/regal5.png"} />
+            </div>
+            <strong className={this.state.burnedCards.length ? "game-name raised" : "game-name"}>{this.state.currentGame.gameName || ""}</strong>
+          </div>
+          
+
+          {/* <div>{this.state.currentGame.forkedFrom !== this.state.username ? 
               <div>
                 <small>forked from: </small>
                 <button className="btn user" onClick={() => this.searchUser(this.state.currentGame.forkedFrom)}>
@@ -410,8 +421,9 @@ class Dashboard extends Component {
                   {this.state.currentGame.admin}
                 </button>
               </div>
-            }</div>
-          </div>
+            }</div> */}
+
+
           <div className="author">{`Version: ${this.state.currentVersion.versionName || "none!"}\n\n`}</div>
           <div className="version">
           {(this.state.newAce || localStorage.getItem(`versionState: ${this.state.currentGame.gameName}`)) ? 
@@ -434,6 +446,10 @@ class Dashboard extends Component {
           </div>
           
           <div className="king-rules">
+            <div className="scroll king">
+              <img alt="scroll" src="./images/scroll.png" />
+            </div>
+            <div className="color king"></div>
             <div className="title">King Rules</div>
             {this.state.kingRules.map(rule=>(
               <KingRule image={rule.image} name={rule.name} instructions={rule.instructions}/>
@@ -441,6 +457,10 @@ class Dashboard extends Component {
           </div>
           
           <div className="game-rules">
+            <div className="scroll game">
+              <img alt="scroll" src="./images/scroll.png" />
+            </div>
+            <div className="color game"></div>
             <div className="title">Game Rules</div>
             {this.state.rules.slice(1).map(rule=>(
               <GameRule rank={rule.rank} name={rule.name} instructions={rule.instructions}/>
@@ -453,8 +473,18 @@ class Dashboard extends Component {
               <img alt={card.rank} src={card.image} className="burned-card" />
             ))}
           </div>
-
+          
+          <div className="table">
+            <img alt="table" src="./images/table.png" />
+            <img className="stein" alt="stein" src="./images/stein.png" />
+          </div>
+          
           <div className="HUD">
+            <div className={this.state.burnedCards.length ? 
+              (this.state.currentCard.rank == 1) ? "banner-turned faded" : "banner-turned" 
+              : "hide"}>
+              <img alt="banner" src="./images/regal6.png" />
+            </div>
             {this.renderHUD()}
           </div>
           
