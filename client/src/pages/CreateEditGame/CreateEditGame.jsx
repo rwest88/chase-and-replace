@@ -278,12 +278,22 @@ class CreateEditGame extends Component {
 
         <Nav games={this.state.games} loadGame={this.loadGame}/>
 
-        <h1>Create Edit Page</h1>
+        <div className="container-fluid">
         
         <form>
-          <h6>{this.state.currentGame.gameName}</h6>
+          
 
-          <select value={this.state.vers} onChange={this.handleSelectChange}>
+        
+          <div className="container-fluid create-menu">
+          <div class="row">
+          <div class="col">
+          
+          
+          
+          <button class="btn btn-light create-button">{this.state.currentGame.gameName}</button>
+          
+          <select class="form-control" value={this.state.vers} onChange={this.handleSelectChange}>
+          
             {
               this.state.versions.map((version, index) => {
                 return (
@@ -291,75 +301,121 @@ class CreateEditGame extends Component {
                     key={version.versionName} 
                     value={index}>
                     {version.versionName} {version.versionName === "[NEW]" ? "(current progress)" : `(Created: ${version.date})`}
+                  
                   </option>
                 )
               })
             }
           </select>  
-
-          <input
+          </div>
+          
+          {/* <input className="create-button"
             type="text"
             placeholder="rename here..."
             name="versionName"
             value={this.state.versionName}
             onChange={this.handleNameChange}
-          />
+          /> */}
           
-          <br />
+          
+          
+          
+          <div class="col">
+          <div class="dropdown">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Edit Game
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <button class="dropdown-item">Rename</button>
+              <button class="dropdown-item">Delete</button>
+              
+            </div>
+          </div>
+          <div class="dropdown">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Edit Version
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <button class="dropdown-item">Update</button>
+              <button class="dropdown-item">Delete</button>
+              
+            </div>
+          </div>
+          
+          
+          
+          </div>
 
-          <button onClick={this.createNewGame}>Save As New Game</button>
-          <button onClick={this.loadTemplate}>Load Kings Template</button>
-          <button onClick={this.clearFields}>Clear All Fields</button>
-          <br />
-          <button onClick={this.loadVersion}>Load This Version</button>
-          <button onClick={this.updateVersion}>Update Version</button>
-          <button onClick={this.deleteVersion}>Delete Version</button>
+          {/* <button className="btn btn-light create-button" onClick={this.updateVersion}>Update Version</button>
+          <button className="btn btn-light create-button" onClick={this.deleteVersion}>Delete Version</button> */}
+          
+          <div class="col">
+          </div>
+          
+          <div class="col new-game">
+          <button className="btn btn-light create-button" onClick={this.createNewGame}>Save As New Game</button>
+          <button className="btn btn-light create-button" onClick={this.clearFields}>Clear All Fields</button>
+          </div>
 
           <br/><br/>
+
           
-          {this.state.newGameRules.slice(1,12).map((rule, index) => (
-
-            <div style={{clear: 'both '}}>
-              <div style={{float: 'left'}}>
-                <img className="rule-card" alt={rule.rank} style={{height: 16 + 'vh'}} src={`./images/${rule.rank}s.png`} />
-              </div>
-              <div style={{float: 'left'}}>
-                <div className="input-group mb-1">
-                  <div className="input-group-prepend">
-                    <span className={rule.name ? "input-group-text" : "input-group-text bg-warning"} id="inputGroup-sizing-default">Rule Name</span>
-                  </div>
-                  <input type="text" 
-                    className="form-control"
-                    // aria-label="Default" 
-                    // aria-describedby="inputGroup-sizing-default"
-                    placeholder={this.state.oldRules[index + 1].name}
-                    value={rule.name} // this can be optional
-                    name="name"
-                    onChange={this.handleInputChange(index)}
-                  />
-                </div>
-                  
-                <div className="input-group">
-                  <div className="input-group-prepend">
-                  <span className={rule.instructions ? "input-group-text" : "input-group-text bg-warning"} id="inputGroup-sizing-default">Rule Name</span>
-                  </div>
-                  <textarea
-                    type="text"
-                    className="form-control"
-                    placeholder={this.state.oldRules[index + 1].instructions}
-                    value={rule.instructions} // this can be optional
-                    name="instructions"
-                    onChange={this.handleInputChange(index)}
-                  />
-                </div>
-              </div>
-              <br/>
+          
             </div>
+          </div>
+          
+          
+            
+            <div className='container-fluid'>
+            {this.state.newGameRules.slice(1,12).map((rule, index) => (
 
-          ))}
+              
+                <div className="create-rule" style={{float: 'left'}}>
+                  <div style={{float: 'left'}}>
+                    <img className="rule-card" alt={rule.rank} src={`./images/${rule.rank}s.png`} />
+                  </div>
+                  <div className="rule-instr">
+                    <div className="input-group mb-1">
+                      <div className="input-group-prepend">
+                        <span className={rule.name ? "input-group-text" : "input-group-text bg-warning"} id="inputGroup-sizing-default">Rule Name</span>
+                      </div>
+                      <input type="text" 
+                        className="form-control"
+                        // aria-label="Default" 
+                        // aria-describedby="inputGroup-sizing-default"
+                        placeholder={this.state.oldRules[index + 1].name}
+                        //value={rule.name} // this can be optional
+                        name="name"
+                        onChange={this.handleInputChange(index)}
+                      />
+                    </div>
+                      
+                    <div className="input-group input-group-instr">
+                      <div className="input-group-prepend">
+                        <span className={rule.instructions ? "input-group-text" : "input-group-text bg-warning"} id="inputGroup-sizing-default">Instructions</span>
+                      </div>
+                      <textarea
+                        type="text"
+                        className="form-control"
+                        placeholder={this.state.oldRules[index + 1].instructions}
+                        //value={rule.instructions} // this can be optional
+                        name="instructions"
+                        onChange={this.handleInputChange(index)}
+                      />
+                    </div>
+                  </div>
+                  <br/>
+                </div>
+              
+
+            ))}
+            </div>
+          
 
           
         </form>
+
+        </div>
         
 
       </React.Fragment>

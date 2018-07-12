@@ -1,0 +1,44 @@
+.btn{
+    margin-left:.5%;
+}
+
+.create-menu{
+    background-color: lightslategray;
+    padding:.5%;
+    border: solid, black, 2rem;
+}
+
+.new-game{
+    display:inline-block;
+    text-align:right;
+}
+
+.create-rule {
+    padding: .75%
+}
+.rule-instr {
+    float: left;
+    width: 23.6vw;
+}.rule-card{
+    width: 6vw;
+    padding-right: 4%;
+}
+.input-group-instr {
+    height: 5vw;
+}
+@media screen and (max-width: 1200px) {
+    .rule-instr {
+        width: 38.5vw;
+    }
+}
+@media screen and (max-width: 930px) {
+    .rule-instr {
+        width: 70vw;
+    }
+    img {
+        width: 12vw;
+    }
+    .input-group-instr {
+        height: 100%;
+    }
+}
