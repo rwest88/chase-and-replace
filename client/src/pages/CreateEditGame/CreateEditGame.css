@@ -1,44 +1,74 @@
-.btn{
-    margin-left:.5%;
-}
 
-.create-menu{
-    background-color: lightslategray;
-    padding:.5%;
-    border: solid, black, 2rem;
-}
 
-.new-game{
-    display:inline-block;
-    text-align:right;
+.btn {
+  margin:.5%;
+  padding: 0px 8px;
+  border-radius: 1px;
 }
-
+html {
+  background-color: grey;
+}
+body {
+  background-color: gray;
+}
+.create-menu {
+  background-color: darkslategrey;
+  padding:.5%;
+  border: .5rem solid black;
+  border-radius: 5px;
+  margin: 5px 0px;
+}
+.col button {
+  background-color: rgb(211, 49, 20);
+  /* border: inherit; */
+}
+.dropdown-item {
+  text-align: left;
+}
 .create-rule {
-    padding: .75%
+  float: left;
+  background-color: green;
+  padding: .75%;
+  border: .25rem solid black;
+  border-radius: 5px;
+  box-shadow: 2px 2px 8px darkslategrey;
+  margin: .25rem;
 }
-.rule-instr {
-    float: left;
-    width: 23.6vw;
-}.rule-card{
-    width: 6vw;
-    padding-right: 4%;
+.rule-input-group {
+  float: left;
+  width: 24.25vw;
+}
+.rule-card {
+  width: 6vw;
+  padding-right: 7%;
 }
 .input-group-instr {
-    height: 5vw;
+  height: 5vw;
+}
+.input-group-text {
+  background-color: rgb(154, 171, 179);
+  font-size: .8em;
+}
+.del {
+  position: absolute;
+  right: 1px;
+  z-index: 1000;
+  padding: 0px;
+  line-height: 1;
 }
 @media screen and (max-width: 1200px) {
-    .rule-instr {
-        width: 38.5vw;
-    }
+  .rule-instr {
+    width: 38.5vw;
+  }
 }
 @media screen and (max-width: 930px) {
-    .rule-instr {
-        width: 70vw;
-    }
-    img {
-        width: 12vw;
-    }
-    .input-group-instr {
-        height: 100%;
-    }
+  .rule-instr {
+    width: 70vw;
+  }
+  .rule-card {
+    width: 12vw;
+  }
+  .input-group-instr {
+    height: 100%;
+  }
 }

@@ -22,7 +22,8 @@ class CreateEditGame extends Component {
     oldRules: newGameTemplate,
     currentGame: {},
     versions: [{rules: newGameTemplate}],
-    versionID: ""
+    versionID: "",
+    clearedFields: true,
   };
 
   // ==================
@@ -31,6 +32,7 @@ class CreateEditGame extends Component {
 
   componentDidMount() {
     const sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
+    sessionObject.clearedFields = false;
     this.setState(this.pushBlankVersion(sessionObject));
   }
 
@@ -100,8 +102,7 @@ class CreateEditGame extends Component {
   handleInputChange = (index) => (event) => {
     let newRules = this.state.newGameRules;
     newRules[index + 1][event.target.name] = event.target.value;
-    this.setState({ newGameRules: newRules, rules: this.state.oldRules });
-    console.log(this.state.oldRules[1].name)
+    this.setState({ newGameRules: newRules, rules: this.state.oldRules});
   };
 
   handleSelectChange = event => {
@@ -109,7 +110,8 @@ class CreateEditGame extends Component {
     this.setState({
       vers: value,
       versionName: "",
-      newGameRules: this.state.versions[value].rules
+      newGameRules: this.state.versions[value].rules,
+      clearedFields: false
     });
   }
 
@@ -165,14 +167,8 @@ class CreateEditGame extends Component {
     }
   };
 
-  loadTemplate = event => {
-    event.preventDefault();
-
-  }
-
-  clearFields = event => {
-    event.preventDefault();
-    
+  clearFields = () => {
+    this.setState({clearedFields: true, newGameRules: newGameTemplate});
   }
 
   pushBlankVersion = obj => {
@@ -278,144 +274,100 @@ class CreateEditGame extends Component {
 
         <Nav games={this.state.games} loadGame={this.loadGame}/>
 
-        <div className="container-fluid">
-        
-        <form>
-          
+        {/* <div className="container-fluid main-container"> */}
 
-        
           <div className="container-fluid create-menu">
-          <div class="row">
-          <div class="col">
-          
-          
-          
-          <h4>{this.state.currentGame.gameName}</h4>
-          
-          <select class="form-control" value={this.state.vers} onChange={this.handleSelectChange}>
-          
-            {
-              this.state.versions.map((version, index) => {
-                return (
-                  <option 
-                    key={version.versionName} 
-                    value={index}>
-                    {version.versionName} {version.versionName === "[NEW]" ? "(current progress)" : `(Created: ${version.date})`}
-                  
-                  </option>
-                )
-              })
-            }
-          </select>  
-          </div>
-          
-          {/* <input className="create-button"
-            type="text"
-            placeholder="rename here..."
-            name="versionName"
-            value={this.state.versionName}
-            onChange={this.handleNameChange}
-          /> */}
-          
-          
-          
-          
-          <div class="col">
-          <div class="dropdown">
-            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Edit Game
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <button class="btn dropdown-item">Rename</button>
-              <button class="btn dropdown-item">Delete</button>
-              
-            </div>
-          </div>
-          <div class="dropdown">
-            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Edit Version
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <button class="btn dropdown-item">Update</button>
-              <button class="btn dropdown-item">Delete</button>
-              
-            </div>
-          </div>
-          
-          
-          
-          </div>
-
-          {/* <button className="btn btn-light create-button" onClick={this.updateVersion}>Update Version</button>
-          <button className="btn btn-light create-button" onClick={this.deleteVersion}>Delete Version</button> */}
-          
-          <div class="col">
-          </div>
-          
-          <div class="col new-game">
-          <button className="btn btn-light create-button" onClick={this.createNewGame}>Save As New Game</button>
-          <button className="btn btn-light create-button" onClick={this.clearFields}>Clear All Fields</button>
-          </div>
-
-          <br/><br/>
-
-          
-          
-            </div>
-          </div>
-          
-          
-            
-            <div className='container-fluid'>
-            {this.state.newGameRules.slice(1,12).map((rule, index) => (
-
-              
-                <div className="create-rule" style={{float: 'left'}}>
-                  <div style={{float: 'left'}}>
-                    <img className="rule-card" alt={rule.rank} src={`./images/${rule.rank}s.png`} />
+            <div class="row">
+              <div class="col d-flex align-items-end">
+                <select class="form-control" value={this.state.vers} onChange={this.handleSelectChange}>
+                  {this.state.versions.map((version, index) => {
+                    return (
+                      <option 
+                        key={version.versionName} 
+                        value={index}>
+                        {version.versionName} {version.versionName === "[NEW]" ? "(current progress)" : `(Created: ${version.date})`}
+                      </option>
+                    )
+                  })}
+                </select>  
+              </div>
+              <div class="col">
+                <h4 class="game-name">{this.state.currentGame.gameName}</h4>
+                <div class="row d-flex justify-content-center">
+                <div class="dropdown">
+                  <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Edit Version
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <button class="btn dropdown-item">Update</button>
+                    <button class="btn dropdown-item">Delete</button>
                   </div>
-                  <div className="rule-instr">
-                    <div className="input-group mb-1">
-                      <div className="input-group-prepend">
-                        <span className={rule.name ? "input-group-text" : "input-group-text bg-warning"} id="inputGroup-sizing-default">Rule Name</span>
-                      </div>
-                      <input type="text" 
-                        className="form-control"
-                        // aria-label="Default" 
-                        // aria-describedby="inputGroup-sizing-default"
-                        placeholder={this.state.oldRules[index + 1].name}
-                        //value={rule.name} // this can be optional
-                        name="name"
-                        onChange={this.handleInputChange(index)}
-                      />
-                    </div>
-                      
-                    <div className="input-group input-group-instr">
-                      <div className="input-group-prepend">
-                        <span className={rule.instructions ? "input-group-text" : "input-group-text bg-warning"} id="inputGroup-sizing-default">Instructions</span>
-                      </div>
-                      <textarea
-                        type="text"
-                        className="form-control"
-                        placeholder={this.state.oldRules[index + 1].instructions}
-                        //value={rule.instructions} // this can be optional
-                        name="instructions"
-                        onChange={this.handleInputChange(index)}
-                      />
-                    </div>
-                  </div>
-                  <br/>
                 </div>
-              
-
-            ))}
+                <div class="dropdown">
+                  <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Edit Game
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <button class="btn dropdown-item">Rename</button>
+                    <button class="btn dropdown-item">Delete</button>
+                  </div>
+                </div>
+                </div>
+              </div>
+              <div class="col d-flex justify-content-end align-items-end new-game">
+                <button className="btn btn-light create-button" onClick={this.createNewGame}><i class="fas fa-plus"></i> Save As New Game</button>
+                <button className="btn btn-light create-button" onClick={() => this.clearFields()}>Clear All Fields</button>
+              </div>
             </div>
-          
+          </div>
+              
+          {/* <div className='container-fluid'> */}
+            {this.state.newGameRules.slice(1,12).map((rule, index) => (
+            
+              <div className="create-rule">
 
-          
-        </form>
+                <div style={{float: 'left'}}>
+                  <img className="rule-card" alt={rule.rank} src={`./images/${rule.rank}s.png`} />
+                </div>
 
-        </div>
+                <div className="rule-input-group">
+                  <div className="input-group mb-1 d-flex justify-content-end">
+                    <div className="input-group-prepend">
+                      <span className={rule.name ? "input-group-text" : "input-group-text bg-warning"} id="inputGroup-sizing-default">Rule Name</span>
+                    </div>
+                    <input type="text"
+                      className="form-control justify-content-end"
+                      aria-label="Default" 
+                      aria-describedby="inputGroup-sizing-default"
+                      placeholder={rule.name || this.state.oldRules[index + 1].name + " [current rule]"}
+                      name="name"
+                      onChange={this.handleInputChange(index)}
+                    />
+                    <button className="btn del"><i class="fas fa-search"></i></button>
+                  </div>
+                  {/* <input class="swing" type="text" placeholder={this.state.oldRules[index + 1].name} /><label for="rule name">Rule Name</label> */}
+                    
+                  <div className="input-group input-group-instr d-flex justify-content-end">
+                    <div className="input-group-prepend">
+                      <span className={rule.instructions ? "input-group-text" : "input-group-text bg-warning"} id="inputGroup-sizing-default">Instructions</span>
+                    </div>
+                    <textarea
+                      type="text"
+                      className="form-control"
+                      placeholder={rule.instructions || this.state.oldRules[index + 1].instructions}
+                      value={rule.instructions}
+                      name="instructions"
+                      // onClick={}
+                      onChange={this.handleInputChange(index)}
+                    />
+                    <button className="btn del">X</button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          {/* </div> */}
+            
+        {/* </div> */}
         
 
       </React.Fragment>

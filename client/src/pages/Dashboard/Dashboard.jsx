@@ -99,7 +99,8 @@ class Dashboard extends Component {
       oldRules: rules || selectedGame.versions[selectedVersion].rules,
       kingRules: [],
       usedKAs: [],
-      newAce: false
+      newAce: false,
+      clearedFields: false
     });
   }
 
