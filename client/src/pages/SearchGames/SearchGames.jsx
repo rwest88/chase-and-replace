@@ -114,6 +114,7 @@ class SearchGames extends Component {
         game.data._id = `${game.data.gameName} ${this.state.username} from ${game.data.admin}`;
         game.data.admin = this.state.username;
         game.data.forkedFrom = game.data.admin;
+        game.data.created = new Date(Date.now());
         API.saveNewGame(game.data)
           .then(res => {
             if (window.confirm("New game created! Play now?")) this.loadGame(res.data);
@@ -129,23 +130,113 @@ class SearchGames extends Component {
       <React.Fragment>
         <Nav games={this.state.games} loadGame={this.loadGame}/>
 
-        <h1>Search Page</h1>
+        <div className="container-fluid">
 
-        <form>
-          <input 
-            type="text"
-            placeholder="search..."
-            name="searchTerm"
-            value={this.state.searchTerm}
-            onChange={this.handleInputChange}
-            onInput={this.handleInputChange}
-          />
-        </form>
 
-        <h3>{this.state.userResult}</h3>
+          
 
-        <div>{this.state.gamesByUser.map(item => <button onClick={() => this.forkGame(item._id)}>{item.gameName}</button>)}</div>
 
+          <div className="row">
+          
+            <div className="col-sm-4">
+
+
+              <form>
+                <input 
+                  type="text"
+                  placeholder="search..."
+                  name="searchTerm"
+                  value={this.state.searchTerm}
+                  onChange={this.handleInputChange}
+                  onInput={this.handleInputChange}
+                />
+              </form>
+
+              <h3>{this.state.userResult}</h3>
+
+              <div>{this.state.gamesByUser.map(item => <button onClick={() => this.forkGame(item._id)}>{item.gameName}</button>)}</div>
+
+
+              asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf asdf asdf asdf jasdfkljalsdkfjakl sdfkladsj flk jasdflk ajsdfkjla sdfkl asdfkj aldsk fadskjl fakl sdjfkjl asdfkl jasdfjl asdkjl fakjl sdfkjl asdfkjl asdkjl fakjl sdfkjl adsfkjl asdfkjl 
+
+
+            </div>
+
+            <div className="col-sm-4">.col-sm-4
+            
+
+              dasfasdfklasdjflk asdflkj asdlfkjasdlfkj asdf adsf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf asdf asdf adsfkjl asdlfk adslfkj adslkfj asldkfj klj asdlk fasdklfj askldjf askldj flkasj dflkjads flkjas dfklj dsklj adslfkj sdlfkj asdlkfj asdlkfj sdlkfj sldkj fslkdj fskldj flksj dflkj sdfklj lskdj faldskf adsklfj aldskfj ladskfj adsfk jkjasdh fkjadshf kjadshf kjadshf 
+            
+            
+            </div>
+
+
+
+
+
+            <div className="col-sm-4">
+
+
+              <div className="input-group adv-search">
+
+                <input 
+                  type="text"
+                  className="form-control"
+                  placeholder="search..."
+                  name="searchTerm"
+                  value={this.state.searchTerm}
+                  onChange={this.handleInputChange}
+                  onInput={this.handleInputChange}
+                />
+                <div className="input-group-btn">
+                  <div className="btn-group" role="group">
+                    <div className="dropdown dropdown-lg">
+                      <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span className="caret">options</span></button>
+                      <div className="dropdown-menu dropdown-menu-right" role="menu">
+                        <form className="form-horizontal" role="form">
+                          <div className="form-group">
+                            <label for="filter">Filter by</label>
+                            <select className="form-control">
+                              <option value="0" selected>All Snippets</option>
+                              <option value="1">Featured</option>
+                              <option value="2">Most popular</option>
+                              <option value="3">Top rated</option>
+                              <option value="4">Most commented</option>
+                            </select>
+                          </div>
+                          <div className="form-group">
+                            <label for="contain">Author</label>
+                            <input className="form-control" type="text" />
+                          </div>
+                          <div className="form-group">
+                            <label for="contain">Contains the words</label>
+                            <input className="form-control" type="text" />
+                          </div>
+                          <button type="submit" className="btn btn-primary"><i class="fas fa-search"></i></button>
+                        </form>
+                      </div>
+                    </div>
+                    <button type="button" onClick={this.searchDB} className="btn btn-primary"><i class="fas fa-search"></i></button>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <div class="list-group">
+                <button type="button" class="list-group-item list-group-item-action active">
+                  Cras justo odio
+                </button>
+                <button type="button" class="list-group-item list-group-item-action">Dapibus ac facilisis in</button>
+                <button type="button" class="list-group-item list-group-item-action">Morbi leo risus</button>
+                <button type="button" class="list-group-item list-group-item-action">Porta ac consectetur ac</button>
+                <button type="button" class="list-group-item list-group-item-action" disabled>Vestibulum at eros</button>
+              </div>
+              sadfasdfasdf asdf asdf asdf asdf adsf asdf asdf adsf asdf asdf adsf adsf asdf asdf asdf adsf asdf adsf adsf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf adsf adsf adsf kjas dfkjadsfkj hadskfj haskdjfh adskjfh askjdfh kasjdf 
+
+
+
+            </div>
+          </div>
+        </div>
       </React.Fragment>
     );
   }

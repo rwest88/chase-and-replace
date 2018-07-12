@@ -21,6 +21,15 @@ body {
 .game-title {
   grid-column: 5/8;
   background-color: seagreen;
+  font-size: 1.2em;
+}
+.game-title > strong, small {
+  display: inline;
+  /* float: left; */
+  /* color: red; */
+}
+.user {
+  padding: 2px 10px;
 }
 .author {
   grid-column: 8/10;

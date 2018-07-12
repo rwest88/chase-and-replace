@@ -3,6 +3,15 @@ import { Link } from "react-router-dom";
 import "./Nav.css";
 
 class Nav extends React.Component {
+
+  state = {
+    showDropdown: false
+  }
+
+  toggleDropdown = () => {
+    if (this.state.showDropdown) this.setState({showDropdown: false});
+    else this.setState({showDropdown: true});
+  }
   
   render = ({games, loadGame} = this.props) => {
 
@@ -20,19 +29,34 @@ class Nav extends React.Component {
                     className={
                     window.location.pathname === "/dashboard" ? "nav-link active" : "nav-link"
               }>
-                Play {/*<span className="sr-only">(current)</span>*/}
+                Play
               </Link>
             </li>
-            <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li className={this.state.showDropdown ? "lime nav-item dropdown" : "nav-item dropdown"}>
+              <a className="nav-link dropdown-toggle" href="#" onClick={()=>this.toggleDropdown()} id="navbarDropdownMenuLink" data-toggle="" aria-haspopup="true" aria-expanded="false">
                 Load Game
               </a>
-              <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <div className={this.state.showDropdown ? "dropdown dropdown-menu dropdown-menu-right d-flex flex-column align-items-end" : "hide"} >
+              <h6 class="dropdown-header">Your saved games</h6>
                 {games.map(game => (
-                  <button className="dropdown-item" 
-                    onClick={() => loadGame(game)}>
-                    {game.gameName}
-                  </button>
+                  <div class="btn-group dropright">
+                    <button type="button" class="btn dropdown-item"
+                      onClick={() => {this.toggleDropdown(); loadGame(game)}}>
+                      {game.gameName}
+                    </button>
+                    <button type="button" class="btn dropdown-item dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <span class="sr-only">Toggle Dropright</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right versions" x-placement="right-start">
+                      <h6 class="dropdown-header">versions</h6>
+                      {game.versions.map((version, index) => (
+                        <button class="btn dropdown-item"
+                          onClick={() => {this.toggleDropdown(); loadGame(game, index)}}>
+                          {version.versionName}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
             </li>

@@ -5,3 +5,16 @@
   padding: 4px 16px;
   font-weight: 900;
 }
+/* .dropdown-toggle-split {
+  text-align: end;
+} */
+.hide {
+  display: none;
+}
+.dropdown-menu, .lime {
+  background-color: limegreen;
+}
+.versions {
+  position: absolute; transform: translate3d(160px, 0px, 0px); top: -37px; left: -9px; will-change: transform; float: left;
+  padding: 4px 0px;
+}
