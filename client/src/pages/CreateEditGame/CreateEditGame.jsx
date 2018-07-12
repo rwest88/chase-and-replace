@@ -290,7 +290,7 @@ class CreateEditGame extends Component {
           
           
           
-          <button class="btn btn-light create-button">{this.state.currentGame.gameName}</button>
+          <h4>{this.state.currentGame.gameName}</h4>
           
           <select class="form-control" value={this.state.vers} onChange={this.handleSelectChange}>
           
@@ -326,8 +326,8 @@ class CreateEditGame extends Component {
               Edit Game
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <button class="dropdown-item">Rename</button>
-              <button class="dropdown-item">Delete</button>
+              <button class="btn dropdown-item">Rename</button>
+              <button class="btn dropdown-item">Delete</button>
               
             </div>
           </div>
@@ -336,8 +336,8 @@ class CreateEditGame extends Component {
               Edit Version
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <button class="dropdown-item">Update</button>
-              <button class="dropdown-item">Delete</button>
+              <button class="btn dropdown-item">Update</button>
+              <button class="btn dropdown-item">Delete</button>
               
             </div>
           </div>
