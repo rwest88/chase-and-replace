@@ -473,7 +473,12 @@ class Dashboard extends Component {
               <img alt={card.rank} src={card.image} className="burned-card" />
             ))}
           </div>
-
+          
+          <div className="table">
+            <img alt="table" src="./images/table.png" />
+            <img className="stein" alt="stein" src="./images/stein.png" />
+          </div>
+          
           <div className="HUD">
             <div className={this.state.burnedCards.length ? 
               (this.state.currentCard.rank == 1) ? "banner-turned faded" : "banner-turned" 
