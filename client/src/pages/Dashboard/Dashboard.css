@@ -150,6 +150,7 @@ html {
   /* width: 30%; */
 }
 .king-rules > .game-rule > .btn {
+  background-color: navy;
   box-shadow: 0px 0px 5px 2px lime;
 }
 .game-rules {
@@ -195,7 +196,9 @@ html {
   z-index: 3;
 }
 .game-rules > .game-rule > .btn {
+  background-color: navy;
   box-shadow: 0px 0px 5px 2px lime;
+  color: #eee;
 }
 .table {
   display: grid;
@@ -237,7 +240,7 @@ html {
   top: 7%;
   left: 5%;
   z-index: 100;
-  transform: perspective(450px) rotateX(40deg) skew(-20deg);
+  transform: perspective(475px) rotateX(40deg) skew(-18deg);
   cursor: pointer;
   background-color: lime;
   border-radius: 12px;
