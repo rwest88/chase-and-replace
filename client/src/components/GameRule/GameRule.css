@@ -10,6 +10,16 @@
     width: 70%;
     font-size: 2vh;
 }
+.dropdown-menu {
+  z-index: 2001;
+  background-color: #252829 !important;
+  /* padding: 10px; */
+}
+.dropdown-menu > p {
+  color: #eee;
+  font-weight: 400;
+  padding: 0px 10px;
+}
 @media screen and (max-aspect-ratio: 100/58) {
   .game-rule > button {
     font-size: 1.5vh;

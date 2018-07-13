@@ -394,12 +394,37 @@ class Dashboard extends Component {
       return <Redirect to={this.state.redirectTo}/>;
     }
     return (
-      <React.Fragment>
+      <div className="dashboard-root">
         
         <Nav games={this.state.games} loadGame={this.loadGame}/>
 
         <div className="wrapper">
           
+          <div className="background">
+            <div className="background-image">
+              <div className="background-tile">
+              <img alt="stone" src="./images/stone.png" />
+              <img alt="stone" src="./images/stone.png" />
+              <img alt="stone" src="./images/stone.png" />
+              <img alt="stone" src="./images/stone.png" />
+              <img alt="stone" src="./images/stone.png" />
+              <img alt="stone" src="./images/stone.png" /> 
+              <img alt="stone" src="./images/stone.png" />
+              <img alt="stone" src="./images/stone.png" />
+              <img alt="stone" src="./images/stone.png" /> 
+              <img alt="stone" src="./images/stone.png" />
+              <img alt="stone" src="./images/stone.png" />
+              <img alt="stone" src="./images/stone.png" />
+              <img alt="stone" src="./images/stone.png" />
+              <img alt="stone" src="./images/stone.png" />
+              <img alt="stone" src="./images/stone.png" /> 
+              <img alt="stone" src="./images/stone.png" />
+              <img alt="stone" src="./images/stone.png" />
+              <img alt="stone" src="./images/stone.png" /> 
+              </div>
+            </div>
+          </div>
+
           <div className="game-title">
             <div className={this.state.burnedCards.length ? "banner raised" : "banner"}>
               <img alt="banner" src={this.state.burnedCards.length ? "./images/regal6.png" : "./images/regal5.png"} />
@@ -475,7 +500,7 @@ class Dashboard extends Component {
           </div>
           
           <div className="table">
-            <img alt="table" src="./images/table.png" />
+            <img alt="table" src="./images/table3.png" />
             <img className="stein" alt="stein" src="./images/stein.png" />
           </div>
           
@@ -490,7 +515,7 @@ class Dashboard extends Component {
           
         </div>
 
-      </React.Fragment>
+      </div>
 
     );
   }
