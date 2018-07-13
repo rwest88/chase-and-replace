@@ -1,3 +1,4 @@
+
 .btn-light {
   margin:.5%;
   padding: 0px 8px;
@@ -6,10 +7,12 @@
 html {
   background-color: slategray;
   background-image: url("/images/stone.png");
+  /* overflow: scroll; */
 }
 body {
   background-color: slategray;
   background-image: url("/images/stone.png");
+  
 }
 .create-menu {
   width: 95%;
@@ -18,7 +21,7 @@ body {
   border: .5rem solid #252829;
   border-radius: 5px;
   box-shadow: 2px 2px 8px darkslategrey;
-  margin: 16px auto 8px;
+  margin: 2px auto 4px;
 }
 .game-name {
   font-family: 'Germania One', cursive;
@@ -61,14 +64,15 @@ body {
   border: .25rem solid #252829;
   border-radius: 5px;
   box-shadow: 2px 2px 8px darkslategrey;
-  margin: .5rem;
+  margin: .4rem;
 }
 textarea {
   resize: none;
 }
 .rule-input-group {
   float: left;
-  width: 23.4vw;
+  width: 24vw;
+  /* height: 14vh; */
   margin-left: 6px;
 }
 .rule-input-group > * {
@@ -76,11 +80,13 @@ textarea {
 }
 .rule-card {
   box-shadow: 2px 2px 8px navy;
-  width: 5.55vw;
+  width: 5.2vw;
+  /* height: 14.8vh; */
   
 }
 .input-group-instr {
-  height: 5vw;
+  height: 4.6vw;
+  /* height: auto; */
 }
 .input-group-text {
   background-color: #fadf8d;
@@ -96,19 +102,35 @@ textarea {
   color: lightgrey;
   background-color: white;
 }
-@media screen and (max-width: 1200px) {
-  .rule-instr {
+@media screen and (max-width: 1170px) {
+  .rule-input-group {
     width: 38.5vw;
+  }
+  .rule-card {
+    width: 6vw;
   }
 }
 @media screen and (max-width: 930px) {
-  .rule-instr {
-    width: 70vw;
+  .rule-input-group {
+    width: 80vw;
   }
   .rule-card {
-    width: 12vw;
+    width: 10vw;
   }
   .input-group-instr {
     height: 100%;
   }
 }
+@media screen and (min-height: 760px) {
+  .create-menu {
+    margin: 16px auto 8px;
+  }
+  .create-rule {
+    margin: .5rem;
+  }
+}
+/* @media screen and (max-height: 675px) {
+  html {
+    overflow: scroll;
+  }
+} */

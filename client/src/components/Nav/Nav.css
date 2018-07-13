@@ -3,7 +3,7 @@
   padding: 2px 16px;
   font-weight: 900;
   border-bottom: 1px solid black;
-  z-index: 1000;
+  z-index: 2000;
 }
 .navbar-brand {
   font-family: 'Germania One', cursive;

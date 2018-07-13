@@ -394,7 +394,7 @@ class Dashboard extends Component {
       return <Redirect to={this.state.redirectTo}/>;
     }
     return (
-      <React.Fragment>
+      <div className="dashboard-root">
         
         <Nav games={this.state.games} loadGame={this.loadGame}/>
 
@@ -515,7 +515,7 @@ class Dashboard extends Component {
           
         </div>
 
-      </React.Fragment>
+      </div>
 
     );
   }
