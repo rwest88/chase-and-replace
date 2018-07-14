@@ -22,7 +22,7 @@ class CreateEditGame extends Component {
     oldRules: newGameTemplate,
     currentGame: {},
     versions: [{rules: newGameTemplate}],
-    versionID: "",
+    // versionID: "",
     clearedFields: true,
   };
 
@@ -32,7 +32,7 @@ class CreateEditGame extends Component {
 
   componentDidMount() {
     const sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
-    this.setState(this.pushBlankVersion(sessionObject));
+    this.setState(this.pushBlankVersion(sessionObject, true));
   }
 
   componentWillUnmount() {
@@ -91,17 +91,10 @@ class CreateEditGame extends Component {
   // Form Functions
   // ==============
 
-  handleNameChange = event => {
-    const {name, value} = event.target;
-    this.setState({
-      [name]: value
-    });
-  }
-
   handleInputChange = (index, property) => (event) => {
     let newRules = this.state.newGameRules;
     newRules[index + 1][property || event.target.name] = property ? "" : event.target.value;
-    this.setState({ newGameRules: newRules, rules: this.state.oldRules});
+    this.setState({ newGameRules: newRules, rules: this.state.oldRules, changedInput: true});
   };
 
   handleSelectChange = event => {
@@ -153,7 +146,7 @@ class CreateEditGame extends Component {
     }
   };
 
-  pushBlankVersion = obj => {
+  pushBlankVersion = (obj, didMount) => {
     const rules = obj.rules || this.state.rules;
     if (obj.newAce || this.state.newAce || (localStorage.getItem(`versionState: ${obj.gameName}`))) {
       
@@ -166,16 +159,23 @@ class CreateEditGame extends Component {
       versions.push(blank);
       obj.versions = versions;
       obj.vers = obj.versions.length - 1;
-      
+    } 
+    else {
+      obj.vers = obj.versionIndex;
     }
+    if (didMount) obj.versionName = obj.versions[obj.vers].versionName;
     obj.newGameRules = rules;
     return obj;
   }
 
   updateVersion = () => {
-    const {newGameRules, versionName, currentGame, currentVersion, versions, vers} = this.state;
+    let {newGameRules, versionName, currentGame, currentVersion, versions, vers, changedInput} = this.state;
     
     if (vers < 1) return window.alert("You cannot overwrite the original version!");
+    if (!changedInput || versionName === "[NEW]") return window.alert("You didn't change anything!");
+
+    const entry = window.prompt(`Rename? (current name: ${versionName})`);
+    versionName = entry || versionName;
 
     let version = {
       versionName,
@@ -194,8 +194,9 @@ class CreateEditGame extends Component {
             .then(res => this.setState({
               currentVersion: res.data.versions[res.data.versions.length - 1],
               rules: res.data.versions[res.data.versions.length - 1].rules,
-              versions: this.pushBlankVersion(res.data).versions,
-              versionName: ""
+              versions: this.pushBlankVersion(res.data, false).versions,
+              changedInput: false,
+              versionName,
             }))
           )
         ).catch(err => console.log(err))
@@ -209,7 +210,8 @@ class CreateEditGame extends Component {
             currentVersion: res.data.versions[res.data.versions.length - 1],
             rules: res.data.versions[res.data.versions.length - 1].rules,
             oldRules: res.data.versions[res.data.versions.length - 1].rules,
-            versionName: "",
+            changedInput: false,
+            versionName,
             newAce: false
           }))
         ).catch(err => console.log(err));
@@ -230,7 +232,7 @@ class CreateEditGame extends Component {
     API.deleteVersion({gameID: currentGame._id, versionID: versions[vers]._id})
       .then(res => API.getGame(currentGame._id)
         .then(res => this.setState({
-          versions: this.pushBlankVersion(res.data).versions,
+          versions: this.pushBlankVersion(res.data, false).versions,
           vers: (res.data.versions.length < 2) ? 0 : vers,
         }))
       ).catch(err => console.log(err))
@@ -241,7 +243,7 @@ class CreateEditGame extends Component {
   // ==================
 
   render() {
-    if (this.state.redirectTo) {
+    if (this.state.redirectTo && this.state.redirectTo !== "/edit") {
       return <Redirect to={this.state.redirectTo}/>;
     }
     return (
@@ -273,8 +275,8 @@ class CreateEditGame extends Component {
                     Edit Version
                   </button>
                   <div class="dropdown-menu edit" aria-labelledby="dropdownMenuButton">
-                    <button class="btn btn-light dropdown-item">Update</button>
-                    <button class="btn btn-light dropdown-item">Delete</button>
+                    <button class="btn btn-light dropdown-item" onClick={this.updateVersion}>Update</button>
+                    <button class="btn btn-light dropdown-item" onClick={this.deleteVersion}>Delete</button>
                   </div>
                 </div>
                 <p class="game-name">{this.state.currentGame.gameName}</p>

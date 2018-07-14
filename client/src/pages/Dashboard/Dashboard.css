@@ -29,7 +29,7 @@ html {
   grid-template-columns: 50% 50%;
   grid-auto-rows:9vh;
   grid-column: 1/12;
-  grid-row: 1/11;
+  grid-row: 1/12;
   text-align: center;
   /* position: relative; */
 }
@@ -93,16 +93,24 @@ html {
 .game-title > .game-name.raised {
   top: 19%;
 }
-.user {
-  padding: 2px 10px;
-}
 .author {
+  font-family: 'Germania One', cursive;
   grid-column: 8/10;
-  /* background-color: darkolivegreen; */
+  grid-row: 1/2;
+  z-index: 1;
+}
+.nav-button {
+  background-color: brown;
+}
+.nav-button > span {
+  font-size: 1.2rem;
+  color: #ffd65f
 }
 .version {
+  font-family: 'Germania One', cursive;
   grid-column: 10/12;
-  /* background-color: forestgreen; */
+  grid-row: 1/2;
+  z-index: 1;
 }
 .king-rules {
   display: grid;

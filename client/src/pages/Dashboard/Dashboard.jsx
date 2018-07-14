@@ -93,7 +93,7 @@ class Dashboard extends Component {
       currentGame: selectedGame,
       gameName: selectedGame.gameName,
       versions: selectedGame.versions,
-      vers: selectedVersion,
+      versionIndex: selectedVersion,
       currentVersion: selectedGame.versions[selectedVersion],
       rules: rules || selectedGame.versions[selectedVersion].rules,
       oldRules: rules || selectedGame.versions[selectedVersion].rules,
@@ -449,11 +449,23 @@ class Dashboard extends Component {
             }</div> */}
 
 
-          <div className="author">{`Version: ${this.state.currentVersion.versionName || "none!"}\n\n`}</div>
-          <div className="version">
-          {(this.state.newAce || localStorage.getItem(`versionState: ${this.state.currentGame.gameName}`)) ? 
-              <button className="btn btn-secondary" onClick={() => this.saveVersion()}>Save Current as Version</button> : 
-              <div>Version Up to Date</div>}
+          <div className="author d-flex justify-content-center align-items-center">
+            {this.state.currentGame.forkedFrom !== this.state.username ? 
+              <button className="btn nav-button" onClick={() => this.searchUser(this.state.currentGame.forkedFrom)}>
+                forked from:  {this.state.currentGame.forkedFrom}
+              </button>
+            :
+              <button className="btn btn-dark nav-button" onClick={() => this.searchUser(this.state.currentGame.admin)}>
+                by:  <span>{this.state.currentGame.admin}</span>
+              </button>
+            }
+          </div>
+
+          <div className="version d-flex justify-content-center align-items-center">
+            {(this.state.newAce || localStorage.getItem(`versionState: ${this.state.currentGame.gameName}`)) ? 
+              <button className="btn btn-dark nav-button" onClick={() => this.saveVersion()}><span>Save Current as Version</span></button> : 
+              <button className="btn btn-dark nav-button" onClick={() => this.setState({redirectTo: "/edit"})}>Version:  <span>{this.state.currentVersion.versionName || "none!"}</span></button>
+            }
           </div>
           
           

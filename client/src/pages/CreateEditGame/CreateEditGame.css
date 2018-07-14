@@ -21,7 +21,7 @@ body {
   border: .5rem solid #252829;
   border-radius: 5px;
   box-shadow: 2px 2px 8px darkslategrey;
-  margin: 2px auto 4px;
+  margin: 0 auto 4px;
 }
 .game-name {
   font-family: 'Germania One', cursive;
@@ -59,7 +59,7 @@ body {
 }
 .create-rule {
   float: left;
-  background-color: #e63329;
+  background-color: darkgreen;
   padding: .75%;
   border: .25rem solid #252829;
   border-radius: 5px;
@@ -123,7 +123,7 @@ textarea {
 }
 @media screen and (min-height: 760px) {
   .create-menu {
-    margin: 16px auto 8px;
+    margin: 20px auto 12px;
   }
   .create-rule {
     margin: .5rem;
