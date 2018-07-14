@@ -22,8 +22,7 @@ class CreateEditGame extends Component {
     oldRules: newGameTemplate,
     currentGame: {},
     versions: [{rules: newGameTemplate}],
-    versionID: "",
-    clearedFields: true,
+    vers: 0,
   };
 
   // ==================
@@ -32,7 +31,7 @@ class CreateEditGame extends Component {
 
   componentDidMount() {
     const sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
-    this.setState(this.pushBlankVersion(sessionObject));
+    this.setState(this.pushBlankVersion(sessionObject, true));
   }
 
   componentWillUnmount() {
@@ -43,12 +42,12 @@ class CreateEditGame extends Component {
   // Functions related to Gameplay
   // =============================
 
-  loadGame = selectedGame => {
-
+  loadGame = (selectedGame, selectedVersion, createdNew) => {
+    
     let rules;
 
     if (this.state.newAce === true && (this.state.currentGame)) {
-      if (window.confirm(`Save current rule changes to ${this.state.currentGame.gameName}?  \n\n(Note: This will not add a new version. Click 'Save Current as Version' when you are happy with the set of rules.)`)) {
+      if (window.confirm(`Save current rule changes to ${this.state.currentGame.gameName}?  \n\n(Note: This will not create a new version. Click 'Save Current as Version' when you are happy with the set of rules.)`)) {
         localStorage.setItem(`versionState: ${this.state.currentGame.gameName}`, JSON.stringify(this.state.rules));
       }
     }
@@ -60,20 +59,24 @@ class CreateEditGame extends Component {
       }
     }
 
+    if (selectedVersion === undefined) var selectedVersion = selectedGame.versions.length - 1;
+
     this.setState({
       redirectTo: "/dashboard",
       cards: this.shuffleArray(this.state.cards.concat(this.state.burnedCards || {})),
       burnedCards: [],
       currentRule: {},
       currentCard: {},
-      games: this.state.games.concat(selectedGame),
+      games: createdNew ? this.state.games.concat(selectedGame) : this.state.games, // lets you load newly created game
       deckEmpty: false,
       currentGame: selectedGame,
+      gameName: selectedGame.gameName,
       versions: selectedGame.versions,
-      vers: selectedGame.versions.length - 1,
-      currentVersion: selectedGame.versions[selectedGame.versions.length - 1],
-      rules: rules || selectedGame.versions[selectedGame.versions.length - 1].rules,
-      kingRules:[],
+      versionIndex: selectedVersion,
+      currentVersion: selectedGame.versions[selectedVersion],
+      rules: rules || selectedGame.versions[selectedVersion].rules,
+      oldRules: rules || selectedGame.versions[selectedVersion].rules,
+      kingRules: [],
       usedKAs: [],
       newAce: false
     });
@@ -91,17 +94,10 @@ class CreateEditGame extends Component {
   // Form Functions
   // ==============
 
-  handleNameChange = event => {
-    const {name, value} = event.target;
-    this.setState({
-      [name]: value
-    });
-  }
-
   handleInputChange = (index, property) => (event) => {
     let newRules = this.state.newGameRules;
     newRules[index + 1][property || event.target.name] = property ? "" : event.target.value;
-    this.setState({ newGameRules: newRules, rules: this.state.oldRules});
+    this.setState({ newGameRules: newRules, rules: this.state.oldRules, changedInput: true});
   };
 
   handleSelectChange = event => {
@@ -130,9 +126,10 @@ class CreateEditGame extends Component {
     }
     if (errors.length > 0) alert("Missing fields: \n" + errors.join("\n"));
     else {
+      const entry = window.prompt(`Enter the name for your new game! (current name: ${versionName}) \n\n 13 character max`);
       API.saveNewGame({
         _id: versionName + " " + username + " " + Math.floor(Math.random() * 1000000),
-        gameName: versionName,
+        gameName: entry || versionName,
         admin: username,
         forkedFrom: username,
         created: new Date(Date.now()),
@@ -145,20 +142,28 @@ class CreateEditGame extends Component {
           rules: newGameRules
         }]
       }).then(res => {
-          this.setState({newGameRules: res.data.versions[0].rules}, () => {
-            if (window.confirm("New game created! Play now?")) this.loadGame(res.data);
+          this.setState({newGameRules: res.data.versions[0].rules, changedInput: false}, () => {
+            if (window.confirm("New game created! Play now?")) this.loadGame(res.data, undefined, true);
           });
         }
       ).catch(err => console.log(err));
     }
   };
 
-  pushBlankVersion = obj => {
+  deleteGame = () => {
+    const {currentGame, username} = this.state;
+    API.deleteGame(currentGame._id, username).then(res => {
+      this.loadGame(this.state.games[0]);
+    })
+  }
+
+  pushBlankVersion = (obj, didMount, createNew) => {
     const rules = obj.rules || this.state.rules;
-    if (obj.newAce || this.state.newAce || (localStorage.getItem(`versionState: ${obj.gameName}`))) {
+    let blank = null;
+    if (obj.newAce || this.state.newAce || createNew === true || (localStorage.getItem(`versionState: ${obj.gameName}`))) {
       
       let versions = obj.versions.filter(version => version.versionName !== "[NEW]");
-      let blank = {
+      blank = {
         _id: "",
         versionName: "[NEW]",
         rules
@@ -166,25 +171,41 @@ class CreateEditGame extends Component {
       versions.push(blank);
       obj.versions = versions;
       obj.vers = obj.versions.length - 1;
-      
+      obj.versionName = "[NEW]";
+    } 
+    else {
+      obj.vers = obj.versionIndex;
+    }
+    if (didMount) {
+      if (blank === null) obj.versionName = obj.versions[obj.vers].versionName;
     }
     obj.newGameRules = rules;
     return obj;
   }
 
   updateVersion = () => {
-    const {newGameRules, versionName, currentGame, currentVersion, versions, vers} = this.state;
+    let {newGameRules, versionName, currentGame, currentVersion, versions, vers, versionIndex, changedInput} = this.state;
     
     if (vers < 1) return window.alert("You cannot overwrite the original version!");
+    if (!changedInput && versionName !== "[NEW]") return window.alert("You didn't change anything!");
+
+    const errors = [];
+    for (let i = 1; i < newGameRules.length - 1; i++) {
+      if (!newGameRules[i].name) errors.push(`${newGameRules[i].rank}: name`);
+      if (!newGameRules[i].instructions) errors.push(`${newGameRules[i].rank}: instructions`);
+    }
+    if (errors.length > 0) return alert("Missing fields: \n" + errors.join("\n"));
+
+    const entry = window.prompt(`Rename? (current name: ${versionName})`);
 
     let version = {
-      versionName,
+      versionName: entry || versionName,
       date: new Date(Date.now()),
       rules: newGameRules
     }
     // console.log(versions.length - 1, vers);
     // console.log(currentVersion.versionName, versions[vers].versionName)
-    if (parseInt(vers) !== versions.length - 1 || currentVersion.versionName === versions[vers].versionName) {
+    if (versionName !== "[NEW]") {
       console.log("updating");
       version._id = versions[vers]._id;
       version.date = versions[vers].date;
@@ -192,16 +213,17 @@ class CreateEditGame extends Component {
         .then(res => API.pushVersion({gameID: currentGame._id, version})
           .then(res => API.getGame(currentGame._id)
             .then(res => this.setState({
-              currentVersion: res.data.versions[res.data.versions.length - 1],
-              rules: res.data.versions[res.data.versions.length - 1].rules,
-              versions: this.pushBlankVersion(res.data).versions,
-              versionName: ""
+              currentVersion: res.data.versions[versionIndex],
+              rules: res.data.versions[versionIndex].rules,
+              versions: this.pushBlankVersion(res.data, false).versions,
+              changedInput: false,
+              versionName: entry || versionName
             }))
           )
         ).catch(err => console.log(err))
 
     } else {
-      console.log("pushing");
+      console.log("pushing new");
       API.pushVersion({gameID: currentGame._id, version})
         .then(res => API.getGame(currentGame._id)
           .then(res => this.setState({
@@ -209,7 +231,9 @@ class CreateEditGame extends Component {
             currentVersion: res.data.versions[res.data.versions.length - 1],
             rules: res.data.versions[res.data.versions.length - 1].rules,
             oldRules: res.data.versions[res.data.versions.length - 1].rules,
-            versionName: "",
+            versionIndex: res.data.versions.length - 1,
+            changedInput: false,
+            versionName: entry || versionName,
             newAce: false
           }))
         ).catch(err => console.log(err));
@@ -219,7 +243,7 @@ class CreateEditGame extends Component {
   }
 
   deleteVersion = () => {
-    const {currentGame, currentVersion, versions, vers} = this.state;
+    const {currentGame, currentVersion, versions, vers, versionIndex} = this.state;
 
     if (vers < 1) return window.alert("You cannot delete the original version!");
     if (versions[vers].versionName === "[NEW]") return window.alert("You can't delete what isn't saved!");
@@ -230,8 +254,9 @@ class CreateEditGame extends Component {
     API.deleteVersion({gameID: currentGame._id, versionID: versions[vers]._id})
       .then(res => API.getGame(currentGame._id)
         .then(res => this.setState({
-          versions: this.pushBlankVersion(res.data).versions,
-          vers: (res.data.versions.length < 2) ? 0 : vers,
+          versionIndex: (vers <= versionIndex) ? versionIndex - 1 : versionIndex,
+          versions: this.pushBlankVersion(res.data, false).versions,
+          vers: (versions.length -2 < vers) ? vers - 1 : vers,
         }))
       ).catch(err => console.log(err))
   }
@@ -241,7 +266,7 @@ class CreateEditGame extends Component {
   // ==================
 
   render() {
-    if (this.state.redirectTo) {
+    if (this.state.redirectTo && this.state.redirectTo !== "/edit") {
       return <Redirect to={this.state.redirectTo}/>;
     }
     return (
@@ -273,8 +298,12 @@ class CreateEditGame extends Component {
                     Edit Version
                   </button>
                   <div class="dropdown-menu edit" aria-labelledby="dropdownMenuButton">
-                    <button class="btn btn-light dropdown-item">Update</button>
-                    <button class="btn btn-light dropdown-item">Delete</button>
+                    <button class="btn btn-light dropdown-item" 
+                      onClick={() => this.setState(this.pushBlankVersion(this.state, true, true))}>
+                      <i class="fas fa-plus"></i> Create New...
+                    </button>
+                    <button class="btn btn-light dropdown-item" onClick={this.updateVersion}>Save Changes</button>
+                    <button class="btn btn-light dropdown-item" onClick={this.deleteVersion}>Delete</button>
                   </div>
                 </div>
                 <p class="game-name">{this.state.currentGame.gameName}</p>
@@ -283,8 +312,8 @@ class CreateEditGame extends Component {
                     Edit Game
                   </button>
                   <div class="dropdown-menu edit" aria-labelledby="dropdownMenuButton">
-                    <button class="btn btn-light dropdown-item">Rename</button>
-                    <button class="btn btn-light dropdown-item">Delete</button>
+                    <button class="btn btn-light dropdown-item" onClick={this.updateGame}>Rename</button>
+                    <button class="btn btn-light dropdown-item" onClick={this.deleteGame}>Delete</button>
                   </div>
                 </div>
               {/* </div> */}
@@ -296,7 +325,7 @@ class CreateEditGame extends Component {
           </div>
         </div>
             
-        {this.state.newGameRules.slice(1,12).map((rule, index) => (
+        {this.state.versions[this.state.vers].rules.slice(1,12).map((rule, index) => (
         
           <div className="create-rule">
 
@@ -307,13 +336,13 @@ class CreateEditGame extends Component {
             <div className="rule-input-group">
               <div className="input-group mb-1">
                 <div className="input-group-prepend">
-                  <span className={rule.name ? "input-group-text" : "input-group-text bg-warning"}>Rule Name</span>
+                  <span className={this.state.newGameRules[index + 1].name ? "input-group-text" : "input-group-text bg-warning"}>Rule Name</span>
                 </div>
                 <button className="btn del" onClick={this.handleInputChange(index, "name")}><i class="fas fa-times"></i></button>
                 <input type="text"
                   className="form-control"
                   placeholder={rule.name || this.state.oldRules[index + 1].name + " [current rule]"}
-                  value={rule.name}
+                  value={this.state.newGameRules[index + 1].name}
                   name="name"
                   onChange={this.handleInputChange(index)}
                 />
@@ -321,13 +350,13 @@ class CreateEditGame extends Component {
               
               <div className="input-group input-group-instr">
                 <div className="input-group-prepend">
-                  <span className={rule.instructions ? "input-group-text" : "input-group-text bg-warning"}>Instructions</span>
+                  <span className={this.state.newGameRules[index + 1].instructions ? "input-group-text" : "input-group-text bg-warning"}>Instructions</span>
                 </div>
                 <button className="btn del" onClick={this.handleInputChange(index, "instructions")}><i class="fas fa-times"></i></button>
                 <textarea type="text"
                   className="form-control"
                   placeholder={rule.instructions || this.state.oldRules[index + 1].instructions}
-                  value={rule.instructions}
+                  value={this.state.newGameRules[index + 1].instructions}
                   name="instructions"
                   onChange={this.handleInputChange(index)}
                 />
