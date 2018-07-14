@@ -108,7 +108,11 @@ class Dashboard extends Component {
     const {currentCard, currentRule, usedKAs} = this.state;
 
     if (usedKAs && !(usedKAs.indexOf(currentCard.id) === -1)) {
-      return <h1>Rule Changed!</h1>;
+      return (
+        <div className="current-rule">
+          <h1 className="king">Rule Changed!</h1>
+        </div>
+      );
     }
 
     switch(currentCard.rank) {
@@ -116,8 +120,7 @@ class Dashboard extends Component {
         return (
           <form className="current-rule">
             <h1 className="king">Make a Rule!</h1>
-            <h3>This will be a global rule for the current game.</h3>
-            <br />
+            <h3 className="global-rule">This will be a global rule for the current game.</h3>
             <div>
             <input
               type="text"
@@ -182,7 +185,7 @@ class Dashboard extends Component {
         return (
           <div className="current-rule">
             <h1 className="current-rule">{currentRule.name}</h1>
-            <h3>{currentRule.instructions}</h3>
+            <h3 className={this.state.burnedCards.length ? "" : "hide"}>{currentRule.instructions}</h3>
           </div>
         );
     }
@@ -516,7 +519,7 @@ class Dashboard extends Component {
           
           <div className="HUD">
             <div className={this.state.burnedCards.length ? 
-              (this.state.currentCard.rank == 1) ? "banner-turned faded" : "banner-turned" 
+              (this.state.currentCard.rank == 1 && !this.state.usedKAs.includes(this.state.currentCard.id)) ? "banner-turned faded" : "banner-turned" 
               : "hide"}>
               <img alt="banner" src="./images/regal6.png" />
             </div>

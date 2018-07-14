@@ -294,6 +294,7 @@ html {
 .banner-turned {
   grid-column: 1/3;
   grid-row: 1/2;
+  z-index: 1;
   /* margin: 0 auto; */
   text-align: center;
 }
@@ -314,18 +315,32 @@ html {
   text-align: center;
   /* font-size: 1.5em; */
 }
+.HUD-frame {
+  position: relative;
+  height: 200%;
+  background-color: rgba(53, 21, 97, 0.624);
+  box-shadow: 0px 0px 10px 10px rgba(0, 0, 128, 0.624);
+}
+h1 {
+  z-index: 2;
+}
 .current-rule > h1 {
+  position: relative;
   font-size: 1.3em;
   color: #ffd65f;
   text-shadow: 2px 2px 2px black;
 }
 .current-rule > h3 {
   position: relative;
-  top: 30%;
-  font-size: 1.3em;
+  top: 40%;
+  left: 5%;
+  width: 90%;
+  background-color: rgba(0, 0, 128, 0.631);
+  border: 5px outset navy;
+  color: #ccc;
+  text-shadow: 1px 2px 5px #292826;
 }
 .current-rule > .chase-replace {
-  position: relative;
   top: -10%;
   font-size: 2.5em;
   color: #ffd900;
@@ -333,12 +348,15 @@ html {
   text-shadow: 3px 3px 5px rgb(80, 5, 5);
 }
 .current-rule > .king {
-  position: relative;
   font-size: 1.8em;
 }
 .current-rule > .change-card {
-  position: relative;
   top: 0%;
+  font-size: 1.2em;
+}
+.current-rule > .global-rule {
+  top: 12%;
+  font-size: 1.2em;
 }
 
 @media screen and (max-aspect-ratio: 100/52) {
