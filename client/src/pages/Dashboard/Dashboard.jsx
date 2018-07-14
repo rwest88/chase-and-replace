@@ -515,6 +515,8 @@ class Dashboard extends Component {
           <div className="table">
             <img alt="table" src="./images/table3.png" />
             <img className="stein" alt="stein" src="./images/stein.png" />
+            <img className={this.state.burnedCards.length ? "hide" : "click-to-start"} onClick={() => this.drawCard()} alt="click to start" src="./images/click_here3.png" />
+            <img className={this.state.burnedCards.length === 1 ? "click-to-continue" : "hide"} onClick={() => this.drawCard()} alt="click to continue" src="./images/click_here2.png" />
           </div>
           
           <div className="HUD">
