@@ -313,6 +313,7 @@ html {
   position: relative;
   top: 4%;
   text-align: center;
+  z-index: 2;
   /* font-size: 1.5em; */
 }
 .HUD-frame {
