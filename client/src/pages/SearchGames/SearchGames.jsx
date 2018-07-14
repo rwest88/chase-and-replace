@@ -112,8 +112,8 @@ class SearchGames extends Component {
     API.getGame(id)
       .then(game => {
         game.data._id = `${game.data.gameName} ${this.state.username} from ${game.data.admin}`;
-        game.data.admin = this.state.username;
         game.data.forkedFrom = game.data.admin;
+        game.data.admin = this.state.username;
         game.data.created = new Date(Date.now());
         API.saveNewGame(game.data)
           .then(res => {

@@ -20,7 +20,10 @@ router.route("/user")
   .post(gamesController.getGamesByUser);
 
 router.route("/:id")
-  .get(gamesController.getGame)
+  .get(gamesController.getGame);
+
+router.route("/:id/:user")
+  .delete(gamesController.deleteGame);
 
 // // Matches with "/api/books/:id"
 // router

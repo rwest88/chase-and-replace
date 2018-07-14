@@ -12,6 +12,11 @@ class Nav extends React.Component {
     if (this.state.showDropdown) this.setState({showDropdown: false});
     else this.setState({showDropdown: true});
   }
+
+  signOut = () => {
+    localStorage.clear();
+    sessionStorage.clear();
+  }
   
   render = ({games, loadGame} = this.props) => {
 
@@ -33,7 +38,7 @@ class Nav extends React.Component {
               </Link>
             </li>
             <li className={this.state.showDropdown ? "lime nav-item dropdown" : "nav-item dropdown"}>
-              <a className="nav-link dropdown-toggle" href="#" onClick={()=>this.toggleDropdown()} id="navbarDropdownMenuLink" data-toggle="" aria-haspopup="true" aria-expanded="false">
+              <a className="nav-link dropdown-toggle" href="#" onClick={() => this.toggleDropdown()} id="navbarDropdownMenuLink" data-toggle="" aria-haspopup="true" aria-expanded="false">
                 Load Game
               </a>
               <div className={this.state.showDropdown ? "dropdown dropdown-menu dropdown-menu-right d-flex flex-column align-items-end" : "hide"} >
@@ -76,7 +81,8 @@ class Nav extends React.Component {
                 Search Games
               </Link>
             </li>
-            <li className="nav-item">
+            {!localStorage.username ?
+              <li className="nav-item">
               <Link to="/dashboard"
                     className={
                     window.location.pathname === "/#" ? "nav-link active" : "nav-link"
@@ -84,6 +90,14 @@ class Nav extends React.Component {
                 Sign In / Register
               </Link>
             </li>
+            :
+            <li className="nav-item">
+              <a className="nav-link" href="/dashboard" onClick={() => this.signOut()}>
+                Sign Out
+              </a>
+            </li>
+            }
+            
           </ul>
         </div>
       </nav>

@@ -449,8 +449,8 @@ class Dashboard extends Component {
 
           <div className="author d-flex justify-content-center align-items-center">
             {this.state.currentGame.forkedFrom !== this.state.username ? 
-              <button className="btn nav-button" onClick={() => this.searchUser(this.state.currentGame.forkedFrom)}>
-                forked from:  {this.state.currentGame.forkedFrom}
+              <button className="btn btn-dark nav-button" onClick={() => this.searchUser(this.state.currentGame.forkedFrom)}>
+                forked from:  <span>{this.state.currentGame.forkedFrom}</span>
               </button>
             :
               <button className="btn btn-dark nav-button" onClick={() => this.searchUser(this.state.currentGame.admin)}>

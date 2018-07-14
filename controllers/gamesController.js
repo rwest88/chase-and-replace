@@ -37,6 +37,18 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
+  deleteGame: function(req, res) {
+    db.Game
+      .remove({_id: req.params.id})
+      .then(result => {
+        db.User
+          .update( {userName: req.params.user}, { $pull: { games: req.params.id } }, {new: true} )
+          .then(dbModel => console.log(dbModel))
+          .catch(err => console.log(err));
+        res.json(result)
+      })
+      .catch(err => res.status(422).json(err));
+  },
   create: function(req, res) {
     db.Game
       .create(req.body)
