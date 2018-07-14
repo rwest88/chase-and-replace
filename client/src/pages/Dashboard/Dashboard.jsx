@@ -471,7 +471,7 @@ class Dashboard extends Component {
           
           
           <div className="decks">
-            <img src={this.state.deckEmpty ? "./images/empty.png" : "./images/deck.png"} 
+            <img src={this.state.deckEmpty ? "./images/empty.png" : "./images/deck2.png"} 
                  className="deck" 
                  onClick={() => this.drawCard()}/>
           </div>
