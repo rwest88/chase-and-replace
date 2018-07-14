@@ -311,9 +311,6 @@ class Dashboard extends Component {
         }))
         .catch(err => console.log(err));
     }
-
-    setTimeout(()=>console.log(this.state.currentGame), 5000);
-
   }
 
   saveVersion() {
@@ -333,6 +330,7 @@ class Dashboard extends Component {
             API.getGame(this.state.currentGame._id).then(res => this.setState({
               versions: res.data.versions, 
               currentVersion: res.data.versions[res.data.versions.length - 1],
+              versionIndex: res.data.versions.length - 1,
               oldRules: res.data.versions[res.data.versions.length - 1].rules,
               newAce: false}, () => {
                 this.loadGamesFromDB();

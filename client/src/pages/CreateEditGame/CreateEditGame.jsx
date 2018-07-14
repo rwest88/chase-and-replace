@@ -23,7 +23,6 @@ class CreateEditGame extends Component {
     currentGame: {},
     versions: [{rules: newGameTemplate}],
     // versionID: "",
-    clearedFields: true,
   };
 
   // ==================
@@ -43,12 +42,12 @@ class CreateEditGame extends Component {
   // Functions related to Gameplay
   // =============================
 
-  loadGame = selectedGame => {
-
+  loadGame = (selectedGame, selectedVersion, createdNew) => {
+    
     let rules;
 
     if (this.state.newAce === true && (this.state.currentGame)) {
-      if (window.confirm(`Save current rule changes to ${this.state.currentGame.gameName}?  \n\n(Note: This will not add a new version. Click 'Save Current as Version' when you are happy with the set of rules.)`)) {
+      if (window.confirm(`Save current rule changes to ${this.state.currentGame.gameName}?  \n\n(Note: This will not create a new version. Click 'Save Current as Version' when you are happy with the set of rules.)`)) {
         localStorage.setItem(`versionState: ${this.state.currentGame.gameName}`, JSON.stringify(this.state.rules));
       }
     }
@@ -60,20 +59,24 @@ class CreateEditGame extends Component {
       }
     }
 
+    if (selectedVersion === undefined) var selectedVersion = selectedGame.versions.length - 1;
+
     this.setState({
       redirectTo: "/dashboard",
       cards: this.shuffleArray(this.state.cards.concat(this.state.burnedCards || {})),
       burnedCards: [],
       currentRule: {},
       currentCard: {},
-      games: this.state.games.concat(selectedGame),
+      games: createdNew ? this.state.games.concat(selectedGame) : this.state.games, // lets you load newly created game
       deckEmpty: false,
       currentGame: selectedGame,
+      gameName: selectedGame.gameName,
       versions: selectedGame.versions,
-      vers: selectedGame.versions.length - 1,
-      currentVersion: selectedGame.versions[selectedGame.versions.length - 1],
-      rules: rules || selectedGame.versions[selectedGame.versions.length - 1].rules,
-      kingRules:[],
+      versionIndex: selectedVersion,
+      currentVersion: selectedGame.versions[selectedVersion],
+      rules: rules || selectedGame.versions[selectedVersion].rules,
+      oldRules: rules || selectedGame.versions[selectedVersion].rules,
+      kingRules: [],
       usedKAs: [],
       newAce: false
     });
@@ -138,20 +141,21 @@ class CreateEditGame extends Component {
           rules: newGameRules
         }]
       }).then(res => {
-          this.setState({newGameRules: res.data.versions[0].rules}, () => {
-            if (window.confirm("New game created! Play now?")) this.loadGame(res.data);
+          this.setState({newGameRules: res.data.versions[0].rules, changedInput: false}, () => {
+            if (window.confirm("New game created! Play now?")) this.loadGame(res.data, undefined, true);
           });
         }
       ).catch(err => console.log(err));
     }
   };
 
-  pushBlankVersion = (obj, didMount) => {
+  pushBlankVersion = (obj, didMount, createNew) => {
     const rules = obj.rules || this.state.rules;
-    if (obj.newAce || this.state.newAce || (localStorage.getItem(`versionState: ${obj.gameName}`))) {
+    let blank = null;
+    if (obj.newAce || this.state.newAce || createNew === true || (localStorage.getItem(`versionState: ${obj.gameName}`))) {
       
       let versions = obj.versions.filter(version => version.versionName !== "[NEW]");
-      let blank = {
+      blank = {
         _id: "",
         versionName: "[NEW]",
         rules
@@ -159,11 +163,17 @@ class CreateEditGame extends Component {
       versions.push(blank);
       obj.versions = versions;
       obj.vers = obj.versions.length - 1;
+      obj.versionName = "[NEW]";
     } 
     else {
       obj.vers = obj.versionIndex;
     }
-    if (didMount) obj.versionName = obj.versions[obj.vers].versionName;
+    if (didMount) {
+      if (blank === null) {
+        console.log(obj.versions[obj.vers].versionName);
+        obj.versionName = obj.versions[obj.vers].versionName;
+      }
+    }
     obj.newGameRules = rules;
     return obj;
   }
@@ -172,7 +182,7 @@ class CreateEditGame extends Component {
     let {newGameRules, versionName, currentGame, currentVersion, versions, vers, changedInput} = this.state;
     
     if (vers < 1) return window.alert("You cannot overwrite the original version!");
-    if (!changedInput || versionName === "[NEW]") return window.alert("You didn't change anything!");
+    if (!changedInput && versionName !== "[NEW]") return window.alert("You didn't change anything!");
 
     const entry = window.prompt(`Rename? (current name: ${versionName})`);
     versionName = entry || versionName;
@@ -192,8 +202,8 @@ class CreateEditGame extends Component {
         .then(res => API.pushVersion({gameID: currentGame._id, version})
           .then(res => API.getGame(currentGame._id)
             .then(res => this.setState({
-              currentVersion: res.data.versions[res.data.versions.length - 1],
-              rules: res.data.versions[res.data.versions.length - 1].rules,
+              // currentVersion: res.data.versions[res.data.versions.length - 1],
+              // rules: res.data.versions[res.data.versions.length - 1].rules,
               versions: this.pushBlankVersion(res.data, false).versions,
               changedInput: false,
               versionName,
@@ -210,6 +220,7 @@ class CreateEditGame extends Component {
             currentVersion: res.data.versions[res.data.versions.length - 1],
             rules: res.data.versions[res.data.versions.length - 1].rules,
             oldRules: res.data.versions[res.data.versions.length - 1].rules,
+            versionIndex: res.data.versions.length - 1,
             changedInput: false,
             versionName,
             newAce: false
@@ -221,7 +232,7 @@ class CreateEditGame extends Component {
   }
 
   deleteVersion = () => {
-    const {currentGame, currentVersion, versions, vers} = this.state;
+    const {currentGame, currentVersion, versions, vers, versionIndex} = this.state;
 
     if (vers < 1) return window.alert("You cannot delete the original version!");
     if (versions[vers].versionName === "[NEW]") return window.alert("You can't delete what isn't saved!");
@@ -232,8 +243,9 @@ class CreateEditGame extends Component {
     API.deleteVersion({gameID: currentGame._id, versionID: versions[vers]._id})
       .then(res => API.getGame(currentGame._id)
         .then(res => this.setState({
+          versionIndex: (vers <= versionIndex) ? versionIndex - 1 : versionIndex,
           versions: this.pushBlankVersion(res.data, false).versions,
-          vers: (res.data.versions.length < 2) ? 0 : vers,
+          vers: (versions.length -2 < vers) ? vers - 1 : vers,
         }))
       ).catch(err => console.log(err))
   }
@@ -275,7 +287,11 @@ class CreateEditGame extends Component {
                     Edit Version
                   </button>
                   <div class="dropdown-menu edit" aria-labelledby="dropdownMenuButton">
-                    <button class="btn btn-light dropdown-item" onClick={this.updateVersion}>Update</button>
+                    <button class="btn btn-light dropdown-item" 
+                      onClick={() => this.setState(this.pushBlankVersion(this.state, true, true))}>
+                      <i class="fas fa-plus"></i> Create New...
+                    </button>
+                    <button class="btn btn-light dropdown-item" onClick={this.updateVersion}>Save Changes</button>
                     <button class="btn btn-light dropdown-item" onClick={this.deleteVersion}>Delete</button>
                   </div>
                 </div>
