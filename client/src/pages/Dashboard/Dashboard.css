@@ -252,7 +252,7 @@ html {
   cursor: pointer;
   background-color: lime;
   border-radius: 12px;
-  box-shadow: 6px 2px 5px  lime;
+  box-shadow: 1px 1px 15px 3px  lime;
 }
 .current-cards {
   grid-column: 5/8;
