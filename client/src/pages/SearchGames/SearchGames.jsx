@@ -8,23 +8,24 @@ import games from "../Dashboard/games.json";
 
 class SearchGames extends Component {
 
-  state = { cards, games, gamesByUser: [] };
+  state = { cards, games, userResults: [], gamesByUser: [[{gameName: "blank"}]] };
 
-  componentWillMount() {
-    if (!sessionStorage.getItem('gameState')) {
-      console.log('no session data');
-    } else {
-      console.log('yes session data');
-      const sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
-      sessionObject.redirectTo = false;
-      this.setState(sessionObject);
-      this.searchDB();
-    }
-  }
+  // componentWillMount() {
+  //   if (!sessionStorage.getItem('gameState')) {
+  //     console.log('no session data');
+  //   } else {
+  //     console.log('yes session data');
+  //     const sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
+  //     sessionObject.redirectTo = false;
+  //     this.setState(sessionObject);
+  //     this.searchDB();
+  //   }
+  // }
 
   componentDidMount() {
     var sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
     sessionObject.redirectTo = false;
+    sessionObject.gamesByUser = [[{gameName: "blank"}]];
     this.setState(sessionObject);
     this.searchDB();
   }
@@ -86,7 +87,7 @@ class SearchGames extends Component {
     const { name, value } = event.target;
     this.setState({[name]: value}, () => {
       if (value.length > 2) this.searchDB();
-      else this.setState({userResult: [], gamesByUser: []});
+      else this.setState({userResults: [], gamesByUser: [[{gameName: "blank"}]]});
     });
     
     // API.searchDB(this.state.searchTerm)
@@ -97,13 +98,21 @@ class SearchGames extends Component {
   searchDB = () => {
     console.log("searching");
     API.getUser(this.state.searchTerm)
-      .then(user => {
-        if (user.data.length > 0) {
-          API.getGamesByUser({gameIDs: user.data[0].games})
-            .then(res => this.setState({userResult: user.data[0].userName, gamesByUser: res.data}))
+      .then(userRes => {
+        if (userRes.data.length > 0) {
+          let users = [];
+          for (let i in userRes.data) {
+            API.getGamesByUser({gameIDs: userRes.data[i].games})
+            .then(gameRes => {
+              users.push(gameRes.data)
+              console.log(users);
+              setTimeout(() => this.setState({userResults: userRes.data, gamesByUser: users}), 1000);
+            })
             .catch(err => console.log(err));
+          }
+          
         } else {
-          this.setState({userResult: [], gamesByUser: []});
+          this.setState({userResults: [], gamesByUser: [[{gameName: "blank"}]]});
         }
       }).catch(err => console.log(err));
   }
@@ -152,10 +161,20 @@ class SearchGames extends Component {
                 />
               </form>
 
-              <h3>{this.state.userResult}</h3>
+              <div className="list-group">
+                {this.state.gamesByUser[0].map(item => (
+                  <button 
+                    // type="button"
+                    className="list-group-item list-group-item-action"
+                    onClick={() => this.forkGame(item._id)}
+                    >
+                    {item.gameName}
+                  </button>
+                ))}
+              </div>
 
-              <div>{this.state.gamesByUser.map(item => <button onClick={() => this.forkGame(item._id)}>{item.gameName}</button>)}</div>
-
+              {/* <div>{this.state.gamesByUser.map(item => <button onClick={() => this.forkGame(item._id)}>{item.gameName}</button>)}</div> */}
+              
 
               asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf asdf asdf asdf jasdfkljalsdkfjakl sdfkladsj flk jasdflk ajsdfkjla sdfkl asdfkj aldsk fadskjl fakl sdjfkjl asdfkl jasdfjl asdkjl fakjl sdfkjl asdfkjl asdkjl fakjl sdfkjl adsfkjl asdfkjl 
 
@@ -163,7 +182,21 @@ class SearchGames extends Component {
             </div>
 
             <div className="col-sm-4">.col-sm-4
-            
+              <div id="menu">
+                <div className="panel list-group">
+                  <a href="#" className="list-group-item" data-toggle="collapse" data-target="#sm" data-parent="#menu">MESSAGES <span className="label label-info">5</span> <span className="glyphicon glyphicon-envelope pull-right"></span></a>
+                  <div id="sm" className="sublinks collapse">
+                    <a className="list-group-item small"><span className="glyphicon glyphicon-chevron-right"></span> inbox</a>
+                    <a className="list-group-item small"><span className="glyphicon glyphicon-chevron-right"></span> sent</a>
+                  </div>
+                  <a href="#" className="list-group-item" data-toggle="collapse" data-target="#sl" data-parent="#menu">TASKS <span className="glyphicon glyphicon-tag pull-right"></span></a>
+                  <div id="sl" className="sublinks collapse">
+                    <a className="list-group-item small"><span className="glyphicon glyphicon-chevron-right"></span> saved tasks</a>
+                    <a className="list-group-item small"><span className="glyphicon glyphicon-chevron-right"></span> add new task</a>
+                  </div>
+                  <a href="#" className="list-group-item">ANOTHER LINK ...<span className="glyphicon glyphicon-stats pull-right"></span></a>
+                </div>
+              </div>
 
               dasfasdfklasdjflk asdflkj asdlfkjasdlfkj asdf adsf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf asdf asdf adsfkjl asdlfk adslfkj adslkfj asldkfj klj asdlk fasdklfj askldjf askldj flkasj dflkjads flkjas dfklj dsklj adslfkj sdlfkj asdlkfj asdlkfj sdlkfj sldkj fslkdj fskldj flksj dflkj sdfklj lskdj faldskf adsklfj aldskfj ladskfj adsfk jkjasdh fkjadshf kjadshf kjadshf 
             
@@ -212,25 +245,104 @@ class SearchGames extends Component {
                             <label for="contain">Contains the words</label>
                             <input className="form-control" type="text" />
                           </div>
-                          <button type="submit" className="btn btn-primary"><i class="fas fa-search"></i></button>
+                          <button type="submit" className="btn btn-primary"><i className="fas fa-search"></i></button>
                         </form>
                       </div>
                     </div>
-                    <button type="button" onClick={this.searchDB} className="btn btn-primary"><i class="fas fa-search"></i></button>
+                    <button type="button" onClick={this.searchDB} className="btn btn-primary"><i className="fas fa-search"></i></button>
                   </div>
                 </div>
               </div>
               <br />
-              <div class="list-group">
-                <button type="button" class="list-group-item list-group-item-action active">
-                  Cras justo odio
-                </button>
-                <button type="button" class="list-group-item list-group-item-action">Dapibus ac facilisis in</button>
-                <button type="button" class="list-group-item list-group-item-action">Morbi leo risus</button>
-                <button type="button" class="list-group-item list-group-item-action">Porta ac consectetur ac</button>
-                <button type="button" class="list-group-item list-group-item-action" disabled>Vestibulum at eros</button>
+              
+
+              <div id="accordion">
+                <div className="card">
+                  <div className="card-header" id="heading-1">
+                    <h5 className="mb-0">
+                      <a role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
+                        Users matching "{this.state.searchTerm}"
+                      </a>
+                    </h5>
+                  </div>
+                  <div id="collapse-1" className="collapse show" data-parent="#accordion" aria-labelledby="heading-1">
+                    <div className="card-body">
+
+                      {this.state.userResults.map((user, index) => (
+
+                        <div id="accordion-1">
+                          <div className="card">
+                            <div className="card-header" id={`heading-1-${index + 1}`}>
+                              <h5 className="mb-0">
+                                <a className="collapsed" role="button" data-toggle="collapse" href={`#collapse-1-${index + 1}`} aria-expanded="false" aria-controls={`collapse-1-${index + 1}`}>
+                                  {user.userName}'s public games
+                                </a>
+                              </h5>
+                            </div>
+                            <div id={`collapse-1-${index + 1}`} className="collapse" data-parent="#accordion-1" aria-labelledby={`heading-1-${index + 1}`}>
+                              <div className="card-body">
+                              
+                                {this.state.gamesByUser[index].map((game, gameIdx) => (
+
+                                  <div id={`accordion-1-${index + 1}`}>
+                                    <div className="card">
+                                      <div className="card-header" id={`heading-1-${index + 1}-${gameIdx + 1}`}>
+                                        <h5 className="mb-0">
+                                          <a className="collapsed" role="button" data-toggle="collapse" href={`#collapse-1-${index + 1}-${gameIdx + 1}`} aria-expanded="false" aria-controls={`collapse-1-${index + 1}-${gameIdx + 1}`}>
+                                            {game.gameName}
+                                          </a>
+                                        </h5>
+                                      </div>
+                                      <div id={`collapse-1-${index + 1}-${gameIdx + 1}`} className="collapse" data-parent={`#accordion-1-${index + 1}`} aria-labelledby={`heading-1-${index + 1}-${gameIdx + 1}`}>
+                                        <div className="card-body">
+                                          Text 1 > 1 > 1
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                ))}
+
+                              </div>
+                            </div>
+                          </div>
+                        </div> 
+
+                      ))}
+                    
+                    </div>
+                  </div>
+                </div>
+                <div className="card">
+                  <div className="card-header" id="heading-2">
+                    <h5 className="mb-0">
+                      <a className="collapsed" role="button" data-toggle="collapse" href="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
+                        Games matching "{this.state.searchTerm}"
+                      </a>
+                    </h5>
+                  </div>
+                  <div id="collapse-2" className="collapse" data-parent="#accordion" aria-labelledby="heading-2">
+                    <div className="card-body">
+                      Text 2
+                    </div>
+                  </div>
+                </div>
+                <div className="card">
+                  <div className="card-header" id="heading-3">
+                    <h5 className="mb-0">
+                      <a className="collapsed" role="button" data-toggle="collapse" href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+                        Item 3
+                      </a>
+                    </h5>
+                  </div>
+                  <div id="collapse-3" className="collapse" data-parent="#accordion" aria-labelledby="heading-3">
+                    <div className="card-body">
+                      Text 3
+                    </div>
+                  </div>
+                </div>
               </div>
-              sadfasdfasdf asdf asdf asdf asdf adsf asdf asdf adsf asdf asdf adsf adsf asdf asdf asdf adsf asdf adsf adsf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf adsf adsf adsf kjas dfkjadsfkj hadskfj haskdjfh adskjfh askjdfh kasjdf 
+              {/* sadfasdfasdf asdf asdf asdf asdf adsf asdf asdf adsf asdf asdf adsf adsf asdf asdf asdf adsf asdf adsf adsf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf adsf adsf adsf kjas dfkjadsfkj hadskfj haskdjfh adskjfh askjdfh kasjdf  */}
 
 
 
