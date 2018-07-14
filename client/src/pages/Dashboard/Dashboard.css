@@ -29,7 +29,7 @@ html {
   grid-template-columns: 50% 50%;
   grid-auto-rows:9vh;
   grid-column: 1/12;
-  grid-row: 1/11;
+  grid-row: 1/12;
   text-align: center;
   /* position: relative; */
 }
@@ -93,16 +93,24 @@ html {
 .game-title > .game-name.raised {
   top: 19%;
 }
-.user {
-  padding: 2px 10px;
-}
 .author {
+  font-family: 'Germania One', cursive;
   grid-column: 8/10;
-  /* background-color: darkolivegreen; */
+  grid-row: 1/2;
+  z-index: 1;
+}
+.nav-button {
+  background-color: brown;
+}
+.nav-button > span {
+  font-size: 1.2rem;
+  color: #ffd65f
 }
 .version {
+  font-family: 'Germania One', cursive;
   grid-column: 10/12;
-  /* background-color: forestgreen; */
+  grid-row: 1/2;
+  z-index: 1;
 }
 .king-rules {
   display: grid;
@@ -244,7 +252,7 @@ html {
   cursor: pointer;
   background-color: lime;
   border-radius: 12px;
-  box-shadow: 6px 2px 5px  lime;
+  box-shadow: 1px 1px 15px 3px  lime;
 }
 .current-cards {
   grid-column: 5/8;
@@ -286,6 +294,7 @@ html {
 .banner-turned {
   grid-column: 1/3;
   grid-row: 1/2;
+  z-index: 1;
   /* margin: 0 auto; */
   text-align: center;
 }
@@ -304,20 +313,35 @@ html {
   position: relative;
   top: 4%;
   text-align: center;
+  z-index: 2;
   /* font-size: 1.5em; */
 }
+.HUD-frame {
+  position: relative;
+  height: 200%;
+  background-color: rgba(53, 21, 97, 0.624);
+  box-shadow: 0px 0px 10px 10px rgba(0, 0, 128, 0.624);
+}
+h1 {
+  z-index: 2;
+}
 .current-rule > h1 {
+  position: relative;
   font-size: 1.3em;
   color: #ffd65f;
   text-shadow: 2px 2px 2px black;
 }
 .current-rule > h3 {
   position: relative;
-  top: 30%;
-  font-size: 1.3em;
+  top: 40%;
+  left: 5%;
+  width: 90%;
+  background-color: rgba(0, 0, 128, 0.631);
+  border: 5px outset navy;
+  color: #ccc;
+  text-shadow: 1px 2px 5px #292826;
 }
 .current-rule > .chase-replace {
-  position: relative;
   top: -10%;
   font-size: 2.5em;
   color: #ffd900;
@@ -325,12 +349,15 @@ html {
   text-shadow: 3px 3px 5px rgb(80, 5, 5);
 }
 .current-rule > .king {
-  position: relative;
   font-size: 1.8em;
 }
 .current-rule > .change-card {
-  position: relative;
   top: 0%;
+  font-size: 1.2em;
+}
+.current-rule > .global-rule {
+  top: 12%;
+  font-size: 1.2em;
 }
 
 @media screen and (max-aspect-ratio: 100/52) {

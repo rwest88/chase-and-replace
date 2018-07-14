@@ -28,14 +28,15 @@ export default {
   getGamesByUser: function(dataObj) {
     return axios.post("/api/games/user", dataObj);
   },
+  searchGamesByName: function(searchTerm) {
+    return axios.get("/api/games/search/" + searchTerm);
+  },
   getGame: function(id) {
     return axios.get("api/games/" + id);
   },
-  // Gets the book with the given id
-  // getBook: function(id) {
-  //   return axios.get("/api/books/" + id);
-  // },
-  // Deletes the book with the given id
+  deleteGame: function(id, user) {
+    return axios.delete("api/games/" + id + "/" + user);
+  },
   deleteVersion: function(dataObj) {
     return axios.post("/api/games/versions", dataObj);
   },

@@ -93,7 +93,7 @@ class Dashboard extends Component {
       currentGame: selectedGame,
       gameName: selectedGame.gameName,
       versions: selectedGame.versions,
-      vers: selectedVersion,
+      versionIndex: selectedVersion,
       currentVersion: selectedGame.versions[selectedVersion],
       rules: rules || selectedGame.versions[selectedVersion].rules,
       oldRules: rules || selectedGame.versions[selectedVersion].rules,
@@ -108,7 +108,11 @@ class Dashboard extends Component {
     const {currentCard, currentRule, usedKAs} = this.state;
 
     if (usedKAs && !(usedKAs.indexOf(currentCard.id) === -1)) {
-      return <h1>Rule Changed!</h1>;
+      return (
+        <div className="current-rule">
+          <h1 className="king">Rule Changed!</h1>
+        </div>
+      );
     }
 
     switch(currentCard.rank) {
@@ -116,8 +120,7 @@ class Dashboard extends Component {
         return (
           <form className="current-rule">
             <h1 className="king">Make a Rule!</h1>
-            <h3>This will be a global rule for the current game.</h3>
-            <br />
+            <h3 className="global-rule">This will be a global rule for the current game.</h3>
             <div>
             <input
               type="text"
@@ -182,7 +185,7 @@ class Dashboard extends Component {
         return (
           <div className="current-rule">
             <h1 className="current-rule">{currentRule.name}</h1>
-            <h3>{currentRule.instructions}</h3>
+            <h3 className={this.state.burnedCards.length ? "" : "hide"}>{currentRule.instructions}</h3>
           </div>
         );
     }
@@ -311,9 +314,6 @@ class Dashboard extends Component {
         }))
         .catch(err => console.log(err));
     }
-
-    setTimeout(()=>console.log(this.state.currentGame), 5000);
-
   }
 
   saveVersion() {
@@ -333,6 +333,7 @@ class Dashboard extends Component {
             API.getGame(this.state.currentGame._id).then(res => this.setState({
               versions: res.data.versions, 
               currentVersion: res.data.versions[res.data.versions.length - 1],
+              versionIndex: res.data.versions.length - 1,
               oldRules: res.data.versions[res.data.versions.length - 1].rules,
               newAce: false}, () => {
                 this.loadGamesFromDB();
@@ -449,16 +450,28 @@ class Dashboard extends Component {
             }</div> */}
 
 
-          <div className="author">{`Version: ${this.state.currentVersion.versionName || "none!"}\n\n`}</div>
-          <div className="version">
-          {(this.state.newAce || localStorage.getItem(`versionState: ${this.state.currentGame.gameName}`)) ? 
-              <button className="btn btn-secondary" onClick={() => this.saveVersion()}>Save Current as Version</button> : 
-              <div>Version Up to Date</div>}
+          <div className="author d-flex justify-content-center align-items-center">
+            {this.state.currentGame.forkedFrom !== this.state.username ? 
+              <button className="btn btn-dark nav-button" onClick={() => this.searchUser(this.state.currentGame.forkedFrom)}>
+                forked from:  <span>{this.state.currentGame.forkedFrom}</span>
+              </button>
+            :
+              <button className="btn btn-dark nav-button" onClick={() => this.searchUser(this.state.currentGame.admin)}>
+                by:  <span>{this.state.currentGame.admin}</span>
+              </button>
+            }
+          </div>
+
+          <div className="version d-flex justify-content-center align-items-center">
+            {(this.state.newAce || localStorage.getItem(`versionState: ${this.state.currentGame.gameName}`)) ? 
+              <button className="btn btn-dark nav-button" onClick={() => this.saveVersion()}><span>Save Current as Version</span></button> : 
+              <button className="btn btn-dark nav-button" onClick={() => this.setState({redirectTo: "/edit"})}>Version:  <span>{this.state.currentVersion.versionName || "none!"}</span></button>
+            }
           </div>
           
           
           <div className="decks">
-            <img src={this.state.deckEmpty ? "./images/empty.png" : "./images/deck.png"} 
+            <img src={this.state.deckEmpty ? "./images/empty.png" : "./images/deck2.png"} 
                  className="deck" 
                  onClick={() => this.drawCard()}/>
           </div>
@@ -506,7 +519,7 @@ class Dashboard extends Component {
           
           <div className="HUD">
             <div className={this.state.burnedCards.length ? 
-              (this.state.currentCard.rank == 1) ? "banner-turned faded" : "banner-turned" 
+              (this.state.currentCard.rank == 1 && !this.state.usedKAs.includes(this.state.currentCard.id)) ? "banner-turned faded" : "banner-turned" 
               : "hide"}>
               <img alt="banner" src="./images/regal6.png" />
             </div>
