@@ -31,6 +31,12 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
+  searchGamesByName: function(req, res) {
+    db.Game
+      .find({gameName: { $regex: req.params.searchTerm, $options: "i" } } )
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
   getGame: function(req, res) {
     db.Game
       .findById(req.params.id)

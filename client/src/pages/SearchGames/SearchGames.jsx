@@ -8,7 +8,7 @@ import games from "../Dashboard/games.json";
 
 class SearchGames extends Component {
 
-  state = { cards, games, userResults: [], gamesByUser: [[{gameName: "blank"}]] };
+  state = { cards, games, userResults: [], gamesByUser: [[{gameName: "blank"}]], titleResults: [{gameName: "blank"}]};
 
   // componentWillMount() {
   //   if (!sessionStorage.getItem('gameState')) {
@@ -26,8 +26,9 @@ class SearchGames extends Component {
     var sessionObject = JSON.parse(sessionStorage.getItem('gameState'));
     sessionObject.redirectTo = false;
     sessionObject.gamesByUser = [[{gameName: "blank"}]];
-    this.setState(sessionObject);
-    this.searchDB();
+    sessionObject.titleResults = [{gameName: "blank"}];
+    console.log(sessionObject.searchTerm);
+    this.setState(sessionObject, () => this.searchDB());
   }
 
   componentWillUnmount() {
@@ -97,7 +98,8 @@ class SearchGames extends Component {
 
   searchDB = () => {
     console.log("searching");
-    API.getUser(this.state.searchTerm)
+    const {searchTerm} = this.state;
+    API.getUser(searchTerm)
       .then(userRes => {
         if (userRes.data.length > 0) {
           let users = [];
@@ -115,6 +117,8 @@ class SearchGames extends Component {
           this.setState({userResults: [], gamesByUser: [[{gameName: "blank"}]]});
         }
       }).catch(err => console.log(err));
+    API.searchGamesByName(searchTerm)
+      .then(gameRes => this.setState({titleResults: gameRes.data}));
   }
 
   forkGame = id => {
@@ -182,6 +186,52 @@ class SearchGames extends Component {
             </div>
 
             <div className="col-sm-4">.col-sm-4
+              
+              <div className="card">
+                <div className="card-header" id="heading-4">
+                  <h5 className="mb-0">
+                    <a className="collapsed" role="button" data-toggle="collapse" href="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
+                      Description
+                    </a>
+                  </h5>
+                </div>
+                <div id="collapse-4" className="collapse" data-parent="#accordion" aria-labelledby="heading-4">
+                  <div className="card-body">
+                    A game about stuff. 
+                    <br /><br />
+                    [keywords]
+                  </div>
+                </div>
+              </div>
+              <div className="card">
+                <div className="card-header" id="heading-5">
+                  <h5 className="mb-0">
+                    <a className="collapsed" role="button" data-toggle="collapse" href="#collapse-5" aria-expanded="false" aria-controls="collapse-5">
+                      Ratings
+                    </a>
+                  </h5>
+                </div>
+                <div id="collapse-5" className="collapse" data-parent="#accordion" aria-labelledby="heading-5">
+                  <div className="card-body">
+                    STAR STAR STAR STAR
+                  </div>
+                </div>
+              </div>
+              <div className="card">
+                <div className="card-header" id="heading-6">
+                  <h5 className="mb-0">
+                    <a className="collapsed" role="button" data-toggle="collapse" href="#collapse-6" aria-expanded="false" aria-controls="collapse-6">
+                      Rules
+                    </a>
+                  </h5>
+                </div>
+                <div id="collapse-6" className="collapse" data-parent="#accordion" aria-labelledby="heading-6">
+                  <div className="card-body">
+                    ACCORDION GOES HERE
+                  </div>
+                </div>
+              </div>
+
               <div id="menu">
                 <div className="panel list-group">
                   <a href="#" className="list-group-item" data-toggle="collapse" data-target="#sm" data-parent="#menu">MESSAGES <span className="label label-info">5</span> <span className="glyphicon glyphicon-envelope pull-right"></span></a>
@@ -295,7 +345,7 @@ class SearchGames extends Component {
                                       </div>
                                       <div id={`collapse-1-${index + 1}-${gameIdx + 1}`} className="collapse" data-parent={`#accordion-1-${index + 1}`} aria-labelledby={`heading-1-${index + 1}-${gameIdx + 1}`}>
                                         <div className="card-body">
-                                          Text 1 > 1 > 1
+                                          <button>See details...</button>
                                         </div>
                                       </div>
                                     </div>
@@ -323,7 +373,30 @@ class SearchGames extends Component {
                   </div>
                   <div id="collapse-2" className="collapse" data-parent="#accordion" aria-labelledby="heading-2">
                     <div className="card-body">
-                      Text 2
+                      
+                    {this.state.titleResults.map((title, index) => (
+
+                      <div id="accordion-1">
+                        <div className="card">
+                          <div className="card-header" id={`heading-1-${index + 1}`}>
+                            <h5 className="mb-0">
+                              <a className="collapsed" role="button" data-toggle="collapse" href={`#collapse-1-${index + 1}`} aria-expanded="false" aria-controls={`collapse-1-${index + 1}`}>
+                                {title.gameName}
+                              </a>
+                            </h5>
+                          </div>
+                          <div id={`collapse-1-${index + 1}`} className="collapse" data-parent="#accordion-1" aria-labelledby={`heading-1-${index + 1}`}>
+                            <div className="card-body">
+                            
+                              <button>See details...</button>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div> 
+
+                      ))}
+
                     </div>
                   </div>
                 </div>
@@ -331,7 +404,7 @@ class SearchGames extends Component {
                   <div className="card-header" id="heading-3">
                     <h5 className="mb-0">
                       <a className="collapsed" role="button" data-toggle="collapse" href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
-                        Item 3
+                        Keywords matching "{this.state.searchTerm}"
                       </a>
                     </h5>
                   </div>

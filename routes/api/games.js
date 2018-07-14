@@ -22,6 +22,9 @@ router.route("/user")
 router.route("/:id")
   .get(gamesController.getGame);
 
+router.route("/search/:searchTerm")
+  .get(gamesController.searchGamesByName);
+
 router.route("/:id/:user")
   .delete(gamesController.deleteGame);
 

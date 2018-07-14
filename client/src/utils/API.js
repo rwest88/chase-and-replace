@@ -28,6 +28,9 @@ export default {
   getGamesByUser: function(dataObj) {
     return axios.post("/api/games/user", dataObj);
   },
+  searchGamesByName: function(searchTerm) {
+    return axios.get("/api/games/search/" + searchTerm);
+  },
   getGame: function(id) {
     return axios.get("api/games/" + id);
   },
