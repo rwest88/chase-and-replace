@@ -64,7 +64,8 @@ class Dashboard extends Component {
   // ==============
 
   loadGame = (selectedGame, selectedVersion) => {
-    
+
+    let {games} = this.state;
     let rules;
 
     if (this.state.newAce === true && (this.state.currentGame)) {
@@ -80,17 +81,22 @@ class Dashboard extends Component {
       }
     }
 
+    if (selectedGame.gameName === "[Random Mix!]") {
+      games = games.filter(game => game.gameName !== "[Random Mix!]");
+      games = this.addRandom(games);
+    }
+
     if (selectedVersion === undefined) var selectedVersion = selectedGame.versions.length - 1;
 
     this.setState({
-      redirectTo: false,
       cards: this.shuffleArray(this.state.cards.concat(this.state.burnedCards || {})),
       burnedCards: [],
       currentRule: {},
       currentCard: {},
-      // games,
+      games,
       deckEmpty: false,
       currentGame: selectedGame,
+      lookingAt: selectedGame,
       gameName: selectedGame.gameName,
       versions: selectedGame.versions,
       versionIndex: selectedVersion,
@@ -99,8 +105,7 @@ class Dashboard extends Component {
       oldRules: rules || selectedGame.versions[selectedVersion].rules,
       kingRules: [],
       usedKAs: [],
-      newAce: false,
-      clearedFields: false
+      newAce: false
     });
   }
 
@@ -319,7 +324,8 @@ class Dashboard extends Component {
               API.getGamesByUser({gameIDs: userRes.data[0].games})
                 .then(res => {
                   console.log(res.data);
-                  this.setState({games: res.data}, () => {
+                  const games = this.addRandom(res.data)
+                  this.setState({games}, () => {
                     if (!this.state.currentGame) {
                       console.log("gonna load");
                       this.loadGame(res.data[0]);
@@ -350,6 +356,40 @@ class Dashboard extends Component {
         }))
         .catch(err => console.log(err));
     }
+  }
+
+  addRandom = games => {
+    if (this.state.username && games.length > 1) {
+      const recentRules = [{rank: "1"}];
+      const allRules = [{rank: "1"}];
+      for (var i = 0; i < 11; i++) {
+        let randIdx = Math.floor(Math.random() * games.length);
+        recentRules.push(games[randIdx].versions[games[randIdx].versions.length - 1].rules[i + 1]);
+        allRules.push(games[randIdx].versions[Math.floor(Math.random() * games[randIdx].versions.length)].rules[i + 1]);
+      }
+      recentRules.push({rank: "13", name: "Make a Rule", instructions: "Make a Global Rule for the current game!"});
+      allRules.push({rank: "13", name: "Make a Rule", instructions: "Make a Global Rule for the current game!"});
+
+      games.push({
+        gameName: "[Random Mix!]",
+        created: new Date(Date.now()),
+        admin: this.state.username,
+        forkedFrom: this.state.username,
+        versions: [
+          {
+            rules: allRules,
+            date: new Date(Date.now()),
+            versionName: "entire history"
+          },
+          {
+            rules: recentRules,
+            date: new Date(Date.now()),
+            versionName: "most recent"
+          }
+        ],
+      });
+    }
+    return games;
   }
 
   saveVersion() {

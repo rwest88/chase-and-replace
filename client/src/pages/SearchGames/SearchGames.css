@@ -44,7 +44,8 @@ border-bottom-left-radius: 4px;
 }
 .mb-0 > a:after {
   content: "\f078"; /* fa-chevron-down */
-  font-family: 'FontAwesome';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
   position: absolute;
   right: 0;
 }

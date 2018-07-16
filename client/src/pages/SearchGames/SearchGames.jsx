@@ -8,7 +8,7 @@ import games from "../Dashboard/games.json";
 
 class SearchGames extends Component {
 
-  state = { cards, games, userResults: [], gamesByUser: [[{gameName: "blank"}]], titleResults: [{gameName: "blank"}]};
+  state = { games, userResults: [], lookingAt: {gameName: "blank"}, gamesByUser: [[{gameName: "blank"}]], titleResults: [{gameName: "blank"}]};
 
   // componentWillMount() {
   //   if (!sessionStorage.getItem('gameState')) {
@@ -27,7 +27,6 @@ class SearchGames extends Component {
     sessionObject.redirectTo = false;
     sessionObject.gamesByUser = [[{gameName: "blank"}]];
     sessionObject.titleResults = [{gameName: "blank"}];
-    console.log(sessionObject.searchTerm);
     this.setState(sessionObject, () => this.searchDB());
   }
 
@@ -35,22 +34,16 @@ class SearchGames extends Component {
     sessionStorage.setItem('gameState', JSON.stringify(this.state));
   }
 
-  loadGame = selectedGame => {
-    console.log(this.state.burnedCards);
-    console.log(this.state.cards);
-
+  loadGame = (selectedGame, selectedVersion, createdNew) => {
+    
+    let {games} = this.state;
     let rules;
-    if (!selectedGame) {
-      selectedGame = games[0]; 
-      rules = games[0].rules;
-    }
-    console.log(this.state.usedKAs.length);
-    if (this.state.usedKAs.length > 0 && (this.state.currentGame)) {
-      if (window.confirm(`Save current rule changes to ${this.state.currentGame.gameName || selectedGame.gameName}?`)) {
-        localStorage.setItem(`versionState: ${this.state.currentGame.gameName || selectedGame.gameName}`, JSON.stringify(this.state.rules));
+
+    if (this.state.newAce === true && (this.state.currentGame)) {
+      if (window.confirm(`Save current rule changes to ${this.state.currentGame.gameName}?  \n\n(Note: This will not create a new version. Click 'Save Current as Version' when you are happy with the set of rules.)`)) {
+        localStorage.setItem(`versionState: ${this.state.currentGame.gameName}`, JSON.stringify(this.state.rules));
       }
     }
-
     
     if (localStorage.getItem(`versionState: ${selectedGame.gameName}`)) {
       if (window.confirm(`Load previous rule changes to ${selectedGame.gameName}?`)) {
@@ -58,22 +51,32 @@ class SearchGames extends Component {
         rules = localObject;
       }
     }
+
+    if (selectedGame.gameName === "[Random Mix!]") {
+      games = games.filter(game => game.gameName !== "[Random Mix!]");
+      games = this.addRandom(games);
+    }
+
+    if (selectedVersion === undefined) var selectedVersion = selectedGame.versions.length - 1;
+
     this.setState({
       redirectTo: "/dashboard",
       cards: this.shuffleArray(this.state.cards.concat(this.state.burnedCards || {})),
       burnedCards: [],
       currentRule: {},
       currentCard: {},
-      games,
       deckEmpty: false,
       currentGame: selectedGame,
-      rules: rules || selectedGame.versions[0].rules,
-      kingRules:[],
+      gameName: selectedGame.gameName,
+      versions: selectedGame.versions,
+      versionIndex: selectedVersion,
+      currentVersion: selectedGame.versions[selectedVersion],
+      rules: rules || selectedGame.versions[selectedVersion].rules,
+      oldRules: rules || selectedGame.versions[selectedVersion].rules,
+      kingRules: [],
       usedKAs: [],
-      replace: "2", // temporary solution
-      
+      newAce: false
     });
-    setTimeout(() => console.log("loaded game", this.state.currentGame), 2000);
   }
 
   shuffleArray = (array) => {
@@ -152,46 +155,49 @@ class SearchGames extends Component {
           <div className="row">
           
             <div className="col-sm-4">
-
-
-              <form>
-                <input 
-                  type="text"
-                  placeholder="search..."
-                  name="searchTerm"
-                  value={this.state.searchTerm}
-                  onChange={this.handleInputChange}
-                  onInput={this.handleInputChange}
-                />
-              </form>
-
-              <div className="list-group">
-                {this.state.gamesByUser[0].map(item => (
+              {
+                this.state.games.slice(0, -1).map((game, index) => (
+                  <div className="card text-white bg-dark">
+                <div className="card-header" id={`heading-${index + 7}`}>
+                  <h5 className="mb-0">
+                    <a className="collapsed" role="button" data-toggle="collapse" href={`#collapse-${index + 7}`} aria-expanded="false" aria-controls={`collapse-${index + 7}`}>
+                      {game.gameName}
+                    </a>
+                  </h5>
+                </div>
+                <div id={`collapse-${index + 7}`} className="collapse" data-parent="#accordion" aria-labelledby={`heading-${index + 7}`}>
+                  <div className="card-body">
+                    A game about stuff. 
+                    <br /><br />
+                    [tags]
+                    <br /><br />
+                    <button 
+                    // type="button"
+                    className="btn btn-primary"
+                    >
+                    Add Tags
+                  </button>
                   <button 
                     // type="button"
-                    className="list-group-item list-group-item-action"
-                    onClick={() => this.forkGame(item._id)}
+                    className="btn btn-primary"
                     >
-                    {item.gameName}
+                    Make Public
                   </button>
-                ))}
+                  </div>
+                </div>
               </div>
-
-              {/* <div>{this.state.gamesByUser.map(item => <button onClick={() => this.forkGame(item._id)}>{item.gameName}</button>)}</div> */}
-              
-
-              asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf asdf asdf asdf jasdfkljalsdkfjakl sdfkladsj flk jasdflk ajsdfkjla sdfkl asdfkj aldsk fadskjl fakl sdjfkjl asdfkl jasdfjl asdkjl fakjl sdfkjl asdfkjl asdkjl fakjl sdfkjl adsfkjl asdfkjl 
-
+                ))
+              }
 
             </div>
 
-            <div className="col-sm-4">.col-sm-4
+            <div className="col-sm-4">
               
-              <div className="card">
+              <div className="card text-white bg-dark">
                 <div className="card-header" id="heading-4">
                   <h5 className="mb-0">
                     <a className="collapsed" role="button" data-toggle="collapse" href="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
-                      Description
+                    {this.state.lookingAt.gameName} by {this.state.lookingAt.admin}
                     </a>
                   </h5>
                 </div>
@@ -199,11 +205,19 @@ class SearchGames extends Component {
                   <div className="card-body">
                     A game about stuff. 
                     <br /><br />
-                    [keywords]
+                    [tags]
+                    <br /><br />
+                    <button 
+                    // type="button"
+                    className="btn btn-primary"
+                    onClick={() => this.forkGame(this.state.lookingAt._id)}
+                    >
+                    Fork This Game!
+                  </button>
                   </div>
                 </div>
               </div>
-              <div className="card">
+              <div className="card text-white bg-dark">
                 <div className="card-header" id="heading-5">
                   <h5 className="mb-0">
                     <a className="collapsed" role="button" data-toggle="collapse" href="#collapse-5" aria-expanded="false" aria-controls="collapse-5">
@@ -217,7 +231,7 @@ class SearchGames extends Component {
                   </div>
                 </div>
               </div>
-              <div className="card">
+              <div className="card text-white bg-dark">
                 <div className="card-header" id="heading-6">
                   <h5 className="mb-0">
                     <a className="collapsed" role="button" data-toggle="collapse" href="#collapse-6" aria-expanded="false" aria-controls="collapse-6">
@@ -227,26 +241,26 @@ class SearchGames extends Component {
                 </div>
                 <div id="collapse-6" className="collapse" data-parent="#accordion" aria-labelledby="heading-6">
                   <div className="card-body">
-                    ACCORDION GOES HERE
+                    <div id="menu" style={{color: "black"}}>
+                      <div className="panel list-group">
+                        <a href="#" className="list-group-item list-group-item-primary" data-toggle="collapse" data-target="#sm" data-parent="#menu">MESSAGES <span className="label label-info">5</span> <span className="glyphicon glyphicon-envelope pull-right"></span></a>
+                        <div id="sm" className="sublinks collapse">
+                          <a className="list-group-item list-group-item-primary small"><span className="glyphicon glyphicon-chevron-right"></span> inbox</a>
+                          <a className="list-group-item list-group-item-primary small"><span className="glyphicon glyphicon-chevron-right"></span> sent</a>
+                        </div>
+                        <a href="#" className="list-group-item list-group-item-dark" data-toggle="collapse" data-target="#sl" data-parent="#menu">TASKS <span className="glyphicon glyphicon-tag pull-right"></span></a>
+                        <div id="sl" className="sublinks collapse">
+                          <a className="list-group-item list-group-item-dark small"><span className="glyphicon glyphicon-chevron-right"></span> saved tasks</a>
+                          <a className="list-group-item list-group-item-dark small"><span className="glyphicon glyphicon-chevron-right"></span> add new task</a>
+                        </div>
+                        <a href="#" className="list-group-item list-group-item-dark">ANOTHER LINK ...<span className="glyphicon glyphicon-stats pull-right"></span></a>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div id="menu">
-                <div className="panel list-group">
-                  <a href="#" className="list-group-item" data-toggle="collapse" data-target="#sm" data-parent="#menu">MESSAGES <span className="label label-info">5</span> <span className="glyphicon glyphicon-envelope pull-right"></span></a>
-                  <div id="sm" className="sublinks collapse">
-                    <a className="list-group-item small"><span className="glyphicon glyphicon-chevron-right"></span> inbox</a>
-                    <a className="list-group-item small"><span className="glyphicon glyphicon-chevron-right"></span> sent</a>
-                  </div>
-                  <a href="#" className="list-group-item" data-toggle="collapse" data-target="#sl" data-parent="#menu">TASKS <span className="glyphicon glyphicon-tag pull-right"></span></a>
-                  <div id="sl" className="sublinks collapse">
-                    <a className="list-group-item small"><span className="glyphicon glyphicon-chevron-right"></span> saved tasks</a>
-                    <a className="list-group-item small"><span className="glyphicon glyphicon-chevron-right"></span> add new task</a>
-                  </div>
-                  <a href="#" className="list-group-item">ANOTHER LINK ...<span className="glyphicon glyphicon-stats pull-right"></span></a>
-                </div>
-              </div>
+              
 
               dasfasdfklasdjflk asdflkj asdlfkjasdlfkj asdf adsf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf asdf asdf adsfkjl asdlfk adslfkj adslkfj asldkfj klj asdlk fasdklfj askldjf askldj flkasj dflkjads flkjas dfklj dsklj adslfkj sdlfkj asdlkfj asdlkfj sdlkfj sldkj fslkdj fskldj flksj dflkj sdfklj lskdj faldskf adsklfj aldskfj ladskfj adsfk jkjasdh fkjadshf kjadshf kjadshf 
             
@@ -345,7 +359,7 @@ class SearchGames extends Component {
                                       </div>
                                       <div id={`collapse-1-${index + 1}-${gameIdx + 1}`} className="collapse" data-parent={`#accordion-1-${index + 1}`} aria-labelledby={`heading-1-${index + 1}-${gameIdx + 1}`}>
                                         <div className="card-body">
-                                          <button>See details...</button>
+                                          <button className="btn btn-light" onClick={() => this.setState({lookingAt: game})}>See details...</button>
                                         </div>
                                       </div>
                                     </div>
@@ -388,7 +402,7 @@ class SearchGames extends Component {
                           <div id={`collapse-1-${index + 1}`} className="collapse" data-parent="#accordion-1" aria-labelledby={`heading-1-${index + 1}`}>
                             <div className="card-body">
                             
-                              <button>See details...</button>
+                              <button className="btn btn-light" onClick={() => this.setState({lookingAt: title})}>See details...</button>
 
                             </div>
                           </div>
@@ -404,7 +418,7 @@ class SearchGames extends Component {
                   <div className="card-header" id="heading-3">
                     <h5 className="mb-0">
                       <a className="collapsed" role="button" data-toggle="collapse" href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
-                        Keywords matching "{this.state.searchTerm}"
+                        Tags matching "{this.state.searchTerm}"
                       </a>
                     </h5>
                   </div>

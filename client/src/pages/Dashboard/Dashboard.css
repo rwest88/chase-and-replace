@@ -167,6 +167,7 @@ html {
   grid-auto-rows:7.5vh;
   grid-column: 8/12;
   grid-row: 5/11;
+  height: 103%;
   background-color: rgba(0, 100, 0, 0.693);
   box-shadow: 0px 0px 30px 10px rgba(0, 100, 0, 0.8);
   z-index: 3;
@@ -230,10 +231,10 @@ html {
   /* transform: skew(-30deg); */
 }
 .table > img.stein {
-  top: 14%;
+  top: 18%;
   left: 8%;
   z-index: 600;
-  height: 18%;
+  height: 15%;
   width: initial;
   transform: skew(0deg);
 }
@@ -383,7 +384,7 @@ h1 {
   font-size: 1.2em;
 }
 .current-rule > .global-rule {
-  top: 12%;
+  top: 30%;
   font-size: 1.2em;
 }
 .current-rule > .intro {
