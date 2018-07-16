@@ -6,6 +6,7 @@ import cards from "../Dashboard/cards.json";
 import games from "../Dashboard/games.json";
 import newGameTemplate from "../Dashboard/newGameTemplate.json";
 import API from "../../utils/API";
+import moment from "moment";
 
 class CreateEditGame extends Component {
 
@@ -328,11 +329,12 @@ class CreateEditGame extends Component {
                     <option 
                       key={version.versionName} 
                       value={index}>
-                      {version.versionName} {version.versionName === "[NEW]" ? "(current progress)" : `(Created: ${version.date})`}
+                      {version.versionName} {version.versionName === "[NEW]" ? "(current progress)" : `(Created: ${moment(version.date).format("M-D-YYYY h:mm a")})`}
                     </option>
                   )
                 })}
               </select>  
+              
             </div>
             <div class="col d-flex justify-content-around align-items-center">
               
