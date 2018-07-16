@@ -14,7 +14,7 @@ const gameSeed = [
     admin: "Chase_Replacenson",
     forkedFrom: "",
     created: new Date(Date.now()),
-    ratings: [2, 5, 4, 5],
+    ratings: [],
     saved: true,  // users collection
     public: false,
     versions: [
@@ -70,7 +70,7 @@ const gameSeed = [
           {
               "rank": "10",
               "name": "Categories",
-              "instructions": "Pick a category. Say a thing belonging to that category. Play continues clockwise blah blah blah blah blah blah blah."
+              "instructions": "Pick a category. Next player names a thing belonging to that category. Play continues clockwise until someone gets stumped or repeats an answer."
           },
           {
               "rank": "11",
@@ -91,14 +91,270 @@ const gameSeed = [
       }
     ]
   },
+
+  {
+    "_id" : "Strip Kings rwest88 723847",
+    "ratings" : [],
+    "public" : false,
+    "gameName" : "Strip Kings",
+    "admin" : "rwest88",
+    "forkedFrom" : "",
+    "created" : new Date(Date.now()),
+    "saved" : true,
+    "versions" : [ 
+        {
+          "rules" : [ 
+            {
+                "rank" : "1",
+                "name" : "Chase and Replace",
+                "instructions" : "Everybody drinks! If anyone is feeling bold, take a shot and a chaser. Then, choose a rank (other than King and Ace) and change the rule for that card."
+            }, 
+            {
+                "name" : "shoes",
+                "instructions" : "remove shoes",
+                "rank" : "2"
+            }, 
+            {
+                "rank" : "3",
+                "name" : "tee",
+                "instructions" : "remove tee-shirt"
+            }, 
+            {
+                "rank" : "4",
+                "name" : "drawers",
+                "instructions" : "remove undies"
+            }, 
+            {
+                "rank" : "5",
+                "name" : "golden rings",
+                "instructions" : "remove all jewelry"
+            }, 
+            {
+                "rank" : "6",
+                "name" : "knickers",
+                "instructions" : "remove pants"
+            }, 
+            {
+                "rank" : "7",
+                "name" : "heaven",
+                "instructions" : "stand up and lift your hands to the sky"
+            }, 
+            {
+                "rank" : "8",
+                "name" : "Pick a Mate",
+                "instructions" : "Pick a person. For the rest of the game, whenever you drink, that person must drink."
+            }, 
+            {
+                "rank" : "9",
+                "name" : "mine",
+                "instructions" : "choose an item of clothing (either removed or being worn) and put it on"
+            }, 
+            {
+                "rank" : "10",
+                "name" : "zen",
+                "instructions" : "everyone must share one minute of awkward silence"
+            }, 
+            {
+                "rank" : "11",
+                "name" : "I never",
+                "instructions" : "Everyone raises three (or five) fingers and starts a game of 'Never Have I Ever'."
+            }, 
+            {
+                "rank" : "12",
+                "name" : "wild and free",
+                "instructions" : "remove bra"
+            }, 
+            {
+                "rank" : "13",
+                "name" : "Make a Rule",
+                "instructions" : "Make a global rule for the current game!"
+            }
+          ],
+          
+          "date" : new Date(Date.now()),
+          "versionName" : "init"
+        }, 
+    ],
+    "__v" : 0
+  },
+  {
+    "_id" : "webdev rwest88 352513",
+    "ratings" : [],
+    "public" : false,
+    "gameName" : "Web Developers",
+    "admin" : "rwest88",
+    "forkedFrom" : "rwest88",
+    "created" : new Date(Date.now()),
+    "saved" : true,
+    "versions" : [ 
+      {
+        "rules" : [ 
+          {
+              "rank" : "1",
+              "name" : "Chase and Replace",
+              "instructions" : "Everybody drinks! If anyone is feeling bold, take a shot and a chaser. Then, choose a rank (other than King and Ace) and change the rule for that card."
+          }, 
+          {
+              "name" : "Intro[DEUCE]",
+              "instructions" : "Give us your elevator pitch!",
+              "rank" : "2"
+          }, 
+          {
+              "rank" : "3",
+              "name" : "Opportunities",
+              "instructions" : "Tell us about either (1) what you're looking for in a job or some places you've looked, or (2) an anecdote about yourself or someone you know who has been successful landing a job after doing a bootcamp!"
+          }, 
+          {
+              "rank" : "4",
+              "name" : "Explore",
+              "instructions" : "Tell us about a language, library, or technology you want to learn about now that you've learned the MERN stack, and why!"
+          }, 
+          {
+              "rank" : "5",
+              "name" : "Guys",
+              "instructions" : "Men, drink!"
+          }, 
+          {
+              "rank" : "6",
+              "name" : "Chicks",
+              "instructions" : "Ladies, drink!"
+          }, 
+          {
+              "rank" : "7",
+              "name" : "Methods",
+              "instructions" : "Proceeding clockwise, list off JavaScript methods (of a chosen topic: Strings, Arrays, Objects, the Math module, etc. He who gets stumped must drink."
+          }, 
+          {
+              "rank" : "8",
+              "name" : "Authentic8ion",
+              "instructions" : "Explain either (1) how passport.js works, (2) any other auth packages you've  used, or (3) meet us after class to help us set up Google/Facebook Auth."
+          }, 
+          {
+              "rank" : "9",
+              "name" : "Bust a Rhyme",
+              "instructions" : "Shout out a technical term. Play continues clockwise as players rhyme that word. Whoever gets stumped must drink."
+          }, 
+          {
+              "rank" : "10",
+              "name" : "ORM",
+              "instructions" : "Mongoose, or Sequelize, and why? (or maybe you're weird and you like the homemade ORM in the burger app)"
+          }, 
+          {
+              "rank" : "11",
+              "name" : "Blackboard",
+              "instructions" : "Choose two players to write out a solution to a small problem of your choice (e.g., FizzBuzz or a ShuffleArray function). If they can't do it in one minute, the three of you must drink."
+          }, 
+          {
+              "rank" : "12",
+              "name" : "Quiz",
+              "instructions" : "Each player asks you one question about something that was taught in boot camp. You must drink once for each incorrect answer."
+          }, 
+          {
+              "rank" : "13",
+              "name" : "Make a Rule",
+              "instructions" : "Make a global rule for the current game!"
+          }
+        ],
+        
+        "versionName" : "init",
+        "date" : new Date(Date.now())
+      }
+    ],
+    "__v" : 0
+  },
+  {
+    "_id" : "JavaScript rwest88 137331",
+    "ratings" : [],
+    "public" : true,
+    "gameName" : "RVA js",
+    "admin" : "rwest88",
+    "forkedFrom" : "rwest88",
+    "created" : new Date(Date.now()),
+    "saved" : true,
+    "versions" : [ 
+      {
+        "rules" : [ 
+          {
+              "rank" : "1",
+              "name" : "Chase and Replace",
+              "instructions" : "Everybody drinks! If anyone is feeling bold, take a shot and a chaser. Then, choose a rank (other than King and Ace) and change the rule for that card."
+          }, 
+          {
+              "name" : "Intro[deuce]",
+              "instructions" : "introduce yourself!",
+              "rank" : "2"
+          }, 
+          {
+              "name" : "Opportunity",
+              "instructions" : "talk about job opportunities!",
+              "rank" : "3"
+          }, 
+          {
+              "name" : "Door",
+              "instructions" : "leave the meeting",
+              "rank" : "4"
+          }, 
+          {
+              "rank" : "5",
+              "name" : "Guys",
+              "instructions" : "All boys drink."
+          }, 
+          {
+              "name" : "Chris",
+              "instructions" : "Chirs must drink constantly",
+              "rank" : "6"
+          }, 
+          {
+              "name" : "Methods",
+              "instructions" : "Proceeding clockwise, list off JavaScript methods (of a chosen topic: Strings, Arrays, Objects, the Math module, etc. He who gets stumped must drink.",
+              "rank" : "7"
+          }, 
+          {
+              "rank" : "8",
+              "name" : "Pick a Mate",
+              "instructions" : "Pick a person. For the rest of the game, whenever you drink, that person must drink."
+          }, 
+          {
+              "rank" : "9",
+              "name" : "Bust a Rhyme",
+              "instructions" : "Say a word. Play continues clockwise. Whoever gets stumped on rhyming must drink."
+          }, 
+          {
+              "rank" : "10",
+              "name" : "Categories",
+              "instructions" : "Pick a category. Say a thing belonging to that category. Play continues clockwise blah blah blah blah blah blah blah."
+          }, 
+          {
+              "rank" : "11",
+              "name" : "I Never",
+              "instructions" : "Everyone raises three (or five) fingers and starts a game of 'Never Have I Ever'."
+          }, 
+          {
+              "rank" : "12",
+              "name" : "Question Master",
+              "instructions" : "You are the Question Master! Anytime you ask somebody a question, if he/she fails to respond with a question, he/she must drink."
+          }, 
+          {
+              "rank" : "13",
+              "name" : "Make a Rule",
+              "instructions" : "Make a global rule for the current game!"
+          }
+        ],
+        
+        "versionName" : "init",
+        "date" : new Date(Date.now())
+      }
+    ],
+    "__v" : 0
+  },
   {
     gameName: "Star Wars",
     admin: "n8morton",
-    forkedFrom: "n8morton",
+    forkedFrom: "",
     created: new Date(Date.now()),
-    ratings: [5, 5, 4, 5, 5, 2, 1, 4, 5, 3, 5, 5, 4, 5],
+    ratings: [],
     saved: true,  // users collection
-    public: true,
+    public: false,
     versions: [
       {
         versionName: "init",
@@ -121,8 +377,8 @@ const gameSeed = [
           },
           {
               "rank": "4",
-              "name": "Floor",
-              "instructions": "Last person to put a hand on the floor drinks."
+              "name": "Pour",
+              "instructions": "Pour some of your drink into the King's Cup. Whoever draws the last 4 must down the cup."
           },
           {
               "rank": "5",
@@ -131,90 +387,8 @@ const gameSeed = [
           },
           {
               "rank": "6",
-              "name": "Chicks",
-              "instructions": "All girls drink."
-          },
-          {
-              "rank": "7",
-              "name": "Methods (js)",
-              "instructions": "Proceeding clockwise, list off JavaScript methods (of a chosen topic: Strings, Arrays, Objects, the Math module, etc. He who gets stumped must drink."
-          },
-          {
-              "rank": "8",
-              "name": "Pick a Nate",
-              "instructions": "For the duration of the game, Nate must drink once for every person drinking, times the number of eights drawn."
-          },
-          {
-              "rank": "9",
-              "name": "Chewy",
-              "instructions": "Make the Chewbacca noise, and then drink."
-          },
-          {
-              "rank": "10",
-              "name": "Star Wars Categories",
-              "instructions": "Pick a Star Wars category, such as planets, vehicles, characters, etc. Say a thing belonging to that category. Play continues clockwise. If you get stumped, you must drink."
-          },
-          {
-              "rank": "11",
-              "name": "I Never (Star Wars ed.)",
-              "instructions": "Everyone raises three (or five) fingers and starts a game of 'Never Have I Ever'. All responses must contain a Star-Wars reference."
-          },
-          {
-              "rank": "12",
-              "name": "Princesses",
-              "instructions": "You're in the hot seat for a round of 'Would You Rather'"
-          },
-          {
-              "rank": "13",
-              "name": "Make a Rule",
-              "instructions": "Make a global rule for the current game!"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    gameName: "Kings_Variation",
-    admin: "a",
-    forkedFrom: "",
-    created: new Date(Date.now()),
-    ratings: [],
-    saved: true,  // users collection
-    public: false,
-    versions: [
-      {
-        versionName: "init",
-        date: new Date(Date.now()),
-        rules: [
-          {
-              "rank": "1",
-              "name": "Chase and Replace",
-              "instructions": "Everybody drinks! If anyone is feeling bold, take a shot and a chaser. Then, choose a rank (other than King and Ace) and change the rule for that card."
-          },
-          {
-              "rank": "2",
-              "name": "Poo",
-              "instructions": "Throw poo."
-          },
-          {
-              "rank": "3",
-              "name": "Pee",
-              "instructions": "Throw pee."
-          },
-          {
-              "rank": "4",
-              "name": "Score",
-              "instructions": "And seven years ago."
-          },
-          {
-              "rank": "5",
-              "name": "Hive",
-              "instructions": "Find a beehive and eat it."
-          },
-          {
-              "rank": "6",
-              "name": "Dicks",
-              "instructions": "Eat a bag of dicks."
+              "name": "Death Sticks",
+              "instructions": "Time for a smoke break."
           },
           {
               "rank": "7",
@@ -223,88 +397,6 @@ const gameSeed = [
           },
           {
               "rank": "8",
-              "name": "Cate",
-              "instructions": "Cate must drink."
-          },
-          {
-              "rank": "9",
-              "name": "Stein",
-              "instructions": "Chug 32 oz of beer."
-          },
-          {
-              "rank": "10",
-              "name": "Win",
-              "instructions": "You win! Drink."
-          },
-          {
-              "rank": "11",
-              "name": "Snack",
-              "instructions": "Grab a snack."
-          },
-          {
-              "rank": "12",
-              "name": "Questions",
-              "instructions": "Ask someone a question. That person must then ask another player a question, and so on. Whoever messes up drinks."
-          },
-          {
-              "rank": "13",
-              "name": "Make a Rule",
-              "instructions": "Make a global rule for the current game!"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    gameName: "Custom",
-    admin: "Chase_Replacenson",
-    forkedFrom: "",
-    created: new Date(Date.now()),
-    ratings: [],
-    saved: true,  // users collection
-    public: false,
-    versions: [
-      {
-        versionName: "init",
-        date: new Date(Date.now()),
-        rules: [
-          {
-              "rank": "1",
-              "name": "Chase and Replace",
-              "instructions": "Everybody drinks! If anyone is feeling bold, take a shot and a chaser. Then, choose a rank (other than King and Ace) and change the rule for that card."
-          },
-          {
-              "rank": "2",
-              "name": "Artoo",
-              "instructions": "Do best R2D2 impression, and then continue play clockwise. Vote for the loser who must drink."
-          },
-          {
-              "rank": "3",
-              "name": "C3PO",
-              "instructions": "You must remain as C3PO until another three is drawn. (Accent must stay and arms may not break position. Whenever they do, you drink.)"
-          },
-          {
-              "rank": "4",
-              "name": "Floor",
-              "instructions": "Last person to put a hand on the floor drinks."
-          },
-          {
-              "rank": "5",
-              "name": "Guys",
-              "instructions": "All boys drink."
-          },
-          {
-              "rank": "6",
-              "name": "Chicks",
-              "instructions": "All girls drink."
-          },
-          {
-              "rank": "7",
-              "name": "Methods (js)",
-              "instructions": "Proceeding clockwise, list off JavaScript methods (of a chosen topic: Strings, Arrays, Objects, the Math module, etc. He who gets stumped must drink."
-          },
-          {
-              "rank": "8",
               "name": "Pick a Nate",
               "instructions": "For the duration of the game, Nate must drink once for every person drinking, times the number of eights drawn."
           },
@@ -327,89 +419,6 @@ const gameSeed = [
               "rank": "12",
               "name": "Princesses",
               "instructions": "You're in the hot seat for a round of 'Would You Rather'"
-          },
-          {
-              "rank": "13",
-              "name": "Make a Rule",
-              "instructions": "Make a global rule for the current game!"
-          }
-        ]
-      }
-    ]
-  },
-
-  {
-    gameName: "Shitty Game",
-    admin: "Some Dude",
-    forkedFrom: "Some Dude",
-    created: new Date(Date.now()),
-    ratings: [],
-    saved: true,  // users collection
-    public: false,
-    versions: [
-      {
-        versionName: "init",
-        date: new Date(Date.now()),
-        rules: [
-          {
-              "rank": "1",
-              "name": "Chase and Replace",
-              "instructions": "Everybody drinks! If anyone is feeling bold, take a shot and a chaser. Then, choose a rank (other than King and Ace) and change the rule for that card."
-          },
-          {
-              "rank": "2",
-              "name": "asdfasdf",
-              "instructions": "asdfasdf."
-          },
-          {
-              "rank": "3",
-              "name": "asdfasdf",
-              "instructions": "asdfasdf"
-          },
-          {
-              "rank": "4",
-              "name": "Floor",
-              "instructions": "Last person to put a hand on the floor drinks."
-          },
-          {
-              "rank": "5",
-              "name": "Guys",
-              "instructions": "All boys drink."
-          },
-          {
-              "rank": "6",
-              "name": "Chicks",
-              "instructions": "All girls drink."
-          },
-          {
-              "rank": "7",
-              "name": "asdfadsf",
-              "instructions": "asdfasdf"
-          },
-          {
-              "rank": "8",
-              "name": "asdfasdf",
-              "instructions": "asdfasdf"
-          },
-          {
-              "rank": "9",
-              "name": "asdfasdfy",
-              "instructions": "asdfasdf"
-          },
-          {
-              "rank": "10",
-              "name": "werwetewr",
-              "instructions": "ewrtwert."
-          },
-          {
-              "rank": "11",
-              "name": "wertewrt",
-              "instructions": "oiewruthjwerg"
-          },
-          {
-              "rank": "12",
-              "name": "oiawue45ewrt",
-              "instructions": "elritu3t4er"
           },
           {
               "rank": "13",
@@ -454,33 +463,20 @@ db.User
     .then(data => {
       console.log(data.length + " records inserted into Game collection!");
 
-      //grab all games that are "original" and put them in an array
-      db.Game.find({"forkedFrom": "Original"}).then((data) => {
-        const gameIDs = data.map(game => game._id)
-
-        
-      
-        //loop through all users to add any games created by them or any default/original games
-        for (let i in data) {
-          // create array of games containing any games mathcing userename as well as all default games and remove any duplicatres
-          let gamesToAdd = [data[i]._id, ...gameIDs.filter(id => id !== data[i]._id)]
-          console.log(gamesToAdd);
-          db.User
-          //push created array into users games
-            .update({"userName": data[i].admin}, { $push: { games: { $each: gamesToAdd } } }, {new: true} )
-
-            .then(() => {
-                console.log(`${data[i]._id} inserted into ${data[i].admin}'s games!`);
-                // if (i == data.length - 1) {
-                //   process.exit(0);
-                // }
-            })
-            .catch(err => {
-                console.error(err);
-                process.exit(1);
-            });
-        }
-      });
+      for (let i in data) {
+        db.User
+          .update({"userName": data[i].admin}, { $push: { games: data[i]._id }, }, {new: true} )
+          .then(() => {
+            console.log(`${data[i]._id} inserted into ${data[i].admin}'s games!`);
+            if (i == data.length - 1) {
+              process.exit(0);
+            }
+          })
+          .catch(err => {
+            console.error(err);
+            process.exit(1);
+          });
+      }
     
     })
     .catch(err => {
