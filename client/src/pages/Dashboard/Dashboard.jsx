@@ -96,6 +96,7 @@ class Dashboard extends Component {
       games,
       deckEmpty: false,
       currentGame: selectedGame,
+      lookingAt: selectedGame,
       gameName: selectedGame.gameName,
       versions: selectedGame.versions,
       versionIndex: selectedVersion,
@@ -104,8 +105,7 @@ class Dashboard extends Component {
       oldRules: rules || selectedGame.versions[selectedVersion].rules,
       kingRules: [],
       usedKAs: [],
-      newAce: false,
-      clearedFields: false
+      newAce: false
     });
   }
 

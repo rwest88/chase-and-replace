@@ -196,7 +196,7 @@ const gameSeed = [
           }, 
           {
               "name" : "Intro[DEUCE]",
-              "instructions" : "Give us your elevator pitch!",
+              "instructions" : "Give us your elevator pitch! (Or tell us more about yourself)",
               "rank" : "2"
           }, 
           {
@@ -226,7 +226,7 @@ const gameSeed = [
           }, 
           {
               "rank" : "8",
-              "name" : "Authentic8ion",
+              "name" : "Authentication",
               "instructions" : "Explain either (1) how passport.js works, (2) any other auth packages you've  used, or (3) meet us after class to help us set up Google/Facebook Auth."
           }, 
           {
@@ -266,7 +266,7 @@ const gameSeed = [
     "_id" : "JavaScript rwest88 137331",
     "ratings" : [],
     "public" : true,
-    "gameName" : "RVA js",
+    "gameName" : "RVA.js",
     "admin" : "rwest88",
     "forkedFrom" : "rwest88",
     "created" : new Date(Date.now()),
@@ -301,7 +301,7 @@ const gameSeed = [
           }, 
           {
               "name" : "Chris",
-              "instructions" : "Chirs must drink constantly",
+              "instructions" : "Chris must drink constantly",
               "rank" : "6"
           }, 
           {

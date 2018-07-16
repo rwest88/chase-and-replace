@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Nav from "../../components/Nav";
 import { Redirect } from "react-router-dom";
 import "./CreateEditGame.css";
-import cards from "../Dashboard/cards.json";
+// import cards from "../Dashboard/cards.json";
 import games from "../Dashboard/games.json";
 import newGameTemplate from "../Dashboard/newGameTemplate.json";
 import API from "../../utils/API";
@@ -15,7 +15,7 @@ class CreateEditGame extends Component {
   // ==============
 
   state = { // SHRINK THIS?
-    cards,
+    // cards,
     games,
     newGameRules: newGameTemplate,
     usedKAs: [],
@@ -227,7 +227,7 @@ class CreateEditGame extends Component {
   }
 
   updateVersion = () => {
-    let {newGameRules, versionName, currentGame, currentVersion, versions, vers, versionIndex, changedInput} = this.state;
+    let {newGameRules, versionName, currentGame, versions, vers, versionIndex, changedInput} = this.state;
     
     if (vers < 1) return window.alert("You cannot overwrite the original version!");
     if (!changedInput && versionName !== "[NEW]") return window.alert("You didn't change anything!");
