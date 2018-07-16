@@ -104,6 +104,27 @@ class Dashboard extends Component {
     });
   }
 
+  renderIntro() {
+    return (
+      <div>
+        <h4 className="welcome">Welcome to Chase and Replace!</h4>
+        <br />
+        <p>Chase and Replace is a variation on the drinking game, <a href="https://en.wikipedia.org/wiki/Kings_(game)" target="_blank">Kings</a>.</p>
+        <p>Players take turns drawing cards and following instructions, however:</p>
+        <ul className="intro-list">
+          <li>The Ace is Special</li>
+          <li>The player drawing an Ace <em>changes a rule</em> for any card, Two through Queen</li>
+          <li>...Permanently!</li>
+          <li>Because of this, the game <em>evolves</em> the more it is played</li>
+          <li>As rules change, version history is saved (for premium users)</li>
+          <li>Premium users can create themed games and share them online!</li>
+        </ul>
+
+        <p>You will see instructions for each card in this window.</p>
+      </div>
+    )
+  }
+
   renderHUD() {
     const {currentCard, currentRule, usedKAs} = this.state;
 
@@ -120,7 +141,7 @@ class Dashboard extends Component {
         return (
           <form className="current-rule">
             <h1 className="king">Make a Rule!</h1>
-            <h3 className="global-rule">This will be a global rule for the current game.</h3>
+            <h3 className="global-rule">This will be a global rule for the current game.
             <div>
             <input
               type="text"
@@ -142,14 +163,20 @@ class Dashboard extends Component {
             <button 
               onClick={this.handleFormSubmit}>Submit
             </button>
+            </h3>
           </form>
         )
       case "1":
         return (
           <form className="current-rule">
           <h1 className="chase-replace">Chase and Replace!</h1>
-          <h3 className="change-card">Pick which card to change (indefinitely!)</h3>
-          <select value={this.state.replace} onChange={this.handleSelectChange}>
+          <h3 className="change-card">Everyone Drinks!<br />Choose a card to change (permanently!)
+          
+          <select 
+            className="ace-form-items"
+            value={this.state.replace} 
+            onChange={this.handleSelectChange}
+          >
             <option value="" disabled selected>Choose a rank...</option>
             {
               ['Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 
@@ -160,6 +187,7 @@ class Dashboard extends Component {
           </select>  
           <div>
           <input
+            className="ace-form-items"
             type="text"
             placeholder="Enter name..."
             name="ruleName"
@@ -169,6 +197,7 @@ class Dashboard extends Component {
           </div>
           <div>
           <textarea
+            className="ace-form-items"
             type="text"
             placeholder="Enter instructions..."
             name="ruleInstructions"
@@ -177,15 +206,22 @@ class Dashboard extends Component {
           />
           </div>
           <button 
+            className="ace-form-items"
             onClick={this.handleFormSubmit}>Submit
           </button>
+          </h3>
         </form>
         );
       default:
         return (
           <div className="current-rule">
             <h1 className="current-rule">{currentRule.name}</h1>
-            <h3 className={this.state.burnedCards.length ? "" : "hide"}>{currentRule.instructions}</h3>
+            <h3 
+              className={this.state.burnedCards.length ? 
+                (currentRule.instructions.length > 150) ? "over-150" : "" 
+               : "intro"}>
+              {currentRule.instructions || this.renderIntro()}
+            </h3>
           </div>
         );
     }
@@ -473,6 +509,15 @@ class Dashboard extends Component {
           <div className="decks">
             <img src={this.state.deckEmpty ? "./images/empty.png" : "./images/deck2.png"} 
                  className="deck" 
+                 style={!this.state.deckEmpty ?
+                        {top: (6.9 - (this.state.cards.length / 10)) + "%",
+                        backgroundColor: "rgb(33, 25, 17)",
+                        borderRight: (this.state.cards.length / 10) + "px solid rgb(51, 40, 29)",
+                        borderBottom: (this.state.cards.length / 5) + "px solid rgb(27, 22, 17)",
+                        height: 80 + parseFloat(this.state.cards.length / 10) + "%",
+                        } :
+                        {boxShadow: "0px 0px 0px 0px white"}
+                      }
                  onClick={() => this.drawCard()}/>
           </div>
           
@@ -480,7 +525,14 @@ class Dashboard extends Component {
             <img alt={this.state.currentCard.rank} 
                  src={this.state.currentCard.image} 
                  onClick={() => this.undo()}
+                //  onMouseEnter={() => this.setState({ hover: true })}
+                //  onMouseLeave={() => this.setState({ hover: false })}
                  className="current-card"/>
+            {/* <img alt="undo" src="./images/undo.png" 
+                 onClick={() => this.undo()} 
+                 onMouseEnter={() => this.setState({ hover: true })}
+                 onMouseLeave={() => this.setState({ hover: false })}
+                 className={this.state.hover ? "undo" : "undo"} /> */}
           </div>
           
           <div className="king-rules">
