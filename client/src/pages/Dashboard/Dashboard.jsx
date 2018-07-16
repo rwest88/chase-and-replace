@@ -511,9 +511,9 @@ class Dashboard extends Component {
                  className="deck" 
                  style={!this.state.deckEmpty ?
                         {top: (6.9 - (this.state.cards.length / 10)) + "%",
-                        backgroundColor: "rgb(56, 52, 45)",
-                        borderRight: (this.state.cards.length / 10) + "px solid rgb(56, 52, 45)",
-                        borderBottom: (this.state.cards.length / 5) + "px solid rgb(56, 52, 45)",
+                        backgroundColor: "rgb(33, 25, 17)",
+                        borderRight: (this.state.cards.length / 10) + "px solid rgb(51, 40, 29)",
+                        borderBottom: (this.state.cards.length / 5) + "px solid rgb(27, 22, 17)",
                         height: 80 + parseFloat(this.state.cards.length / 10) + "%",
                         } :
                         {boxShadow: "0px 0px 0px 0px white"}
