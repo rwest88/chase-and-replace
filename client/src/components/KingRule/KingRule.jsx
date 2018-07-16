@@ -2,7 +2,7 @@ import React from "react";
 import "./KingRule.css";
 
 const KingRule = props=>(
-<div className="game-rule dropdown">
+<div className="game-rule dropup">
       <img src={props.image}/>
       <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       {props.name}

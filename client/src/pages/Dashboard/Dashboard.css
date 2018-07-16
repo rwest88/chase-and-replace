@@ -118,8 +118,9 @@ html {
   grid-auto-rows:7.5vh;
   grid-column: 8/12;
   grid-row: 2/5;
+  height: 90%;
   text-align: center;
-  background-color: rgba(0, 255, 0, 0.693);
+  background-color: rgba(0, 255, 0, 0.593);
   box-shadow: 0px 0px 27px 5px rgba(0, 255, 0, 0.8);
   z-index: 3;
 }
@@ -138,11 +139,10 @@ html {
 .color.king {
   grid-column: 1/3;
   grid-row: 1/2;
-  padding: 0% 44%;
+  height: 80%;
   background-color: lime;
   box-shadow: 0px 0px 15px 5px lime;
   border: 5px outset rgba(0, 170, 0, 0.611);
-  /* box-shadow: 0px 0px 10px 10px lime; */
 }
 .scroll.king {
   grid-column: 1/3;
@@ -169,7 +169,7 @@ html {
   grid-row: 5/11;
   background-color: rgba(0, 100, 0, 0.693);
   box-shadow: 0px 0px 30px 10px rgba(0, 100, 0, 0.8);
-  z-index: 5;
+  z-index: 3;
 }
 .game-rules > .title {
   grid-column: 1/3;
@@ -181,7 +181,7 @@ html {
 .color.game {
   grid-column: 1/3;
   grid-row: 1/2;
-  padding: 0% 44%;
+  height: 80%;
   border: 5px outset rgba(0, 75, 0, 0.611);
   background-color: darkgreen;
   box-shadow: 0px 0px 10px 10px darkgreen;
@@ -202,6 +202,10 @@ html {
 }
 .game-rule {
   z-index: 3;
+  top: 3%;
+}
+.game-rule.dropdown {
+  z-index: 2001;
 }
 .game-rules > .game-rule > .btn {
   background-color: navy;
@@ -254,18 +258,34 @@ html {
   z-index: 100;
   transform: perspective(475px) rotateX(40deg) skew(-18deg);
   cursor: pointer;
-  background-color: lime;
-  border-radius: 12px;
-  box-shadow: 1px 1px 15px 3px  lime;
+  border-radius: 6%;
+  box-shadow: 1px 1px 15px 5px  rgb(221, 255, 0);
+}
+.deck:hover {
+  box-shadow: 1px 1px 15px 4px lime;
 }
 .current-cards {
+  position: relative;
   grid-column: 5/8;
   grid-row: 2/7;
   text-align: center;
   z-index: 4;
 }
 .current-card {
+  /* position: relative; */
   height: 100%;
+}
+.undo {
+  position: fixed;
+  top: 18%;
+  left: 35.8%;
+  height: 10%;
+  background-color: #eee;
+  padding: 10px;
+  border: 5px solid black;
+  border-radius: 20%;
+  /* width: 50%; */
+  z-index: 5;
 }
 .burned-cards {
   grid-column: 1/5;
@@ -331,7 +351,7 @@ h1 {
 }
 .current-rule > h1 {
   position: relative;
-  font-size: 1.3em;
+  font-size: 1.5em;
   color: #ffd65f;
   text-shadow: 2px 2px 2px black;
 }
@@ -345,6 +365,9 @@ h1 {
   color: #ccc;
   text-shadow: 1px 2px 5px #292826;
 }
+.over-150 {
+  font-size: 1.3rem;
+}
 .current-rule > .chase-replace {
   top: -10%;
   font-size: 2.5em;
@@ -356,12 +379,35 @@ h1 {
   font-size: 1.8em;
 }
 .current-rule > .change-card {
-  top: 0%;
+  top: -10%;
   font-size: 1.2em;
 }
 .current-rule > .global-rule {
   top: 12%;
   font-size: 1.2em;
+}
+.current-rule > .intro {
+  top: -320%;
+  font-size: 1em;
+  text-shadow: 1px 1px 1px black;
+}
+.welcome {
+  color: gold;
+}
+.intro-list {
+  text-align: start;
+}
+.intro-list > li:nth-child(odd) {
+  color: gold;
+}
+em {
+  color: gold;
+}
+input {
+  width: 64%;
+}
+textarea {
+  width: 80%;
 }
 
 @media screen and (max-aspect-ratio: 100/52) {
