@@ -35,22 +35,16 @@ class SearchGames extends Component {
     sessionStorage.setItem('gameState', JSON.stringify(this.state));
   }
 
-  loadGame = selectedGame => {
-    console.log(this.state.burnedCards);
-    console.log(this.state.cards);
-
+  loadGame = (selectedGame, selectedVersion, createdNew) => {
+    
+    let {games} = this.state;
     let rules;
-    if (!selectedGame) {
-      selectedGame = games[0]; 
-      rules = games[0].rules;
-    }
-    console.log(this.state.usedKAs.length);
-    if (this.state.usedKAs.length > 0 && (this.state.currentGame)) {
-      if (window.confirm(`Save current rule changes to ${this.state.currentGame.gameName || selectedGame.gameName}?`)) {
-        localStorage.setItem(`versionState: ${this.state.currentGame.gameName || selectedGame.gameName}`, JSON.stringify(this.state.rules));
+
+    if (this.state.newAce === true && (this.state.currentGame)) {
+      if (window.confirm(`Save current rule changes to ${this.state.currentGame.gameName}?  \n\n(Note: This will not create a new version. Click 'Save Current as Version' when you are happy with the set of rules.)`)) {
+        localStorage.setItem(`versionState: ${this.state.currentGame.gameName}`, JSON.stringify(this.state.rules));
       }
     }
-
     
     if (localStorage.getItem(`versionState: ${selectedGame.gameName}`)) {
       if (window.confirm(`Load previous rule changes to ${selectedGame.gameName}?`)) {
@@ -58,22 +52,32 @@ class SearchGames extends Component {
         rules = localObject;
       }
     }
+
+    if (selectedGame.gameName === "[Random Mix!]") {
+      games = games.filter(game => game.gameName !== "[Random Mix!]");
+      games = this.addRandom(games);
+    }
+
+    if (selectedVersion === undefined) var selectedVersion = selectedGame.versions.length - 1;
+
     this.setState({
       redirectTo: "/dashboard",
       cards: this.shuffleArray(this.state.cards.concat(this.state.burnedCards || {})),
       burnedCards: [],
       currentRule: {},
       currentCard: {},
-      games,
       deckEmpty: false,
       currentGame: selectedGame,
-      rules: rules || selectedGame.versions[0].rules,
-      kingRules:[],
+      gameName: selectedGame.gameName,
+      versions: selectedGame.versions,
+      versionIndex: selectedVersion,
+      currentVersion: selectedGame.versions[selectedVersion],
+      rules: rules || selectedGame.versions[selectedVersion].rules,
+      oldRules: rules || selectedGame.versions[selectedVersion].rules,
+      kingRules: [],
       usedKAs: [],
-      replace: "2", // temporary solution
-      
+      newAce: false
     });
-    setTimeout(() => console.log("loaded game", this.state.currentGame), 2000);
   }
 
   shuffleArray = (array) => {

@@ -44,6 +44,7 @@ class CreateEditGame extends Component {
 
   loadGame = (selectedGame, selectedVersion, createdNew) => {
     
+    let {games} = this.state;
     let rules;
 
     if (this.state.newAce === true && (this.state.currentGame)) {
@@ -59,6 +60,11 @@ class CreateEditGame extends Component {
       }
     }
 
+    if (selectedGame.gameName === "[Random Mix!]") {
+      games = games.filter(game => game.gameName !== "[Random Mix!]");
+      games = this.addRandom(games);
+    }
+
     if (selectedVersion === undefined) var selectedVersion = selectedGame.versions.length - 1;
 
     this.setState({
@@ -67,7 +73,7 @@ class CreateEditGame extends Component {
       burnedCards: [],
       currentRule: {},
       currentCard: {},
-      games: createdNew ? this.state.games.concat(selectedGame) : this.state.games, // lets you load newly created game
+      games: createdNew ? games.concat(selectedGame) : games, // lets you load newly created game
       deckEmpty: false,
       currentGame: selectedGame,
       gameName: selectedGame.gameName,
@@ -80,6 +86,40 @@ class CreateEditGame extends Component {
       usedKAs: [],
       newAce: false
     });
+  }
+
+  addRandom = games => {
+    if (this.state.username && games.length > 1) {
+      const recentRules = [{rank: "1"}];
+      const allRules = [{rank: "1"}];
+      for (var i = 0; i < 11; i++) {
+        let randIdx = Math.floor(Math.random() * games.length);
+        recentRules.push(games[randIdx].versions[games[randIdx].versions.length - 1].rules[i + 1]);
+        allRules.push(games[randIdx].versions[Math.floor(Math.random() * games[randIdx].versions.length)].rules[i + 1]);
+      }
+      recentRules.push({rank: "13", name: "Make a Rule", instructions: "Make a Global Rule for the current game!"});
+      allRules.push({rank: "13", name: "Make a Rule", instructions: "Make a Global Rule for the current game!"});
+
+      games.push({
+        gameName: "[Random Mix!]",
+        created: new Date(Date.now()),
+        admin: this.state.username,
+        forkedFrom: this.state.username,
+        versions: [
+          {
+            rules: allRules,
+            date: new Date(Date.now()),
+            versionName: "entire history"
+          },
+          {
+            rules: recentRules,
+            date: new Date(Date.now()),
+            versionName: "most recent"
+          }
+        ],
+      });
+    }
+    return games;
   }
 
   shuffleArray = (array) => {
@@ -128,7 +168,7 @@ class CreateEditGame extends Component {
     else {
       const entry = window.prompt(`Enter the name for your new game! (current name: ${versionName}) \n\n 13 character max`);
       API.saveNewGame({
-        _id: versionName + " " + username + " " + Math.floor(Math.random() * 1000000),
+        _id: (entry || versionName) + " " + username + " " + Math.floor(Math.random() * 1000000),
         gameName: entry || versionName,
         admin: username,
         forkedFrom: username,
@@ -152,9 +192,11 @@ class CreateEditGame extends Component {
 
   deleteGame = () => {
     const {currentGame, username} = this.state;
-    API.deleteGame(currentGame._id, username).then(res => {
-      this.loadGame(this.state.games[0]);
-    })
+    if (window.confirm(`Are you sure you want to delete "${currentGame.gameName}"? This cannot be undone!`)) {
+      API.deleteGame(currentGame._id, username).then(res => {
+        this.loadGame(this.state.games[0]);
+      });
+    }
   }
 
   pushBlankVersion = (obj, didMount, createNew) => {
@@ -188,7 +230,9 @@ class CreateEditGame extends Component {
     
     if (vers < 1) return window.alert("You cannot overwrite the original version!");
     if (!changedInput && versionName !== "[NEW]") return window.alert("You didn't change anything!");
-
+    if (currentGame.gameName === "[Random Mix!]") {
+      if (window.confirm("Version history cannot be saved. Do you want to save the current rules as a new game?")) return this.createNewGame();
+    }
     const errors = [];
     for (let i = 1; i < newGameRules.length - 1; i++) {
       if (!newGameRules[i].name) errors.push(`${newGameRules[i].rank}: name`);
