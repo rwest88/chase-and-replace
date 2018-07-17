@@ -347,6 +347,92 @@ const gameSeed = [
     ],
     "__v" : 0
   },
+
+  {
+    "_id" : "Ryan's Dankness rwest88 152700",
+    "ratings" : [],
+    "public" : false,
+    "gameName" : "Ryan's Dankness",
+    "admin" : "rwest88",
+    "forkedFrom" : "rwest88",
+    "created" : "2018-07-17T00:57:20.490Z",
+    "saved" : true,
+    "versions" : [ 
+      {
+        "rules" : [ 
+          {
+              "rank" : "1"
+          }, 
+          {
+              "name" : "Pew Pew",
+              "instructions" : "Pick an opponent. Both players then pat their hips twice and make a choice, continuously and in rhythm. (clap clap [choice], clap clap [choice]). The choices are Reload, Block, and Shoot, all done with hand signals. He who shoots someone during reload, wins, and the other person must drink. (You cannot effectively shoot without prior reload. You may decide to play with one-round magazines or two-round.)",
+              "rank" : "2"
+          }, 
+          {
+              "rank" : "3",
+              "name" : "Freestyle",
+              "instructions" : "Have someone kick a beat, then go HAM"
+          }, 
+          {
+              "rank" : "4",
+              "name" : "Floor",
+              "instructions" : "Do some break-dancing real quick."
+          }, 
+          {
+              "rank" : "5",
+              "name" : "I'm Still Alive",
+              "instructions" : "Sing a Pearl Jam lyric, then drink. You must now say everything in Eddie Vedder's singing style until another 10 is drawn, and if you break character, you drink."
+          }, 
+          {
+              "rank" : "6",
+              "name" : "Sickest Skateboard",
+              "instructions" : "Describe your vision of the sickest board."
+          }, 
+          {
+              "rank" : "7",
+              "name" : "Kevin Bacon",
+              "instructions" : "Like the degrees of separation to Kevin Bacon, pick two players to each name an actor.  You must then chain them together through co-stars of movies. [Ex.: Jim Carrey to Juliette Lewis: Eternal Sunshine (Carrey and Winslet), Titanic (Winslet and DiCap), Gilbert Grape (DiCap and Lewis)]"
+          }, 
+          {
+              "rank" : "8",
+              "name" : "Paintball",
+              "instructions" : "Describe your vision of the sweetest paintball gun."
+          }, 
+          {
+              "rank" : "9",
+              "name" : "Meow Master",
+              "instructions" : "You are the meow master! Whenever you meow, the last person to respond with a meow must drink."
+          }, 
+          {
+              "rank" : "10",
+              "name" : "Sentences",
+              "instructions" : "Starting with you and proceeding clockwise, players each say one word in attempt to tell a story. "
+          }, 
+          {
+              "rank" : "11",
+              "name" : "Truth or Dare",
+              "instructions" : "Pick another player, and ask them \"truth or dare\", then make them uncomfortable."
+          }, 
+          {
+              "rank" : "12",
+              "name" : "Question Master",
+              "instructions" : "You are the Question Master! Anytime you ask somebody a question, if he/she fails to respond with a question, he/she must drink."
+          }, 
+          {
+              "rank" : "13",
+              "name" : "Make a Rule",
+              "instructions" : "Make a Global Rule for the current game!"
+          }
+        ],
+        "_id" : ObjectId("5b4d3ef064cc483378395276"),
+        "versionName" : "init",
+        "date" : ISODate("2018-07-17T00:57:20.490Z")
+      }
+    ],
+    "__v" : 0
+  },
+
+
   {
     gameName: "Star Wars",
     admin: "n8morton",

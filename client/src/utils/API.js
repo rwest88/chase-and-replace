@@ -37,6 +37,9 @@ export default {
   deleteGame: function(id, user) {
     return axios.delete("api/games/" + id + "/" + user);
   },
+  togglePublic: function(id) {
+    return axios.put("api/games", id);
+  },
   deleteVersion: function(dataObj) {
     return axios.post("/api/games/versions", dataObj);
   },

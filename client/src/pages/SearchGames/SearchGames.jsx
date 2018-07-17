@@ -8,7 +8,7 @@ import games from "../Dashboard/games.json";
 
 class SearchGames extends Component {
 
-  state = { games, userResults: [], lookingAt: {gameName: "blank"}, gamesByUser: [[{gameName: "blank"}]], titleResults: [{gameName: "blank"}]};
+  state = { games, userResults: [], showBadges: [false], lookingAt: {gameName: "blank"}, gamesByUser: [[{gameName: "blank"}]], titleResults: [{gameName: "blank"}]};
 
   // componentWillMount() {
   //   if (!sessionStorage.getItem('gameState')) {
@@ -27,6 +27,8 @@ class SearchGames extends Component {
     sessionObject.redirectTo = false;
     sessionObject.gamesByUser = [[{gameName: "blank"}]];
     sessionObject.titleResults = [{gameName: "blank"}];
+    sessionObject.showBadges = [];
+    for (let i in sessionObject.games) sessionObject.showBadges.push(false);
     this.setState(sessionObject, () => this.searchDB());
   }
 
@@ -124,6 +126,34 @@ class SearchGames extends Component {
       .then(gameRes => this.setState({titleResults: gameRes.data}));
   }
 
+  togglePublic = (id) => {
+    API.togglePublic({gameID: id})
+      .then(res => {
+        console.log(res);
+        if (res.data.nModified > 0) {
+          let {games, showBadges} = this.state;
+          for (let i in games) {
+            if (games[i]._id === id) {
+              games[i].public = !games[i].public;
+              if (!games[i].public) showBadges[i] = false;
+            }
+          }
+          this.setState({games, showBadges});
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
+  toggleBadges = index => {
+    let {showBadges} = this.state;
+    showBadges[index] = !showBadges[index];
+    this.setState({showBadges});
+  }
+
+  addBadge = (btnType, badge, id) => {
+
+  }
+
   forkGame = id => {
     API.getGame(id)
       .then(game => {
@@ -155,39 +185,65 @@ class SearchGames extends Component {
           <div className="row">
           
             <div className="col-sm-4">
-              {
-                this.state.games.slice(0, -1).map((game, index) => (
-                  <div className="card text-white bg-dark">
-                <div className="card-header" id={`heading-${index + 7}`}>
-                  <h5 className="mb-0">
-                    <a className="collapsed" role="button" data-toggle="collapse" href={`#collapse-${index + 7}`} aria-expanded="false" aria-controls={`collapse-${index + 7}`}>
-                      {game.gameName}
-                    </a>
-                  </h5>
-                </div>
-                <div id={`collapse-${index + 7}`} className="collapse" data-parent="#accordion" aria-labelledby={`heading-${index + 7}`}>
-                  <div className="card-body">
-                    A game about stuff. 
-                    <br /><br />
-                    [tags]
-                    <br /><br />
-                    <button 
-                    // type="button"
-                    className="btn btn-primary"
-                    >
-                    Add Tags
-                  </button>
-                  <button 
-                    // type="button"
-                    className="btn btn-primary"
-                    >
-                    Make Public
-                  </button>
+              {this.state.games.slice(0, -1).map((game, index) => (
+                <div className="card text-white bg-dark">
+                  <div className="card-header" id={`heading-${index + 7}`}>
+                    <h5 className="mb-0">
+                      <a className="collapsed" role="button" data-toggle="collapse" href={`#collapse-${index + 7}`} aria-expanded="false" aria-controls={`collapse-${index + 7}`}>
+                        {game.gameName}
+                      </a>
+                    </h5>
+                  </div>
+                  <div id={`collapse-${index + 7}`} className="collapse" data-parent="#accordion" aria-labelledby={`heading-${index + 7}`}>
+                    <div className="card-body">
+                      A game about stuff. 
+                      {game.public ? (
+                        <React.Fragment>
+                        <br /><br />
+                        <button className="btn btn-primary" onClick={() => this.toggleBadges(index)}>
+                          {this.state.showBadges[index] ? "Finish adding tags" : "Add tags..."}
+                        </button>
+                        </React.Fragment>
+                      ) : ""
+                      }
+                      <br /><br />
+                      <div className={this.state.showBadges[index] && game.public ? "" : "hide"}>
+                        <span onClick={() => this.addBadge("primary")} class="btn badge badge-primary">Interactive</span>
+                        <span onClick={() => this.addBadge("primary")} class="btn badge badge-primary">Small Groups</span>
+                        <span onClick={() => this.addBadge("primary")} class="btn badge badge-primary">Large Groups</span>
+                        <span onClick={() => this.addBadge("primary")} class="btn badge badge-primary">Themed</span><br />
+                        <span onClick={() => this.addBadge("secondary")} class="btn badge badge-secondary">Cerebral</span>
+                        <span onClick={() => this.addBadge("secondary")} class="btn badge badge-secondary">Trivial</span>
+                        <span onClick={() => this.addBadge("secondary")} class="btn badge badge-secondary">Pop-Culture</span><br />
+                        <span onClick={() => this.addBadge("success")} class="btn badge badge-success">Family-Friendly</span>
+                        <span onClick={() => this.addBadge("success")} class="btn badge badge-success">Social</span>
+                        <span onClick={() => this.addBadge("success")} class="btn badge badge-success">Conversational</span><br />
+                        <span onClick={() => this.addBadge("danger")} class="btn badge badge-danger">Adult</span>
+                        <span onClick={() => this.addBadge("danger")} class="btn badge badge-danger">Insulting</span>
+                        <span onClick={() => this.addBadge("danger")} class="btn badge badge-danger">Brutal</span><br />
+                        <span onClick={() => this.addBadge("warning")} class="btn badge badge-warning">Physical</span>
+                        <span onClick={() => this.addBadge("warning")} class="btn badge badge-warning">Challenging</span>
+                        <span onClick={() => this.addBadge("warning")} class="btn badge badge-warning">Technical</span><br />
+                        <span onClick={() => this.addBadge("info")} class="btn badge badge-info">Silly</span>
+                        <span onClick={() => this.addBadge("info")} class="btn badge badge-info">Funny</span>
+                        <span onClick={() => this.addBadge("info")} class="btn badge badge-info">Surreal</span>
+                        <span onClick={() => this.addBadge("info")} class="btn badge badge-info">Serious</span>
+                        <span onClick={() => this.addBadge("info")} class="btn badge badge-info">Depressing</span><br />
+                        <span onClick={() => this.addBadge("light")} class="btn badge badge-light">Low-Key</span>
+                        <span onClick={() => this.addBadge("light")} class="btn badge badge-light">Relaxing</span>
+                        <span onClick={() => this.addBadge("light")} class="btn badge badge-light">Pensive</span><br />
+                        <span onClick={() => this.addBadge("dark")} class="btn badge badge-dark">Loud</span>
+                        <span onClick={() => this.addBadge("dark")} class="btn badge badge-dark">Rambunctious</span>
+                        <span onClick={() => this.addBadge("dark")} class="btn badge badge-dark">Painful</span>
+                        <br /><br />
+                      </div>
+                      <button className="btn btn-primary" onClick={() => this.togglePublic(game._id)}>
+                        {game.public ? "Make Private" : "Make Public"}
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-                ))
-              }
+              ))}
 
             </div>
 

@@ -222,9 +222,14 @@ class Dashboard extends Component {
           <div className="current-rule">
             <h1 className="current-rule">{currentRule.name}</h1>
             <h3 
-              className={this.state.burnedCards.length ? 
-                (currentRule.instructions.length > 150) ? "over-150" : "" 
-               : "intro"}>
+              className={
+                this.state.burnedCards.length ? 
+                  (currentRule.instructions.length > 150) ? 
+                    (currentRule.instructions.length > 250) ?
+                      "over-250"
+                    : "over-150" 
+                  : "" 
+                : "intro"}>
               {currentRule.instructions || this.renderIntro()}
             </h3>
           </div>

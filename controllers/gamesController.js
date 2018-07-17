@@ -73,6 +73,16 @@ module.exports = {
   //   .then(dbm => res.json(dbm))
   //   .catch(err => res.status(422).json(err));
   // },
+  togglePublic: function(req, res) {
+    db.Game.findOne({_id: req.body.gameID})
+      .then(game => {
+        console.log(game.public);
+        db.Game.update({_id: req.body.gameID}, {$set: {public: !game.public}})
+          .then(dbModel => res.json(dbModel))
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
+  },
   pushVersion: function(req, res) {
     db.Game
       .update( { _id : req.body.gameID }, { $push : { versions : { $each : [req.body.version], $sort : { date : 1 } } } } )
