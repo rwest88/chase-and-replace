@@ -27,15 +27,23 @@ module.exports = {
       .catch(err => console.log(err));
   },
   getGamesByUser: function(req, res) {
-    db.Game
+    if (req.body.search) {
+      db.Game
+      .find( { $and: [ {_id: { $in: req.body.gameIDs } }, { public: true } ] } )
+      .sort({ created: 1 })
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+    } else {
+      db.Game
       .find( { _id: { $in: req.body.gameIDs } } )
       .sort({ created: 1 })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
+    }
   },
   searchGamesByName: function(req, res) {
     db.Game
-      .find({gameName: { $regex: req.params.searchTerm, $options: "i" } } )
+      .find( { $and: [ {gameName: { $regex: req.params.searchTerm, $options: "i" } }, { public: true } ] } )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
