@@ -221,6 +221,12 @@ class SearchGames extends Component {
       .catch(err => console.log(err));
   }
 
+  addToSearch = (badge) => {
+    let {searchTags} = this.state;
+    if (searchTags) searchTags = searchTags + ", " + badge.name;
+    else searchTags = badge.name;
+    this.setState({searchTags});
+  }
 
   forkGame = id => {
     API.getGame(id)
@@ -448,7 +454,8 @@ class SearchGames extends Component {
                                 {badge.name ? badge.name : <br />}
                               </span>
                             ))}
-                            <input className="form-control" type="text" />
+                            <br /><br />
+                            <input className="form-control" name="searchTags" value={this.state.searchTags} placeholder="Tags..." onChange={this.handleInputChange} type="text" />
                           </div>
                           <button type="submit" className="btn btn-primary"><i className="fas fa-search"></i></button>
                         </form>
