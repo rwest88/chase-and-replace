@@ -9,6 +9,9 @@
 .card {
   text-align: start;
 }
+.search-dropdown {
+  color: #eee;
+}
 StarRatingComponent {
   height: 888%;
 }
