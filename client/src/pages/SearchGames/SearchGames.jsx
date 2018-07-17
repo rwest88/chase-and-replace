@@ -5,6 +5,7 @@ import API from "../../utils/API";
 import "./SearchGames.css";
 import cards from "../Dashboard/cards.json";
 import games from "../Dashboard/games.json";
+import StarRatingComponent from "react-star-rating-component";
 
 class SearchGames extends Component {
 
@@ -110,7 +111,7 @@ class SearchGames extends Component {
         if (userRes.data.length > 0) {
           let users = [];
           for (let i in userRes.data) {
-            API.getGamesByUser({gameIDs: userRes.data[i].games})
+            API.getGamesByUser({gameIDs: userRes.data[i].games, search: true})
             .then(gameRes => {
               users.push(gameRes.data)
               console.log(users);
@@ -235,6 +236,13 @@ class SearchGames extends Component {
       }).catch(err => console.log(err));
   }
 
+  onStarClick = (nextValue, prevValue, name) => {
+    this.setState({rating: nextValue}, () => {
+      console.log(name);
+    });
+    
+  }
+
   render() {
     if (this.state.redirectTo) {
       return <Redirect to={this.state.redirectTo}/>;
@@ -314,9 +322,14 @@ class SearchGames extends Component {
                 </div>
                 <div id="collapse-4" className="collapse" data-parent="#accordion" aria-labelledby="heading-4">
                   <div className="card-body">
-                    A game about stuff. <i class="btn fas fa-edit" style={{float: "right"}}></i>
+                    A game about stuff.
                     <br /><br />
-                    [tags]
+                    Tags: 
+                      {this.state.badges.filter(badge => this.state.lookingAt.tags.includes(badge.name)).map(badge => (
+                        <span className={badge.classes}>
+                          {badge.name ? badge.name : <br />}
+                        </span>
+                      ))}
                     <br /><br />
                     <button 
                     // type="button"
@@ -338,7 +351,22 @@ class SearchGames extends Component {
                 </div>
                 <div id="collapse-5" className="collapse" data-parent="#accordion" aria-labelledby="heading-5">
                   <div className="card-body">
-                    STAR STAR STAR STAR
+                  
+                  <StarRatingComponent
+    name={"starRating"} /* name of the radio input, it is required */
+    value={this.state.rating} /* number of selected icon (`0` - none, `1` - first) */
+    starCount={10} /* number of icons in rating, default `5` */
+    onStarClick={this.onStarClick} /* on icon click handler */
+    /* on icon hover handler */
+    // onStarHoverOut={Function(nextValue, prevValue, name)} /* on icon hover out handler */
+    // renderStarIcon={Function(nextValue, prevValue, name)} /* it should return string or react component */
+    // renderStarIconHalf={Function(nextValue, prevValue, name)} /* it should return string or react component */
+    // starColor={String} /* color of selected icons, default `#ffb400` */
+    // emptyStarColor={String} /* color of non-selected icons, default `#333` */
+    // editing={Boolean} /* is component available for editing, default `true` */
+/>
+
+
                   </div>
                 </div>
               </div>
@@ -396,7 +424,7 @@ class SearchGames extends Component {
                   <div className="btn-group" role="group">
                     <div className="dropdown dropdown-lg">
                       <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span className="caret">options</span></button>
-                      <div className="dropdown-menu dropdown-menu-right" role="menu">
+                      <div className="dropdown-menu dropdown-menu-right search-dropdown" role="menu">
                         <form className="form-horizontal" role="form">
                           <div className="form-group">
                             <label for="filter">Filter by</label>
@@ -408,12 +436,18 @@ class SearchGames extends Component {
                               <option value="4">Most commented</option>
                             </select>
                           </div>
-                          <div className="form-group">
+                          {/* <div className="form-group">
                             <label for="contain">Author</label>
                             <input className="form-control" type="text" />
-                          </div>
+                          </div> */}
                           <div className="form-group">
-                            <label for="contain">Contains the words</label>
+                            <label for="contain">Contains tags:</label>
+                            <br />
+                            {this.state.badges.map(badge => (
+                              <span className={badge.classes} onClick={() => this.addToSearch(badge)}>
+                                {badge.name ? badge.name : <br />}
+                              </span>
+                            ))}
                             <input className="form-control" type="text" />
                           </div>
                           <button type="submit" className="btn btn-primary"><i className="fas fa-search"></i></button>
