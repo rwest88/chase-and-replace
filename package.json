@@ -27,7 +27,6 @@
     "express": "^4.15.4",
     "express-session": "^1.15.6",
     "if-env": "^1.0.4",
-    "lodash": "^4.17.10",
     "moment": "^2.22.2",
     "mongoose": "^5.0.17",
     "morgan": "^1.9.0",

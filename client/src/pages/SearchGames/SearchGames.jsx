@@ -5,7 +5,6 @@ import API from "../../utils/API";
 import "./SearchGames.css";
 import cards from "../Dashboard/cards.json";
 import games from "../Dashboard/games.json";
-import _ from "lodash";
 
 class SearchGames extends Component {
 
@@ -153,42 +152,6 @@ class SearchGames extends Component {
   }
 
   populateBadgesArray = obj => {
-    // const badges = [
-    //   <span onClick={() => this.addBadge("primary")} class="btn badge badge-primary">Interactive</span>,
-    //   <span onClick={() => this.addBadge("primary")} class="btn badge badge-primary">Small Groups</span>,
-    //   <span onClick={() => this.addBadge("primary")} class="btn badge badge-primary">Large Groups</span>,
-    //   <span onClick={() => this.addBadge("primary")} class="btn badge badge-primary">Themed</span>,
-    //   <br />,
-    //   <span onClick={() => this.addBadge("secondary")} class="btn badge badge-secondary">Cerebral</span>,
-    //   <span onClick={() => this.addBadge("secondary")} class="btn badge badge-secondary">Trivial</span>,
-    //   <span onClick={() => this.addBadge("secondary")} class="btn badge badge-secondary">Pop-Culture</span>,
-    //   <br />,
-    //   <span onClick={() => this.addBadge("success")} class="btn badge badge-success">Family-Friendly</span>,
-    //   <span onClick={() => this.addBadge("success")} class="btn badge badge-success">Social</span>,
-    //   <span onClick={() => this.addBadge("success")} class="btn badge badge-success">Conversational</span>,
-    //   <br />,
-    //   <span onClick={() => this.addBadge("danger")} class="btn badge badge-danger">Adult</span>,
-    //   <span onClick={() => this.addBadge("danger")} class="btn badge badge-danger">Insulting</span>,
-    //   <span onClick={() => this.addBadge("danger")} class="btn badge badge-danger">Brutal</span>,
-    //   <br />,
-    //   <span onClick={() => this.addBadge("warning")} class="btn badge badge-warning">Physical</span>,
-    //   <span onClick={() => this.addBadge("warning")} class="btn badge badge-warning">Challenging</span>,
-    //   <span onClick={() => this.addBadge("warning")} class="btn badge badge-warning">Technical</span>,
-    //   <br />,
-    //   <span onClick={() => this.addBadge("info")} class="btn badge badge-info">Silly</span>,
-    //   <span onClick={() => this.addBadge("info")} class="btn badge badge-info">Funny</span>,
-    //   <span onClick={() => this.addBadge("info")} class="btn badge badge-info">Surreal</span>,
-    //   <span onClick={() => this.addBadge("info")} class="btn badge badge-info">Serious</span>,
-    //   <span onClick={() => this.addBadge("info")} class="btn badge badge-info">Depressing</span>,
-    //   <br />,
-    //   <span onClick={() => this.addBadge("light")} class="btn badge badge-light">Low-Key</span>,
-    //   <span onClick={() => this.addBadge("light")} class="btn badge badge-light">Relaxing</span>,
-    //   <span onClick={() => this.addBadge("light")} class="btn badge badge-light">Pensive</span>,
-    //   <br />,
-    //   <span onClick={() => this.addBadge("dark")} class="btn badge badge-dark">Loud</span>,
-    //   <span onClick={() => this.addBadge("dark")} class="btn badge badge-dark">Rambunctious</span>,
-    //   <span onClick={() => this.addBadge("dark")} class="btn badge badge-dark">Painful</span>
-    // ];
 
     const badges = [
       {classes: "btn badge badge-primary", name: "Interactive"},
