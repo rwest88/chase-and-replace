@@ -10,12 +10,13 @@ mongoose.connect(
 
 const gameSeed = [
   {
+    _id: "Classic Kings Chase_Replacenson 837530",
     gameName: "Classic Kings",
     admin: "Chase_Replacenson",
     forkedFrom: "",
     created: new Date(Date.now()),
     ratings: [],
-    saved: true,  // users collection
+    tags: ["Interactive"],
     public: false,
     versions: [
       {
@@ -100,7 +101,7 @@ const gameSeed = [
     "admin" : "rwest88",
     "forkedFrom" : "",
     "created" : new Date(Date.now()),
-    "saved" : true,
+    "tags" : ["Interactive", "Small Groups"],
     "versions" : [ 
         {
           "rules" : [ 
@@ -185,7 +186,7 @@ const gameSeed = [
     "admin" : "rwest88",
     "forkedFrom" : "rwest88",
     "created" : new Date(Date.now()),
-    "saved" : true,
+    "tags" : ["Interactive"],
     "versions" : [ 
       {
         "rules" : [ 
@@ -270,7 +271,7 @@ const gameSeed = [
     "admin" : "rwest88",
     "forkedFrom" : "rwest88",
     "created" : new Date(Date.now()),
-    "saved" : true,
+    "tags" : ["Interactive"],
     "versions" : [ 
       {
         "rules" : [ 
@@ -356,7 +357,7 @@ const gameSeed = [
     "admin" : "rwest88",
     "forkedFrom" : "rwest88",
     "created" : "2018-07-17T00:57:20.490Z",
-    "saved" : true,
+    "tags" : ["Interactive"],
     "versions" : [ 
       {
         "rules" : [ 
@@ -424,9 +425,8 @@ const gameSeed = [
               "instructions" : "Make a Global Rule for the current game!"
           }
         ],
-        "_id" : ObjectId("5b4d3ef064cc483378395276"),
         "versionName" : "init",
-        "date" : ISODate("2018-07-17T00:57:20.490Z")
+        "date" : new Date(Date.now())
       }
     ],
     "__v" : 0
@@ -434,12 +434,13 @@ const gameSeed = [
 
 
   {
+    "_id" : "Star Wars n8morton 937458",
     gameName: "Star Wars",
     admin: "n8morton",
     forkedFrom: "",
     created: new Date(Date.now()),
     ratings: [],
-    saved: true,  // users collection
+    tags: ["Interactive"],
     public: false,
     versions: [
       {

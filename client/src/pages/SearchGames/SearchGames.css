@@ -1,3 +1,14 @@
+.col-sm-4 {
+  text-align: center;
+}
+.col-sm-4 > h1 {
+  font-family: 'Germania One', cursive;
+  color: gold;
+  text-shadow: 2px 2px 5px black;
+}
+.card {
+  text-align: start;
+}
 .dropdown.dropdown-lg .dropdown-menu {
   margin-top: -1px;
   padding: 6px 20px;

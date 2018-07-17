@@ -65,6 +65,7 @@ class Dashboard extends Component {
 
   loadGame = (selectedGame, selectedVersion) => {
 
+    console.log(selectedGame);
     let {games} = this.state;
     let rules;
 

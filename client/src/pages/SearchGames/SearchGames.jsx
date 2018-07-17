@@ -5,10 +5,11 @@ import API from "../../utils/API";
 import "./SearchGames.css";
 import cards from "../Dashboard/cards.json";
 import games from "../Dashboard/games.json";
+import _ from "lodash";
 
 class SearchGames extends Component {
 
-  state = { games, userResults: [], showBadges: [false], lookingAt: {gameName: "blank"}, gamesByUser: [[{gameName: "blank"}]], titleResults: [{gameName: "blank"}]};
+  state = { games, userResults: [], badges: [], showBadges: [false], lookingAt: {gameName: "blank"}, gamesByUser: [[{gameName: "blank"}]], titleResults: [{gameName: "blank"}]};
 
   // componentWillMount() {
   //   if (!sessionStorage.getItem('gameState')) {
@@ -29,6 +30,7 @@ class SearchGames extends Component {
     sessionObject.titleResults = [{gameName: "blank"}];
     sessionObject.showBadges = [];
     for (let i in sessionObject.games) sessionObject.showBadges.push(false);
+    this.populateBadgesArray(sessionObject);
     this.setState(sessionObject, () => this.searchDB());
   }
 
@@ -150,9 +152,90 @@ class SearchGames extends Component {
     this.setState({showBadges});
   }
 
-  addBadge = (btnType, badge, id) => {
+  populateBadgesArray = obj => {
+    // const badges = [
+    //   <span onClick={() => this.addBadge("primary")} class="btn badge badge-primary">Interactive</span>,
+    //   <span onClick={() => this.addBadge("primary")} class="btn badge badge-primary">Small Groups</span>,
+    //   <span onClick={() => this.addBadge("primary")} class="btn badge badge-primary">Large Groups</span>,
+    //   <span onClick={() => this.addBadge("primary")} class="btn badge badge-primary">Themed</span>,
+    //   <br />,
+    //   <span onClick={() => this.addBadge("secondary")} class="btn badge badge-secondary">Cerebral</span>,
+    //   <span onClick={() => this.addBadge("secondary")} class="btn badge badge-secondary">Trivial</span>,
+    //   <span onClick={() => this.addBadge("secondary")} class="btn badge badge-secondary">Pop-Culture</span>,
+    //   <br />,
+    //   <span onClick={() => this.addBadge("success")} class="btn badge badge-success">Family-Friendly</span>,
+    //   <span onClick={() => this.addBadge("success")} class="btn badge badge-success">Social</span>,
+    //   <span onClick={() => this.addBadge("success")} class="btn badge badge-success">Conversational</span>,
+    //   <br />,
+    //   <span onClick={() => this.addBadge("danger")} class="btn badge badge-danger">Adult</span>,
+    //   <span onClick={() => this.addBadge("danger")} class="btn badge badge-danger">Insulting</span>,
+    //   <span onClick={() => this.addBadge("danger")} class="btn badge badge-danger">Brutal</span>,
+    //   <br />,
+    //   <span onClick={() => this.addBadge("warning")} class="btn badge badge-warning">Physical</span>,
+    //   <span onClick={() => this.addBadge("warning")} class="btn badge badge-warning">Challenging</span>,
+    //   <span onClick={() => this.addBadge("warning")} class="btn badge badge-warning">Technical</span>,
+    //   <br />,
+    //   <span onClick={() => this.addBadge("info")} class="btn badge badge-info">Silly</span>,
+    //   <span onClick={() => this.addBadge("info")} class="btn badge badge-info">Funny</span>,
+    //   <span onClick={() => this.addBadge("info")} class="btn badge badge-info">Surreal</span>,
+    //   <span onClick={() => this.addBadge("info")} class="btn badge badge-info">Serious</span>,
+    //   <span onClick={() => this.addBadge("info")} class="btn badge badge-info">Depressing</span>,
+    //   <br />,
+    //   <span onClick={() => this.addBadge("light")} class="btn badge badge-light">Low-Key</span>,
+    //   <span onClick={() => this.addBadge("light")} class="btn badge badge-light">Relaxing</span>,
+    //   <span onClick={() => this.addBadge("light")} class="btn badge badge-light">Pensive</span>,
+    //   <br />,
+    //   <span onClick={() => this.addBadge("dark")} class="btn badge badge-dark">Loud</span>,
+    //   <span onClick={() => this.addBadge("dark")} class="btn badge badge-dark">Rambunctious</span>,
+    //   <span onClick={() => this.addBadge("dark")} class="btn badge badge-dark">Painful</span>
+    // ];
 
+    const badges = [
+      {classes: "btn badge badge-primary", name: "Interactive"},
+      {classes: "btn badge badge-primary", name: "Small Groups"},
+      {classes: "btn badge badge-primary", name: "Large Groups"},
+      {classes: "btn badge badge-primary", name: "Themed"},
+      {classes: "", name: ""},
+      {classes: "btn badge badge-secondary", name: "Cerebral"},
+      {classes: "btn badge badge-secondary", name: "Trivial"},
+      {classes: "btn badge badge-secondary", name: "Pop-Culture"},
+      {classes: "", name: ""},
+      {classes: "btn badge badge-success", name: "Family-Friendly"},
+      {classes: "btn badge badge-success", name: "Social"},
+      {classes: "btn badge badge-success", name: "Conversational"},
+      {classes: "", name: ""},
+      {classes: "btn badge badge-danger", name: "Adult"},
+      {classes: "btn badge badge-danger", name: "Insulting"},
+      {classes: "btn badge badge-danger", name: "Brutal"},
+      {classes: "", name: ""},
+      {classes: "btn badge badge-warning", name: "Physical"},
+      {classes: "btn badge badge-warning", name: "Challenging"},
+      {classes: "btn badge badge-warning", name: "Technical"},
+      {classes: "", name: ""},
+      {classes: "btn badge badge-info", name: "Silly"},
+      {classes: "btn badge badge-info", name: "Funny"},
+      {classes: "btn badge badge-info", name: "Surreal"},
+      {classes: "btn badge badge-info", name: "Serious"},
+      {classes: "btn badge badge-info", name: "Depressing"},
+      {classes: "", name: ""},
+      {classes: "btn badge badge-light", name: "Low-Key"},
+      {classes: "btn badge badge-light", name: "Relaxing"},
+      {classes: "btn badge badge-light", name: "Pensive"},
+      {classes: "", name: ""},
+      {classes: "btn badge badge-dark", name: "Loud"},
+      {classes: "btn badge badge-dark", name: "Rambunctious"},
+      {classes: "btn badge badge-dark", name: "Painful"},
+    ];
+    
+    obj.badges = badges;
+    return obj;
   }
+
+  addBadge = (badge, id) => {
+    API.addBadge({badge, id})
+  }
+
+
 
   forkGame = id => {
     API.getGame(id)
@@ -179,12 +262,12 @@ class SearchGames extends Component {
         <div className="container-fluid">
 
 
-          
-
-
           <div className="row">
-          
+        
             <div className="col-sm-4">
+
+              <h1>Your Games:</h1>
+
               {this.state.games.slice(0, -1).map((game, index) => (
                 <div className="card text-white bg-dark">
                   <div className="card-header" id={`heading-${index + 7}`}>
@@ -199,42 +282,28 @@ class SearchGames extends Component {
                       A game about stuff. 
                       {game.public ? (
                         <React.Fragment>
-                        <br /><br />
-                        <button className="btn btn-primary" onClick={() => this.toggleBadges(index)}>
-                          {this.state.showBadges[index] ? "Finish adding tags" : "Add tags..."}
-                        </button>
+                          <br /><br />
+                          Tags: 
+                          {this.state.badges.filter(badge => game.tags.includes(badge.name)).map(badge => (
+                            <span className={badge.classes} onClick={() => this.addBadge(badge, game._id)}>
+                              {badge.name ? badge.name : <br />}
+                            </span>
+                          ))}
+                          <br /><br />
+                          <button className="btn btn-primary" onClick={() => this.toggleBadges(index)}>
+                            {this.state.showBadges[index] ? "Finish adding tags" : "Add tags..."}
+                          </button>
                         </React.Fragment>
                       ) : ""
                       }
                       <br /><br />
                       <div className={this.state.showBadges[index] && game.public ? "" : "hide"}>
-                        <span onClick={() => this.addBadge("primary")} class="btn badge badge-primary">Interactive</span>
-                        <span onClick={() => this.addBadge("primary")} class="btn badge badge-primary">Small Groups</span>
-                        <span onClick={() => this.addBadge("primary")} class="btn badge badge-primary">Large Groups</span>
-                        <span onClick={() => this.addBadge("primary")} class="btn badge badge-primary">Themed</span><br />
-                        <span onClick={() => this.addBadge("secondary")} class="btn badge badge-secondary">Cerebral</span>
-                        <span onClick={() => this.addBadge("secondary")} class="btn badge badge-secondary">Trivial</span>
-                        <span onClick={() => this.addBadge("secondary")} class="btn badge badge-secondary">Pop-Culture</span><br />
-                        <span onClick={() => this.addBadge("success")} class="btn badge badge-success">Family-Friendly</span>
-                        <span onClick={() => this.addBadge("success")} class="btn badge badge-success">Social</span>
-                        <span onClick={() => this.addBadge("success")} class="btn badge badge-success">Conversational</span><br />
-                        <span onClick={() => this.addBadge("danger")} class="btn badge badge-danger">Adult</span>
-                        <span onClick={() => this.addBadge("danger")} class="btn badge badge-danger">Insulting</span>
-                        <span onClick={() => this.addBadge("danger")} class="btn badge badge-danger">Brutal</span><br />
-                        <span onClick={() => this.addBadge("warning")} class="btn badge badge-warning">Physical</span>
-                        <span onClick={() => this.addBadge("warning")} class="btn badge badge-warning">Challenging</span>
-                        <span onClick={() => this.addBadge("warning")} class="btn badge badge-warning">Technical</span><br />
-                        <span onClick={() => this.addBadge("info")} class="btn badge badge-info">Silly</span>
-                        <span onClick={() => this.addBadge("info")} class="btn badge badge-info">Funny</span>
-                        <span onClick={() => this.addBadge("info")} class="btn badge badge-info">Surreal</span>
-                        <span onClick={() => this.addBadge("info")} class="btn badge badge-info">Serious</span>
-                        <span onClick={() => this.addBadge("info")} class="btn badge badge-info">Depressing</span><br />
-                        <span onClick={() => this.addBadge("light")} class="btn badge badge-light">Low-Key</span>
-                        <span onClick={() => this.addBadge("light")} class="btn badge badge-light">Relaxing</span>
-                        <span onClick={() => this.addBadge("light")} class="btn badge badge-light">Pensive</span><br />
-                        <span onClick={() => this.addBadge("dark")} class="btn badge badge-dark">Loud</span>
-                        <span onClick={() => this.addBadge("dark")} class="btn badge badge-dark">Rambunctious</span>
-                        <span onClick={() => this.addBadge("dark")} class="btn badge badge-dark">Painful</span>
+                        
+                        {this.state.badges.filter(badge => !game.tags.includes(badge.name)).map(badge => (
+                          <span className={badge.classes} onClick={() => this.addBadge(badge, game._id)}>
+                            {badge.name ? badge.name : <br />}
+                          </span>
+                        ))}
                         <br /><br />
                       </div>
                       <button className="btn btn-primary" onClick={() => this.togglePublic(game._id)}>
@@ -249,6 +318,8 @@ class SearchGames extends Component {
 
             <div className="col-sm-4">
               
+              <h1>Viewing:</h1>
+
               <div className="card text-white bg-dark">
                 <div className="card-header" id="heading-4">
                   <h5 className="mb-0">
@@ -317,10 +388,6 @@ class SearchGames extends Component {
               </div>
 
               
-
-              dasfasdfklasdjflk asdflkj asdlfkjasdlfkj asdf adsf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf asdf asdf adsfkjl asdlfk adslfkj adslkfj asldkfj klj asdlk fasdklfj askldjf askldj flkasj dflkjads flkjas dfklj dsklj adslfkj sdlfkj asdlkfj asdlkfj sdlkfj sldkj fslkdj fskldj flksj dflkj sdfklj lskdj faldskf adsklfj aldskfj ladskfj adsfk jkjasdh fkjadshf kjadshf kjadshf 
-            
-            
             </div>
 
 
@@ -377,7 +444,7 @@ class SearchGames extends Component {
               
 
               <div id="accordion">
-                <div className="card">
+                <div className="card text-white bg-dark">
                   <div className="card-header" id="heading-1">
                     <h5 className="mb-0">
                       <a role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
@@ -405,7 +472,7 @@ class SearchGames extends Component {
                                 {this.state.gamesByUser[index].map((game, gameIdx) => (
 
                                   <div id={`accordion-1-${index + 1}`}>
-                                    <div className="card">
+                                    <div className="card text-white bg-dark">
                                       <div className="card-header" id={`heading-1-${index + 1}-${gameIdx + 1}`}>
                                         <h5 className="mb-0">
                                           <a className="collapsed" role="button" data-toggle="collapse" href={`#collapse-1-${index + 1}-${gameIdx + 1}`} aria-expanded="false" aria-controls={`collapse-1-${index + 1}-${gameIdx + 1}`}>
@@ -433,7 +500,7 @@ class SearchGames extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="card">
+                <div className="card text-white bg-dark">
                   <div className="card-header" id="heading-2">
                     <h5 className="mb-0">
                       <a className="collapsed" role="button" data-toggle="collapse" href="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
@@ -470,7 +537,7 @@ class SearchGames extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="card">
+                <div className="card text-white bg-dark">
                   <div className="card-header" id="heading-3">
                     <h5 className="mb-0">
                       <a className="collapsed" role="button" data-toggle="collapse" href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
@@ -485,8 +552,6 @@ class SearchGames extends Component {
                   </div>
                 </div>
               </div>
-              {/* sadfasdfasdf asdf asdf asdf asdf adsf asdf asdf adsf asdf asdf adsf adsf asdf asdf asdf adsf asdf adsf adsf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf adsf adsf adsf kjas dfkjadsfkj hadskfj haskdjfh adskjfh askjdfh kasjdf  */}
-
 
 
             </div>
