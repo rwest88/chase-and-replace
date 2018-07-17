@@ -195,9 +195,30 @@ class SearchGames extends Component {
   }
 
   addBadge = (badge, id) => {
-    API.addBadge({badge, id})
+    API.addSearchTag({badge, id})
+      .then(res => {
+        console.log(res);
+        if (res.data.nModified > 0) {
+          let {games} = this.state;
+          for (let i in games) if (games[i]._id === id) games[i].tags.push(badge.name)
+          this.setState({games});
+        }
+      })
+      .catch(err => console.log(err));
   }
 
+  removeBadge = (badge, id) => {
+    API.removeSearchTag({badge, id})
+      .then(res => {
+        console.log(res);
+        if (res.data.nModified > 0) {
+          let {games} = this.state;
+          for (let i in games) if (games[i]._id === id) games[i].tags = games[i].tags.filter(tag => tag !== badge.name);
+          this.setState({games});
+        }
+      })
+      .catch(err => console.log(err));
+  }
 
 
   forkGame = id => {
@@ -242,13 +263,13 @@ class SearchGames extends Component {
                   </div>
                   <div id={`collapse-${index + 7}`} className="collapse" data-parent="#accordion" aria-labelledby={`heading-${index + 7}`}>
                     <div className="card-body">
-                      A game about stuff. 
+                      A game about stuff. <i class="btn fas fa-edit" style={{float: "right"}}></i>
                       {game.public ? (
                         <React.Fragment>
                           <br /><br />
                           Tags: 
                           {this.state.badges.filter(badge => game.tags.includes(badge.name)).map(badge => (
-                            <span className={badge.classes} onClick={() => this.addBadge(badge, game._id)}>
+                            <span className={badge.classes} onClick={() => this.removeBadge(badge, game._id)}>
                               {badge.name ? badge.name : <br />}
                             </span>
                           ))}
@@ -293,7 +314,7 @@ class SearchGames extends Component {
                 </div>
                 <div id="collapse-4" className="collapse" data-parent="#accordion" aria-labelledby="heading-4">
                   <div className="card-body">
-                    A game about stuff. 
+                    A game about stuff. <i class="btn fas fa-edit" style={{float: "right"}}></i>
                     <br /><br />
                     [tags]
                     <br /><br />

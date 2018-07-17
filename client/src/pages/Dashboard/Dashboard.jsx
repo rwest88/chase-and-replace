@@ -65,9 +65,10 @@ class Dashboard extends Component {
 
   loadGame = (selectedGame, selectedVersion) => {
 
-    console.log(selectedGame);
     let {games} = this.state;
     let rules;
+    
+    // if (selectedGame === undefined) selectedGame = games[0];
 
     if (this.state.newAce === true && (this.state.currentGame)) {
       if (window.confirm(`Save current rule changes to ${this.state.currentGame.gameName}?  \n\n(Note: This will not add a new version. Click 'Save Current as Version' when you are happy with the set of rules.)`)) {

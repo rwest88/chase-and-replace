@@ -16,7 +16,7 @@ const gameSeed = [
     forkedFrom: "",
     created: new Date(Date.now()),
     ratings: [],
-    tags: ["Interactive"],
+    tags: [],
     public: false,
     versions: [
       {
@@ -101,7 +101,7 @@ const gameSeed = [
     "admin" : "rwest88",
     "forkedFrom" : "",
     "created" : new Date(Date.now()),
-    "tags" : ["Interactive", "Small Groups"],
+    "tags" : [],
     "versions" : [ 
         {
           "rules" : [ 
@@ -186,7 +186,7 @@ const gameSeed = [
     "admin" : "rwest88",
     "forkedFrom" : "rwest88",
     "created" : new Date(Date.now()),
-    "tags" : ["Interactive"],
+    "tags" : [],
     "versions" : [ 
       {
         "rules" : [ 
@@ -271,7 +271,7 @@ const gameSeed = [
     "admin" : "rwest88",
     "forkedFrom" : "rwest88",
     "created" : new Date(Date.now()),
-    "tags" : ["Interactive"],
+    "tags" : [],
     "versions" : [ 
       {
         "rules" : [ 
@@ -357,7 +357,7 @@ const gameSeed = [
     "admin" : "rwest88",
     "forkedFrom" : "rwest88",
     "created" : "2018-07-17T00:57:20.490Z",
-    "tags" : ["Interactive"],
+    "tags" : [],
     "versions" : [ 
       {
         "rules" : [ 
@@ -440,7 +440,7 @@ const gameSeed = [
     forkedFrom: "",
     created: new Date(Date.now()),
     ratings: [],
-    tags: ["Interactive"],
+    tags: [],
     public: false,
     versions: [
       {

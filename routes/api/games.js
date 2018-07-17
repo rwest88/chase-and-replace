@@ -26,6 +26,10 @@ router.route("/user")
 router.route("/search/:searchTerm")
   .get(gamesController.searchGamesByName);
 
+router.route("/search")
+  .put(gamesController.addSearchTag)
+  .post(gamesController.removeSearchTag);
+
 // // Matches with "/api/books/:id"
 // router
 //   .route("/:id")

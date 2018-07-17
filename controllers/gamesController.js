@@ -83,6 +83,18 @@ module.exports = {
       })
       .catch(err => console.log(err));
   },
+  addSearchTag: function(req, res) {
+    db.Game
+      .update( { _id : req.body.id }, { $push : { tags : req.body.badge.name } } )
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  removeSearchTag: function(req, res) {
+    db.Game
+      .update( { _id : req.body.id }, { $pull : { tags : req.body.badge.name } } )
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
   pushVersion: function(req, res) {
     db.Game
       .update( { _id : req.body.gameID }, { $push : { versions : { $each : [req.body.version], $sort : { date : 1 } } } } )
