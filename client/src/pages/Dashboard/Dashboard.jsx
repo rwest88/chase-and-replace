@@ -76,12 +76,12 @@ class Dashboard extends Component {
       }
     }
     
-    if (localStorage.getItem(`versionState: ${selectedGame.gameName}`)) {
-      if (window.confirm(`Load previous rule changes to ${selectedGame.gameName}?`)) {
-        const localObject = JSON.parse(localStorage.getItem(`versionState: ${selectedGame.gameName}`));
-        rules = localObject;
+      if (localStorage.getItem(`versionState: ${selectedGame.gameName}`)) {
+        if (window.confirm(`Load previous rule changes to ${selectedGame.gameName}?`)) {
+          const localObject = JSON.parse(localStorage.getItem(`versionState: ${selectedGame.gameName}`));
+          rules = localObject;
+        }
       }
-    }
 
     if (selectedGame.gameName === "[Random Mix!]") {
       games = games.filter(game => game.gameName !== "[Random Mix!]");
@@ -296,11 +296,12 @@ class Dashboard extends Component {
       console.log("loading games from DB");
       API.getUser(this.state.username) // retrieves user obj
         .then(userRes => {
+          console.log(userRes);
           if (userRes.data.length > 0) {
             console.log("user exists");
             if (!userRes.data[0].seeded) {
               console.log("seeding user");
-              API.getDefaultGames()  // retrieves admin: Chase_Replacenson
+              API.getDefaultGames("Chase_Replacenson")  // retrieves admin: Chase_Replacenson
                 .then(res => {
                   // if (!userRes.data[0].seeded) {  // if this hasn't been done yet
                   let clones = [];
@@ -320,6 +321,7 @@ class Dashboard extends Component {
                             if (!this.state.currentGame) {
                               console.log("gonna load");
                               this.loadGame(clonesRes.data[0]);
+                              this.loadGamesFromDB();
                             }
                           })
                         })
@@ -363,6 +365,9 @@ class Dashboard extends Component {
         }))
         .catch(err => console.log(err));
     }
+
+    setTimeout(()=>console.log(this.state.currentGame), 5000);
+
   }
 
   addRandom = games => {
