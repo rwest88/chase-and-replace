@@ -369,6 +369,9 @@ h1 {
 .over-150 {
   font-size: 1.3rem;
 }
+.over-250 {
+  font-size: 1rem;
+}
 .current-rule > .chase-replace {
   top: -10%;
   font-size: 2.5em;

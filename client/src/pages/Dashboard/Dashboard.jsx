@@ -67,6 +67,8 @@ class Dashboard extends Component {
 
     let {games} = this.state;
     let rules;
+    
+    // if (selectedGame === undefined) selectedGame = games[0];
 
     if (this.state.newAce === true && (this.state.currentGame)) {
       if (window.confirm(`Save current rule changes to ${this.state.currentGame.gameName}?  \n\n(Note: This will not add a new version. Click 'Save Current as Version' when you are happy with the set of rules.)`)) {
@@ -222,9 +224,14 @@ class Dashboard extends Component {
           <div className="current-rule">
             <h1 className="current-rule">{currentRule.name}</h1>
             <h3 
-              className={this.state.burnedCards.length ? 
-                (currentRule.instructions.length > 150) ? "over-150" : "" 
-               : "intro"}>
+              className={
+                this.state.burnedCards.length ? 
+                  (currentRule.instructions.length > 150) ? 
+                    (currentRule.instructions.length > 250) ?
+                      "over-250"
+                    : "over-150" 
+                  : "" 
+                : "intro"}>
               {currentRule.instructions || this.renderIntro()}
             </h3>
           </div>

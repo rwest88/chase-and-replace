@@ -8,7 +8,7 @@ import games from "../Dashboard/games.json";
 
 class SearchGames extends Component {
 
-  state = { games, userResults: [], lookingAt: {gameName: "blank"}, gamesByUser: [[{gameName: "blank"}]], titleResults: [{gameName: "blank"}]};
+  state = { games, userResults: [], badges: [], showBadges: [false], lookingAt: {gameName: "blank"}, gamesByUser: [[{gameName: "blank"}]], titleResults: [{gameName: "blank"}]};
 
   // componentWillMount() {
   //   if (!sessionStorage.getItem('gameState')) {
@@ -27,6 +27,9 @@ class SearchGames extends Component {
     sessionObject.redirectTo = false;
     sessionObject.gamesByUser = [[{gameName: "blank"}]];
     sessionObject.titleResults = [{gameName: "blank"}];
+    sessionObject.showBadges = [];
+    for (let i in sessionObject.games) sessionObject.showBadges.push(false);
+    this.populateBadgesArray(sessionObject);
     this.setState(sessionObject, () => this.searchDB());
   }
 
@@ -124,6 +127,100 @@ class SearchGames extends Component {
       .then(gameRes => this.setState({titleResults: gameRes.data}));
   }
 
+  togglePublic = (id) => {
+    API.togglePublic({gameID: id})
+      .then(res => {
+        console.log(res);
+        if (res.data.nModified > 0) {
+          let {games, showBadges} = this.state;
+          for (let i in games) {
+            if (games[i]._id === id) {
+              games[i].public = !games[i].public;
+              if (!games[i].public) showBadges[i] = false;
+            }
+          }
+          this.setState({games, showBadges});
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
+  toggleBadges = index => {
+    let {showBadges} = this.state;
+    showBadges[index] = !showBadges[index];
+    this.setState({showBadges});
+  }
+
+  populateBadgesArray = obj => {
+
+    const badges = [
+      {classes: "btn badge badge-primary", name: "Interactive"},
+      {classes: "btn badge badge-primary", name: "Small Groups"},
+      {classes: "btn badge badge-primary", name: "Large Groups"},
+      {classes: "btn badge badge-primary", name: "Themed"},
+      {classes: "", name: ""},
+      {classes: "btn badge badge-secondary", name: "Cerebral"},
+      {classes: "btn badge badge-secondary", name: "Trivial"},
+      {classes: "btn badge badge-secondary", name: "Pop-Culture"},
+      {classes: "", name: ""},
+      {classes: "btn badge badge-success", name: "Family-Friendly"},
+      {classes: "btn badge badge-success", name: "Social"},
+      {classes: "btn badge badge-success", name: "Conversational"},
+      {classes: "", name: ""},
+      {classes: "btn badge badge-danger", name: "Adult"},
+      {classes: "btn badge badge-danger", name: "Insulting"},
+      {classes: "btn badge badge-danger", name: "Brutal"},
+      {classes: "", name: ""},
+      {classes: "btn badge badge-warning", name: "Physical"},
+      {classes: "btn badge badge-warning", name: "Challenging"},
+      {classes: "btn badge badge-warning", name: "Technical"},
+      {classes: "", name: ""},
+      {classes: "btn badge badge-info", name: "Silly"},
+      {classes: "btn badge badge-info", name: "Funny"},
+      {classes: "btn badge badge-info", name: "Surreal"},
+      {classes: "btn badge badge-info", name: "Serious"},
+      {classes: "btn badge badge-info", name: "Depressing"},
+      {classes: "", name: ""},
+      {classes: "btn badge badge-light", name: "Low-Key"},
+      {classes: "btn badge badge-light", name: "Relaxing"},
+      {classes: "btn badge badge-light", name: "Pensive"},
+      {classes: "", name: ""},
+      {classes: "btn badge badge-dark", name: "Loud"},
+      {classes: "btn badge badge-dark", name: "Rambunctious"},
+      {classes: "btn badge badge-dark", name: "Painful"},
+    ];
+    
+    obj.badges = badges;
+    return obj;
+  }
+
+  addBadge = (badge, id) => {
+    API.addSearchTag({badge, id})
+      .then(res => {
+        console.log(res);
+        if (res.data.nModified > 0) {
+          let {games} = this.state;
+          for (let i in games) if (games[i]._id === id) games[i].tags.push(badge.name)
+          this.setState({games});
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
+  removeBadge = (badge, id) => {
+    API.removeSearchTag({badge, id})
+      .then(res => {
+        console.log(res);
+        if (res.data.nModified > 0) {
+          let {games} = this.state;
+          for (let i in games) if (games[i]._id === id) games[i].tags = games[i].tags.filter(tag => tag !== badge.name);
+          this.setState({games});
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
+
   forkGame = id => {
     API.getGame(id)
       .then(game => {
@@ -149,50 +246,64 @@ class SearchGames extends Component {
         <div className="container-fluid">
 
 
-          
-
-
           <div className="row">
-          
+        
             <div className="col-sm-4">
-              {
-                this.state.games.slice(0, -1).map((game, index) => (
-                  <div className="card text-white bg-dark">
-                <div className="card-header" id={`heading-${index + 7}`}>
-                  <h5 className="mb-0">
-                    <a className="collapsed" role="button" data-toggle="collapse" href={`#collapse-${index + 7}`} aria-expanded="false" aria-controls={`collapse-${index + 7}`}>
-                      {game.gameName}
-                    </a>
-                  </h5>
-                </div>
-                <div id={`collapse-${index + 7}`} className="collapse" data-parent="#accordion" aria-labelledby={`heading-${index + 7}`}>
-                  <div className="card-body">
-                    A game about stuff. 
-                    <br /><br />
-                    [tags]
-                    <br /><br />
-                    <button 
-                    // type="button"
-                    className="btn btn-primary"
-                    >
-                    Add Tags
-                  </button>
-                  <button 
-                    // type="button"
-                    className="btn btn-primary"
-                    >
-                    Make Public
-                  </button>
+
+              <h1>Your Games:</h1>
+
+              {this.state.games.slice(0, -1).map((game, index) => (
+                <div className="card text-white bg-dark">
+                  <div className="card-header" id={`heading-${index + 7}`}>
+                    <h5 className="mb-0">
+                      <a className="collapsed" role="button" data-toggle="collapse" href={`#collapse-${index + 7}`} aria-expanded="false" aria-controls={`collapse-${index + 7}`}>
+                        {game.gameName}
+                      </a>
+                    </h5>
+                  </div>
+                  <div id={`collapse-${index + 7}`} className="collapse" data-parent="#accordion" aria-labelledby={`heading-${index + 7}`}>
+                    <div className="card-body">
+                      A game about stuff. <i class="btn fas fa-edit" style={{float: "right"}}></i>
+                      {game.public ? (
+                        <React.Fragment>
+                          <br /><br />
+                          Tags: 
+                          {this.state.badges.filter(badge => game.tags.includes(badge.name)).map(badge => (
+                            <span className={badge.classes} onClick={() => this.removeBadge(badge, game._id)}>
+                              {badge.name ? badge.name : <br />}
+                            </span>
+                          ))}
+                          <br /><br />
+                          <button className="btn btn-primary" onClick={() => this.toggleBadges(index)}>
+                            {this.state.showBadges[index] ? "Finish adding tags" : "Add tags..."}
+                          </button>
+                        </React.Fragment>
+                      ) : ""
+                      }
+                      <br /><br />
+                      <div className={this.state.showBadges[index] && game.public ? "" : "hide"}>
+                        
+                        {this.state.badges.filter(badge => !game.tags.includes(badge.name)).map(badge => (
+                          <span className={badge.classes} onClick={() => this.addBadge(badge, game._id)}>
+                            {badge.name ? badge.name : <br />}
+                          </span>
+                        ))}
+                        <br /><br />
+                      </div>
+                      <button className="btn btn-primary" onClick={() => this.togglePublic(game._id)}>
+                        {game.public ? "Make Private" : "Make Public"}
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-                ))
-              }
+              ))}
 
             </div>
 
             <div className="col-sm-4">
               
+              <h1>Viewing:</h1>
+
               <div className="card text-white bg-dark">
                 <div className="card-header" id="heading-4">
                   <h5 className="mb-0">
@@ -203,7 +314,7 @@ class SearchGames extends Component {
                 </div>
                 <div id="collapse-4" className="collapse" data-parent="#accordion" aria-labelledby="heading-4">
                   <div className="card-body">
-                    A game about stuff. 
+                    A game about stuff. <i class="btn fas fa-edit" style={{float: "right"}}></i>
                     <br /><br />
                     [tags]
                     <br /><br />
@@ -261,10 +372,6 @@ class SearchGames extends Component {
               </div>
 
               
-
-              dasfasdfklasdjflk asdflkj asdlfkjasdlfkj asdf adsf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf asdf asdf adsfkjl asdlfk adslfkj adslkfj asldkfj klj asdlk fasdklfj askldjf askldj flkasj dflkjads flkjas dfklj dsklj adslfkj sdlfkj asdlkfj asdlkfj sdlkfj sldkj fslkdj fskldj flksj dflkj sdfklj lskdj faldskf adsklfj aldskfj ladskfj adsfk jkjasdh fkjadshf kjadshf kjadshf 
-            
-            
             </div>
 
 
@@ -321,7 +428,7 @@ class SearchGames extends Component {
               
 
               <div id="accordion">
-                <div className="card">
+                <div className="card text-white bg-dark">
                   <div className="card-header" id="heading-1">
                     <h5 className="mb-0">
                       <a role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
@@ -349,7 +456,7 @@ class SearchGames extends Component {
                                 {this.state.gamesByUser[index].map((game, gameIdx) => (
 
                                   <div id={`accordion-1-${index + 1}`}>
-                                    <div className="card">
+                                    <div className="card text-white bg-dark">
                                       <div className="card-header" id={`heading-1-${index + 1}-${gameIdx + 1}`}>
                                         <h5 className="mb-0">
                                           <a className="collapsed" role="button" data-toggle="collapse" href={`#collapse-1-${index + 1}-${gameIdx + 1}`} aria-expanded="false" aria-controls={`collapse-1-${index + 1}-${gameIdx + 1}`}>
@@ -377,7 +484,7 @@ class SearchGames extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="card">
+                <div className="card text-white bg-dark">
                   <div className="card-header" id="heading-2">
                     <h5 className="mb-0">
                       <a className="collapsed" role="button" data-toggle="collapse" href="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
@@ -414,7 +521,7 @@ class SearchGames extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="card">
+                <div className="card text-white bg-dark">
                   <div className="card-header" id="heading-3">
                     <h5 className="mb-0">
                       <a className="collapsed" role="button" data-toggle="collapse" href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
@@ -429,8 +536,6 @@ class SearchGames extends Component {
                   </div>
                 </div>
               </div>
-              {/* sadfasdfasdf asdf asdf asdf asdf adsf asdf asdf adsf asdf asdf adsf adsf asdf asdf asdf adsf asdf adsf adsf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf asdf asdf asdf adsf asdf asdf asdf asdf asdf adsf adsf adsf kjas dfkjadsfkj hadskfj haskdjfh adskjfh askjdfh kasjdf  */}
-
 
 
             </div>

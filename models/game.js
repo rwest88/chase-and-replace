@@ -8,7 +8,7 @@ const gameSchema = new Schema({
   forkedFrom: { type: String },
   created: { type: String, default: Date.now },
   ratings: { type: Array },
-  saved: Boolean, // this relation should exist in the Users collection
+  tags: { type: Array },
   public: { type: Boolean, default: false },
   versions: [
     {

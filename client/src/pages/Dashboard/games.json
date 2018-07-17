@@ -1,6 +1,8 @@
 [
   {
     "gameName": "Classic Kings",
+    "tags": [{"classes": "btn badge badge-primary", "name": "Interactive"},
+      {"classes": "btn badge badge-primary", "name": "Small Groups"}],
     "versions": [
       {
         "versionName": "init",
@@ -76,6 +78,8 @@
   },
   {
     "gameName": "Kings Variation",
+    "tags": [{"classes": "btn badge badge-primary", "name": "Interactive"},
+      {"classes": "btn badge badge-primary", "name": "Small Groups"}],
     "versions": [
       {
         "versionName": "init",
@@ -151,6 +155,8 @@
   },
   {
     "gameName": "Custom",
+    "tags": [{"classes": "btn badge badge-primary", "name": "Interactive"},
+      {"classes": "btn badge badge-primary", "name": "Small Groups"}],
     "versions": [
       {
         "versionName": "init",
