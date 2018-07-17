@@ -4,8 +4,8 @@ export default {
   saveNewGame: function(gameData) {
     return axios.post("/api/games", gameData);
   },
-  getDefaultGames: function() {
-    return axios.get("/api/games/seed");
+  getDefaultGames: function(name) {
+    return axios.get("/api/games/seed/" + name);
   },
   saveClones: function(dataObj) {
     return axios.post("/api/games/seed", dataObj);

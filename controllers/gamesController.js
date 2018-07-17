@@ -4,9 +4,11 @@ const db = require("../models");
 module.exports = {
   getDefaultGames: function(req, res) {
     db.Game
-      .find({admin: "Chase_Replacenson"})
-      .sort({ created: -1 })
-      .then(dbModel => res.json(dbModel))
+      .find({admin: req.params.name})
+      .then(dbModel => {
+        console.log(dbModel)
+        console.log("where the hell is it")
+        res.json(dbModel)})
       .catch(err => res.status(422).json(err));
   },
   saveClones: function(req, res) {

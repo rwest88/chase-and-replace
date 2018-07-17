@@ -10,7 +10,6 @@ mongoose.connect(
 
 const gameSeed = [
   {
-    _id: "Classic Kings Chase_Replacenson 837530",
     gameName: "Classic Kings",
     admin: "Chase_Replacenson",
     forkedFrom: "",
@@ -524,12 +523,14 @@ const userSeed = [
   {
     userName: "n8morton",
     email: "n8morton@nate.com",
-    password: "password"
+    password: "password",
+    seeded: false
   },
   {
     userName: "rwest88",
     email: "rwest88.va@gmail.com",
-    password: "ferndoggy"
+    password: "ferndoggy",
+    seeded: false
   }
 ];
 
