@@ -433,7 +433,8 @@ class Dashboard extends Component {
   }
 
   drawCard() {
-    if (this.state.currentGame.gameName && this.state.cards.length > 0) {
+    const {currentGame, cards, cardAction} = this.state;
+    if (!cardAction && (currentGame.gameName && cards.length > 0)) {
       const rules = this.state.rules;
       const card = this.state.cards.pop();
       const newBurn = this.state.burnedCards;
@@ -442,8 +443,10 @@ class Dashboard extends Component {
         currentCard: card,
         currentRule: rules[card.rank - 1],
         burnedCards: newBurn,
-        deckEmpty: (this.state.cards.length === 0)
+        deckEmpty: (this.state.cards.length === 0),
+        cardAction: true
       });
+      setTimeout(()=>this.setState({cardAction:false}),500)
     }
   }
 
@@ -579,7 +582,7 @@ class Dashboard extends Component {
                  onClick={() => this.undo()}
                 //  onMouseEnter={() => this.setState({ hover: true })}
                 //  onMouseLeave={() => this.setState({ hover: false })}
-                 className="current-card"/>
+                 className={this.state.cardAction?"card-action":"current-card"}/>
             {/* <img alt="undo" src="./images/undo.png" 
                  onClick={() => this.undo()} 
                  onMouseEnter={() => this.setState({ hover: true })}
