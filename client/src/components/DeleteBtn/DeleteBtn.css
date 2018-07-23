@@ -1,0 +1,11 @@
+.del {
+  position: absolute;
+  top: 1px;
+  right: 3px;
+  z-index: 1000;
+  padding: 0px;
+  line-height: 1;
+  background-color: white;
+  color: #e74944;
+  font-weight: 700;
+}
