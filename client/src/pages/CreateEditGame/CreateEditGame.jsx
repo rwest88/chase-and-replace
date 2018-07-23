@@ -3,6 +3,7 @@ import Nav from "../../components/Nav";
 import { Redirect } from "react-router-dom";
 import "./CreateEditGame.css";
 // import cards from "../Dashboard/cards.json";
+import DeleteBtn from "../../components/DeleteBtn";
 import games from "../Dashboard/games.json";
 import newGameTemplate from "../Dashboard/newGameTemplate.json";
 import API from "../../utils/API";
@@ -14,7 +15,7 @@ class CreateEditGame extends Component {
   // Initialization
   // ==============
 
-  state = { // SHRINK THIS?
+  state = { // note: declare only what's needed
     // cards,
     games,
     newGameRules: newGameTemplate,
@@ -248,8 +249,7 @@ class CreateEditGame extends Component {
       date: new Date(Date.now()),
       rules: newGameRules
     }
-    // console.log(versions.length - 1, vers);
-    // console.log(currentVersion.versionName, versions[vers].versionName)
+
     if (versionName !== "[NEW]") {
       console.log("updating");
       version._id = versions[vers]._id;
@@ -333,36 +333,32 @@ class CreateEditGame extends Component {
                     </option>
                   )
                 })}
-              </select>  
-              
+              </select>
             </div>
             <div class="col d-flex justify-content-around align-items-center">
-              
-              {/* <div class="row"> */}
-                <div class="dropdown">
-                  <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Edit Version
+              <div class="dropdown">
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Edit Version
+                </button>
+                <div class="dropdown-menu edit" aria-labelledby="dropdownMenuButton">
+                  <button class="btn btn-light dropdown-item" 
+                    onClick={() => this.setState(this.pushBlankVersion(this.state, true, true))}>
+                    <i class="fas fa-plus"></i> Create New...
                   </button>
-                  <div class="dropdown-menu edit" aria-labelledby="dropdownMenuButton">
-                    <button class="btn btn-light dropdown-item" 
-                      onClick={() => this.setState(this.pushBlankVersion(this.state, true, true))}>
-                      <i class="fas fa-plus"></i> Create New...
-                    </button>
-                    <button class="btn btn-light dropdown-item" onClick={this.updateVersion}>Save Changes</button>
-                    <button class="btn btn-light dropdown-item" onClick={this.deleteVersion}>Delete</button>
-                  </div>
+                  <button class="btn btn-light dropdown-item" onClick={this.updateVersion}>Save Changes</button>
+                  <button class="btn btn-light dropdown-item" onClick={this.deleteVersion}>Delete</button>
                 </div>
-                <p class="game-name">{this.state.currentGame.gameName}</p>
-                <div class="dropdown">
-                  <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Edit Game
-                  </button>
-                  <div class="dropdown-menu edit" aria-labelledby="dropdownMenuButton">
-                    <button class="btn btn-light dropdown-item" onClick={this.updateGame}>Rename</button>
-                    <button class="btn btn-light dropdown-item" onClick={this.deleteGame}>Delete</button>
-                  </div>
+              </div>
+              <p class="game-name">{this.state.currentGame.gameName}</p>
+              <div class="dropdown">
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Edit Game
+                </button>
+                <div class="dropdown-menu edit" aria-labelledby="dropdownMenuButton">
+                  <button class="btn btn-light dropdown-item" onClick={this.updateGame}>Rename</button>
+                  <button class="btn btn-light dropdown-item" onClick={this.deleteGame}>Delete</button>
                 </div>
-              {/* </div> */}
+              </div>
             </div>
             <div class="col d-flex justify-content-end align-items-center new-game">
               <button className="btn btn-light create-button" onClick={this.createNewGame}><i class="fas fa-plus"></i> Save As New Game</button>
@@ -384,7 +380,7 @@ class CreateEditGame extends Component {
                 <div className="input-group-prepend">
                   <span className={this.state.newGameRules[index + 1].name ? "input-group-text" : "input-group-text bg-warning"}>Rule Name</span>
                 </div>
-                <button className="btn del" onClick={this.handleInputChange(index, "name")}><i class="fas fa-times"></i></button>
+                <DeleteBtn onClick={this.handleInputChange(index, "name")} />
                 <input type="text"
                   className="form-control"
                   placeholder={rule.name || this.state.oldRules[index + 1].name + " [current rule]"}
@@ -398,7 +394,7 @@ class CreateEditGame extends Component {
                 <div className="input-group-prepend">
                   <span className={this.state.newGameRules[index + 1].instructions ? "input-group-text" : "input-group-text bg-warning"}>Instructions</span>
                 </div>
-                <button className="btn del" onClick={this.handleInputChange(index, "instructions")}><i class="fas fa-times"></i></button>
+                <DeleteBtn onClick={this.handleInputChange(index, "instructions")} />
                 <textarea type="text"
                   className="form-control"
                   placeholder={rule.instructions || this.state.oldRules[index + 1].instructions}
