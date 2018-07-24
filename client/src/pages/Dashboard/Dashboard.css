@@ -362,7 +362,7 @@ h1 {
 }
 .current-rule > h1 {
   position: relative;
-  font-size: 1.5em;
+  font-size: 1.5rem;
   color: #ffd65f;
   text-shadow: 2px 2px 2px black;
 }

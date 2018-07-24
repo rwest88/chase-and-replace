@@ -178,7 +178,7 @@ class Dashboard extends Component {
           <form className="current-rule">
           <h1 className="chase-replace">Chase and Replace!</h1>
           <h3 className="change-card">Everyone Drinks!<br />Choose a card to change (permanently!)
-          
+          <br />
           <select 
             className="ace-form-items"
             value={this.state.replace} 
