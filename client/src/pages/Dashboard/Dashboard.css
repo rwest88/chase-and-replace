@@ -4,15 +4,8 @@
 }
 body {
   font-weight: 600;
-  /* background-color: green; */
-  /* -webkit-transform: perspective(650px) rotateX(40deg);    */
-}
-html {
-  /* background-color: green; */
-  /* -webkit-transform: perspective(650px) rotateX(40deg);    */
 }
 .navbar {
-  /* background-color: green; */
   height: 8% !important;
 }
 .wrapper {
@@ -272,36 +265,27 @@ html {
   text-align: center;
   z-index: 6;
 }
-
 @keyframes mymove {
   0% {  
-    top: -50px;
-    left: -386px;
-    height: 65%;
+    top: -17%;
+    left: -111%;
+    height: 63%;
     transform: perspective(475px) rotateX(40deg) skew(-18deg) rotate(-360deg);
-    
   }
-  
   100% {  
     top: 0px;
     left: 0px;
     height: 100%;
     transform: perspective(0px) rotateX(0deg) skew(0deg) rotate(0deg);
-    
   }
 }
-
 .current-card {
   position: relative;
   height: 100%;
-  
 }
-
 .card-action {
-  position: relative;
-  animation: mymove .5s;
+  animation: mymove .6s;
 }
-
 .undo {
   position: fixed;
   top: 18%;
@@ -365,7 +349,7 @@ html {
   top: 4%;
   text-align: center;
   z-index: 2;
-  /* font-size: 1.5em; */
+  font-size: 1.5vh;
 }
 .HUD-frame {
   position: relative;
@@ -400,25 +384,25 @@ h1 {
 }
 .current-rule > .chase-replace {
   top: -10%;
-  font-size: 2.5em;
+  font-size: 2.5rem;
   color: #ffd900;
   /* text-decoration-color: darkred; */
   text-shadow: 3px 3px 5px rgb(80, 5, 5);
 }
 .current-rule > .king {
-  font-size: 1.8em;
+  font-size: 1.8rem;
 }
 .current-rule > .change-card {
   top: -10%;
-  font-size: 1.2em;
+  font-size: 1.2rem;
 }
 .current-rule > .global-rule {
   top: 30%;
-  font-size: 1.2em;
+  font-size: 1.2rem;
 }
 .current-rule > .intro {
   top: -340%;
-  font-size: 1em;
+  font-size: 2.3vh;
   text-shadow: 1px 1px 1px black;
 }
 .welcome {
@@ -457,5 +441,75 @@ textarea {
 @media screen and (max-aspect-ratio: 100/74) { /* tablet portrait */
   .burned-card {
     height: 13%;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .navbar {
+    /* height: 4%; */
+    display: none;
+  }
+  .game-title > .game-name {
+    font-size: 4vh;
+  }
+  .title {
+    font-size: 3vh;
+  }
+  /* .king-rules > div {
+    position: relative;
+    top: 10%;
+  }
+  .scroll.king > img {
+    z-index: 1;
+  } */
+  .king-rules {
+    margin-top: 8%;
+  }
+  .game-rules {
+    margin-top: 10%;
+  }
+  .decks {
+    grid-row: 2/6;
+  }
+  .table {
+    grid-row: 2/12;
+  }
+  .burned-cards {
+    grid-row: 5/12;
+    transform: perspective(650px) rotateX(40deg) skew(-12deg);
+    padding: 9% 3% 3%;
+  }
+  .current-rule > h1 {
+    font-size: 3vh;
+  }
+  .current-rule > h3 {
+    font-size: 3.5vh;
+  }
+  .over-150 {
+    font-size: 3vh !important;
+  }
+  .over-250 {
+    font-size: 2.5vh !important;
+  }
+  .current-rule > .chase-replace {
+    font-size: 4vh;
+  }
+  .current-rule > .king {
+    font-size: 4vh;
+  }
+  .current-rule > .change-card {
+    font-size: 3vh;
+  }
+  .current-rule > .global-rule {
+    font-size: 3vh;
+  }
+  .current-rule > .intro {
+    font-size: 2vh;
+  }
+  .welcome {
+    font-size: 3vh;
+  }
+  .intro-list {
+    padding-left: 15%;
   }
 }
