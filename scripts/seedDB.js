@@ -3,6 +3,8 @@ const db = require("../models");
 mongoose.Promise = global.Promise;
 
 // This file empties the Game collection and inserts the games below
+// To apply this to Heroku:
+// Add to package.json -- { "scripts" : { "heroku-postbuild": "node scripts/seedDB.js && npm run build" } }
 
 mongoose.connect(
   process.env.MONGODB_URI || "mongodb://localhost/kings"
