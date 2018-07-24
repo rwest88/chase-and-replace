@@ -303,7 +303,6 @@ class Dashboard extends Component {
               console.log("seeding user");
               API.getDefaultGames("Chase_Replacenson")  // retrieves admin: Chase_Replacenson
                 .then(res => {
-                  // if (!userRes.data[0].seeded) {  // if this hasn't been done yet
                   let clones = [];
                   for (let i in res.data) {
                     let clone = res.data[i];
@@ -446,7 +445,7 @@ class Dashboard extends Component {
         deckEmpty: (this.state.cards.length === 0),
         cardAction: true
       });
-      setTimeout(()=>this.setState({cardAction:false}),500)
+      setTimeout(() => this.setState({cardAction:false}), 700);
     }
   }
 
@@ -523,23 +522,6 @@ class Dashboard extends Component {
             </div>
             <strong className={this.state.burnedCards.length ? "game-name raised" : "game-name"}>{this.state.currentGame.gameName || ""}</strong>
           </div>
-          
-
-          {/* <div>{this.state.currentGame.forkedFrom !== this.state.username ? 
-              <div>
-                <small>forked from: </small>
-                <button className="btn user" onClick={() => this.searchUser(this.state.currentGame.forkedFrom)}>
-                  {this.state.currentGame.forkedFrom}
-                </button>
-              </div> :
-              <div>
-                <small>by: </small>
-                <button className="btn user" onClick={() => this.searchUser(this.state.currentGame.admin)}>
-                  {this.state.currentGame.admin}
-                </button>
-              </div>
-            }</div> */}
-
 
           <div className="author d-flex justify-content-center align-items-center">
             {this.state.currentGame.forkedFrom !== this.state.username ? 
@@ -560,16 +542,16 @@ class Dashboard extends Component {
             }
           </div>
           
-          
           <div className="decks">
             <img src={this.state.deckEmpty ? "./images/empty.png" : "./images/deck2.png"} 
-                 className="deck" 
+                 className="deck"
                  style={!this.state.deckEmpty ?
-                        {top: (6.9 - (this.state.cards.length / 10)) + "%",
-                        backgroundColor: "rgb(33, 25, 17)",
-                        borderRight: (this.state.cards.length / 10) + "px solid rgb(51, 40, 29)",
-                        borderBottom: (this.state.cards.length / 5) + "px solid rgb(27, 22, 17)",
-                        height: 80 + parseFloat(this.state.cards.length / 10) + "%",
+                        {
+                          top: (6.9 - (this.state.cards.length / 10)) + "%",
+                          backgroundColor: "rgb(33, 25, 17)",
+                          borderRight: (this.state.cards.length / 10) + "px solid rgb(51, 40, 29)",
+                          borderBottom: (this.state.cards.length / 5) + "px solid rgb(27, 22, 17)",
+                          height: 80 + parseFloat(this.state.cards.length / 10) + "%",
                         } :
                         {boxShadow: "0px 0px 0px 0px white"}
                       }
@@ -582,7 +564,7 @@ class Dashboard extends Component {
                  onClick={() => this.undo()}
                 //  onMouseEnter={() => this.setState({ hover: true })}
                 //  onMouseLeave={() => this.setState({ hover: false })}
-                 className={this.state.cardAction?"card-action":"current-card"}/>
+                 className={this.state.cardAction ? "current-card card-action" : "current-card"}/>
             {/* <img alt="undo" src="./images/undo.png" 
                  onClick={() => this.undo()} 
                  onMouseEnter={() => this.setState({ hover: true })}
@@ -611,7 +593,6 @@ class Dashboard extends Component {
               <GameRule rank={rule.rank} name={rule.name} instructions={rule.instructions}/>
             ))}
           </div>
-          
           
           <div className="burned-cards">
             {this.state.burnedCards.map(card=>(
