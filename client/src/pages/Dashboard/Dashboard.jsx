@@ -172,67 +172,71 @@ class Dashboard extends Component {
             </button>
             </h3>
           </form>
-        )
+        );
       case "1":
         return (
           <form className="current-rule">
-          <h1 className="chase-replace">Chase and Replace!</h1>
-          <h3 className="change-card">Everyone Drinks!<br />Choose a card to change (permanently!)
-          <br />
-          <select 
-            className="ace-form-items"
-            value={this.state.replace} 
-            onChange={this.handleSelectChange}
-          >
-            <option value="" disabled selected>Choose a rank...</option>
-            {
-              ['Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 
-              'Eight', 'Nine', 'Ten', 'Jack', 'Queen'].map((word, index) => {
-                return <option key={word} value={index + 2}>{word}</option>
-              })
-            }
-          </select>  
-          <div>
-          <input
-            className="ace-form-items"
-            type="text"
-            placeholder="Enter name..."
-            name="ruleName"
-            value={this.state.ruleName}
-            onChange={this.handleInputChange}
-          />
+            <h1 className="chase-replace">Chase and Replace!</h1>
+            <h3 className="change-card">Everyone Drinks!<br />Choose a card to change (permanently!)
+            <br />
+            <select 
+              className="ace-form-items"
+              value={this.state.replace} 
+              onChange={this.handleSelectChange}
+            >
+              <option value="" disabled selected>Choose a rank...</option>
+              {
+                ['Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 
+                'Eight', 'Nine', 'Ten', 'Jack', 'Queen'].map((word, index) => {
+                  return <option key={word} value={index + 2}>{word}</option>
+                })
+              }
+            </select>  
+            <div>
+            <input
+              className="ace-form-items"
+              type="text"
+              placeholder="Enter name..."
+              name="ruleName"
+              value={this.state.ruleName}
+              onChange={this.handleInputChange}
+            />
+            </div>
+            <div>
+            <textarea
+              className="ace-form-items"
+              type="text"
+              placeholder="Enter instructions..."
+              name="ruleInstructions"
+              value={this.state.ruleInstructions}
+              onChange={this.handleInputChange}
+            />
+            </div>
+            <button 
+              className="ace-form-items"
+              onClick={this.handleFormSubmit}>Submit
+            </button>
+            </h3>
+          </form>
+        );
+      case null, undefined: // player hasn't started game
+        return (
+          <div className="current-rule">
+            <h3 className="intro">{this.renderIntro()}</h3>
           </div>
-          <div>
-          <textarea
-            className="ace-form-items"
-            type="text"
-            placeholder="Enter instructions..."
-            name="ruleInstructions"
-            value={this.state.ruleInstructions}
-            onChange={this.handleInputChange}
-          />
-          </div>
-          <button 
-            className="ace-form-items"
-            onClick={this.handleFormSubmit}>Submit
-          </button>
-          </h3>
-        </form>
         );
       default:
         return (
           <div className="current-rule">
-            <h1 className="current-rule">{currentRule.name}</h1>
-            <h3 
-              className={
-                currentRule.name ? // if player has started game
-                  (currentRule.instructions.length > 150) ? // if char count > 150
-                    (currentRule.instructions.length > 250) ? // if char count > 250
-                      "over-250" // shrink most
-                    : "over-150" // shrink
-                  : "" // inherit
-                : "intro"}>
-              {currentRule.instructions || this.renderIntro()}
+            <h1 className="current-rule">{currentRule.name || "No name given!"}</h1>
+            <h3 className={
+              (currentRule.instructions.length > 140) ?
+                (currentRule.instructions.length > 250) ?
+                  "over-250" :
+                "over-140" :
+              ""
+            }>
+              {currentRule.instructions || "No instructions given!"}
             </h3>
           </div>
         );
@@ -256,14 +260,12 @@ class Dashboard extends Component {
     const {ruleName, ruleInstructions, currentCard, replace} = this.state;
     if (replace || currentCard.rank === "13") {
       this.setRule(ruleName, ruleInstructions, currentCard.rank, replace);
-      this.setState({ ruleName: "", ruleInstructions: "" });
     } else if (currentCard.rank === "1") {
       alert("choose a card rank!");
     }
   };
  
   setRule(name, instructions, rank, replace) {
-    console.log(name);
     if (rank == "13") {
       const kings = this.state.kingRules;
       kings.push({
@@ -274,11 +276,12 @@ class Dashboard extends Component {
       this.setState({kingRules: kings});
     }
     else if (rank == "1") {
+      if (!name) return window.alert("You must at least enter a name!");
       const oldRules = this.state.rules;
       const newRules = oldRules.filter(rule => rule.rank !== replace);
       newRules.push({
-        name, 
-        instructions,
+        name: name || "",
+        instructions: instructions || "",
         rank: replace
       });
       newRules.sort((a, b) => a.rank - b.rank);
@@ -286,8 +289,9 @@ class Dashboard extends Component {
     }
     const usedKAs = this.state.usedKAs || [];
     usedKAs.push(this.state.currentCard.id);
-    this.setState({usedKAs});
-    sessionStorage.setItem('gameState', JSON.stringify(this.state));
+    this.setState({usedKAs, ruleName: "", ruleInstructions: ""}, () => {
+      sessionStorage.setItem('gameState', JSON.stringify(this.state));
+    });
   }
 
   loadGamesFromDB() {
@@ -445,7 +449,7 @@ class Dashboard extends Component {
         deckEmpty: (this.state.cards.length === 0),
         cardAction: true
       });
-      setTimeout(() => this.setState({cardAction:false}), 700);
+      setTimeout(() => this.setState({cardAction:false}), 700); // use 100 for development, 700 for production
     }
   }
 

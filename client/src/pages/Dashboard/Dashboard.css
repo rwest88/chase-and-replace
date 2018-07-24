@@ -376,7 +376,7 @@ h1 {
   color: #ccc;
   text-shadow: 1px 2px 5px #292826;
 }
-.over-150 {
+.over-140 {
   font-size: 1.3rem;
 }
 .over-250 {
@@ -454,6 +454,10 @@ textarea {
   }
   .title {
     font-size: 3vh;
+  }
+  .nav-button, .nav-button > span {
+    font-size: 3vh;
+    padding: 3%;
   }
   /* .king-rules > div {
     position: relative;
