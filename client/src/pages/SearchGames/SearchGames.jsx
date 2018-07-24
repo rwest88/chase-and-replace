@@ -235,6 +235,7 @@ class SearchGames extends Component {
         game.data.forkedFrom = game.data.admin;
         game.data.admin = this.state.username;
         game.data.created = new Date(Date.now());
+        game.data.public = false;
         API.saveNewGame(game.data)
           .then(res => {
             if (window.confirm("New game created! Play now?")) this.loadGame(res.data);
