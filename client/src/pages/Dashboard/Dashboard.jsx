@@ -225,7 +225,7 @@ class Dashboard extends Component {
             <h1 className="current-rule">{currentRule.name}</h1>
             <h3 
               className={
-                currentRule.instructions ? // if player has started game
+                currentRule.name ? // if player has started game
                   (currentRule.instructions.length > 150) ? // if char count > 150
                     (currentRule.instructions.length > 250) ? // if char count > 250
                       "over-250" // shrink most
