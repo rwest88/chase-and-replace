@@ -13,7 +13,6 @@
 .dropdown-menu {
   z-index: 2001;
   background-color: #252829 !important;
-  /* padding: 10px; */
 }
 .dropdown-menu > p {
   color: #eee;

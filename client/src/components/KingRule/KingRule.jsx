@@ -14,7 +14,4 @@ const KingRule = props=>(
     </div>
   );
 
-
-
-
 export default KingRule;

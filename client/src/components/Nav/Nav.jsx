@@ -81,7 +81,7 @@ class Nav extends React.Component {
                 Search Games
               </Link>
             </li>
-            {!localStorage.username ?
+            {!localStorage.username ? // Check to see if user is logged in
               <li className="nav-item">
               <Link to="/dashboard"
                     className={
@@ -90,7 +90,7 @@ class Nav extends React.Component {
                 Sign In / Register
               </Link>
             </li>
-            :
+            :  // Display sign in or sign out accordingly
             <li className="nav-item">
               <a className="nav-link" href="/dashboard" onClick={() => this.signOut()}>
                 Sign Out
