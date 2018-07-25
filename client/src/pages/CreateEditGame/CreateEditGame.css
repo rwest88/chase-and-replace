@@ -7,16 +7,14 @@
 html {
   background-color: slategray;
   background-image: url("/images/stone.png");
-  /* overflow: scroll; */
 }
 body {
   background-color: slategray;
   background-image: url("/images/stone.png");
-  
 }
 .create-menu {
   width: 95%;
-  background-color: #c9920e;  /* rgb(123, 112, 144); */
+  background-color: #c9920e;  
   padding:.5%;
   border: .5rem solid #252829;
   border-radius: 5px;
@@ -43,7 +41,6 @@ body {
 .col button {
   background-color: rgb(49, 49, 163);
   color: #eee;
-  /* border: inherit; */
 }
 .dropdown-menu {
   z-index: 2000;
@@ -51,7 +48,6 @@ body {
 .dropdown-menu.edit {
   padding: 1px;
   padding-right: 3px;
-
 }
 .dropdown-item {
   text-align: left;
@@ -72,7 +68,6 @@ textarea {
 .rule-input-group {
   float: left;
   width: 24vw;
-  /* height: 14vh; */
   margin-left: 6px;
 }
 .rule-input-group > * {
@@ -80,13 +75,10 @@ textarea {
 }
 .rule-card {
   box-shadow: 2px 2px 8px navy;
-  width: 5.2vw;
-  /* height: 14.8vh; */
-  
+  width: 5.2vw;  
 }
 .input-group-instr {
   height: 4.6vw;
-  /* height: auto; */
 }
 .input-group-text {
   background-color: #fadf8d;
@@ -120,8 +112,3 @@ textarea {
     margin: .5rem;
   }
 }
-/* @media screen and (max-height: 675px) {
-  html {
-    overflow: scroll;
-  }
-} */

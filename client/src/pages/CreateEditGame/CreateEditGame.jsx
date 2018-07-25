@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Nav from "../../components/Nav";
 import { Redirect } from "react-router-dom";
 import "./CreateEditGame.css";
-// import cards from "../Dashboard/cards.json";
 import DeleteBtn from "../../components/DeleteBtn";
 import games from "../Dashboard/games.json";
 import newGameTemplate from "../Dashboard/newGameTemplate.json";
@@ -67,6 +66,7 @@ class CreateEditGame extends Component {
       games = this.addRandom(games);
     }
 
+    // Set current version to most recent (or only) version
     if (selectedVersion === undefined) var selectedVersion = selectedGame.versions.length - 1;
 
     this.setState({
@@ -162,7 +162,7 @@ class CreateEditGame extends Component {
   createNewGame = () => {
     const {newGameRules, versionName, username} = this.state;
     const errors = [];
-    for (let i = 1; i < newGameRules.length - 1; i++) {
+    for (let i = 1; i < newGameRules.length - 1; i++) { 
       if (!newGameRules[i].name) errors.push(`${newGameRules[i].rank}: name`);
       if (!newGameRules[i].instructions) errors.push(`${newGameRules[i].rank}: instructions`);
     }
@@ -201,7 +201,11 @@ class CreateEditGame extends Component {
     }
   }
 
-  pushBlankVersion = (obj, didMount, createNew) => {
+  pushBlankVersion = (obj, didMount, createNew) => { 
+    // 1) If a rule has changed (without version save) a new version is tagged (as "[NEW]")
+    // 2) Receives and updates an object which will be used to set State
+    // 'vers' is used as an index to specify the value of <select> containing versions array
+    // 'versionName' and 'newGameRules' are defined here as well
     const rules = obj.rules || this.state.rules;
     let blank = null;
     if (obj.newAce || this.state.newAce || createNew === true || (localStorage.getItem(`versionState: ${obj.gameName}`))) {
@@ -214,15 +218,14 @@ class CreateEditGame extends Component {
       };
       versions.push(blank);
       obj.versions = versions;
-      obj.vers = obj.versions.length - 1;
+      obj.vers = obj.versions.length - 1; // ensures this will show inside <select>
       obj.versionName = "[NEW]";
     } 
     else {
-      obj.vers = obj.versionIndex;
+      obj.vers = obj.versionIndex; // ensure proper select value
     }
-    if (didMount) {
-      if (blank === null) obj.versionName = obj.versions[obj.vers].versionName;
-    }
+    // versionName gets defined by the version that is being played
+    if (didMount && !blank) obj.versionName = obj.versions[obj.vers].versionName;
     obj.newGameRules = rules;
     return obj;
   }
@@ -234,6 +237,7 @@ class CreateEditGame extends Component {
     if (!changedInput && versionName !== "[NEW]") return window.alert("You didn't change anything!");
     if (currentGame.gameName === "[Random Mix!]") {
       if (window.confirm("Version history cannot be saved. Do you want to save the current rules as a new game?")) return this.createNewGame();
+      else return false;
     }
     const errors = [];
     for (let i = 1; i < newGameRules.length - 1; i++) {
