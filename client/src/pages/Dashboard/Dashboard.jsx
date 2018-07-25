@@ -566,14 +566,7 @@ class Dashboard extends Component {
             <img alt={this.state.currentCard.rank} 
                  src={this.state.currentCard.image} 
                  onClick={() => this.undo()}
-                //  onMouseEnter={() => this.setState({ hover: true })}
-                //  onMouseLeave={() => this.setState({ hover: false })}
                  className={this.state.cardAction ? "current-card card-action" : "current-card"}/>
-            {/* <img alt="undo" src="./images/undo.png" 
-                 onClick={() => this.undo()} 
-                 onMouseEnter={() => this.setState({ hover: true })}
-                 onMouseLeave={() => this.setState({ hover: false })}
-                 className={this.state.hover ? "undo" : "undo"} /> */}
           </div>
           
           <div className="king-rules">

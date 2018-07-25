@@ -2,7 +2,10 @@
 
 A Full-Stack MERN web app (MongoDB, Express.js, React, Node.js)
 
+### "The GitHub of Drinking Games"
+
 - A variation of the drinking game, Kings!
+- Functions as a playable game as well as a customizable library of games and versions
 - Like Kings, players take turns drawing cards, each card rank (2 through King) prompts the player (or the group) to perform a task.
 - When a player draws an Ace, he/she then changes one of the rules associated with a chosen card rank, which sticks around permanently. Because of this, the game evolves the more it is played.
 - The user can save into a version history when he/she is satisfied with the rules.
@@ -17,7 +20,6 @@ A Full-Stack MERN web app (MongoDB, Express.js, React, Node.js)
 - express
 - express-session
 - if-env
-- insert-css
 - moment
 - mongoose
 - morgan
@@ -44,21 +46,9 @@ $ yarn start
 
 ## Screenshots
 
-Home page before login:
+Example page:
 
-![Alt Home Page](/README/home.png?raw=true)
-
-Sign up page:
-
-![Alt Signup Page](/README/signup.png?raw=true)
-
-Login page:
-
-![Alt Login Page](/README/login.png?raw=true)
-
-Dashboard which is only accessible after login:
-
-![Alt Dashboard](/README/dashboard.png?raw=true)
+![Alt Example Page](/README/example.png?raw=true)
 
 #### Wireframes
 

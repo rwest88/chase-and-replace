@@ -77,12 +77,6 @@ module.exports = {
       })
       .catch(err => res.status(422).json(err));
   },
-  // sortVersions: function(req, res) {
-  //   console.log("agg");
-  //   db.Game.aggregate( [ {$match: {_id: req.params.id}}, { $unwind: "$versions"}, { $sort: { "versions.date": -1 } } ] )
-  //   .then(dbm => res.json(dbm))
-  //   .catch(err => res.status(422).json(err));
-  // },
   togglePublic: function(req, res) {
     db.Game.findOne({_id: req.body.gameID})
       .then(game => {
