@@ -6,8 +6,6 @@ module.exports = {
     db.Game
       .find({admin: req.params.name})
       .then(dbModel => {
-        console.log(dbModel)
-        console.log("where the hell is it")
         res.json(dbModel)})
       .catch(err => res.status(422).json(err));
   },
@@ -20,7 +18,7 @@ module.exports = {
         let gameIDs = dbModel.map(game => game._id);
         console.log(gameIDs);
         db.User.update( {userName: req.body.user_name}, { $push: { games: { $each: gameIDs } } }, {new: true} )
-          .then(res => console.log("meowmeow"))
+          .then(res => console.log("added to " + req.body.user_name))
           .catch(err => console.log(err));
         res.json(dbModel);
       })
