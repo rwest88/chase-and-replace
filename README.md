@@ -2,6 +2,10 @@
 
 A Full-Stack MERN web app (MongoDB, Express.js, React, Node.js)
 
+## Try it on Heroku
+
+- https://chase-and-replace.herokuapp.com
+
 ### "The GitHub of Drinking Games"
 
 - A variation of the drinking game, Kings!
@@ -32,13 +36,17 @@ A Full-Stack MERN web app (MongoDB, Express.js, React, Node.js)
 
 After cloning the repo, follow the steps below:
 ```sh
+$ mongod
+```
+Open a second terminal:
+```sh
 $ cd chase-and-replace
 ```
 ```sh
 $ yarn install
 ```
 ```sh
-$ mongod
+$ yarn seed
 ```
 ```sh
 $ yarn start
@@ -58,4 +66,4 @@ Dashboard - https://wireframe.cc/UR7GB2
 
 Create / Edit - https://wireframe.cc/qh8uv0
 
-Search -https://wireframe.cc/DQFgr3
+Search - https://wireframe.cc/DQFgr3
