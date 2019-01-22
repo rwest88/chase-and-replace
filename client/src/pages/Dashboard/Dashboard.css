@@ -226,34 +226,6 @@ body {
 .deck:hover {
   box-shadow: 1px 1px 15px 4px lime;
 }
-.current-cards {
-  position: relative;
-  grid-column: 5/8;
-  grid-row: 2/7;
-  text-align: center;
-  z-index: 6;
-}
-@keyframes mymove {
-  0% {  
-    top: -17%;
-    left: -111%;
-    height: 63%;
-    transform: perspective(475px) rotateX(40deg) skew(-18deg) rotate(-360deg);
-  }
-  100% {  
-    top: 0px;
-    left: 0px;
-    height: 100%;
-    transform: perspective(0px) rotateX(0deg) skew(0deg) rotate(0deg);
-  }
-}
-.current-card {
-  position: relative;
-  height: 100%;
-}
-.card-action {
-  animation: mymove .6s;
-}
 .undo {
   position: fixed;
   top: 18%;

@@ -18,7 +18,7 @@ class Nav extends React.Component {
     sessionStorage.clear();
   }
   
-  render = ({games, loadGame} = this.props) => {
+  render = ({ games, loadGame } = this.props) => {
 
     return (
       <nav className="navbar navbar-expand-lg navbar-dark">
