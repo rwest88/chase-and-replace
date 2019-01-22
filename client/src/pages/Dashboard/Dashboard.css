@@ -192,7 +192,8 @@ body {
   /* transform: skew(-30deg); */
 }
 .table > img.stein {
-  top: 18%;
+  top: 287%;
+  /* ^ JAN'19 (was 18%) */
   left: 8%;
   z-index: 600;
   height: 15%;
@@ -200,7 +201,8 @@ body {
   transform: skew(0deg);
 }
 .table > img.click-to-start, img.click-to-continue {
-  top: 20%;
+  top: 238%;
+  /* ^ JAN'19 (was 20%) */
   left: 58%;
   height: 18%;
   width: initial;
@@ -215,7 +217,8 @@ body {
 .deck {
   height: 80%;
   position: relative;
-  top: 7%;
+  top: 15% !important;
+  /* ^ JAN'19 (was 7% -important) */
   left: 5%;
   z-index: 5;
   transform: perspective(475px) rotateX(40deg) skew(-18deg);
@@ -243,7 +246,7 @@ body {
   grid-row: 4/11;
   /* background-color: darkgreen; */
   padding: 9vh 3% 3% 3%;
-  position: relative;
+  /* position: relative;     JAN'19 */
   top: 100%;
   transform: perspective(650px) rotateX(40deg) skew(-20deg);
   background-color: red;
