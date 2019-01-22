@@ -1,10 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import LandingLogin from "./pages/LandingLogin";
+// import LandingLogin from "./pages/LandingLogin";
 import Dashboard from "./pages/Dashboard";
 import CreateEditGame from "./pages/CreateEditGame";
 import SearchGames from "./pages/SearchGames";
-import API from "./utils/API";
 // import NoMatch from "./pages/NoMatch_old";
 
 

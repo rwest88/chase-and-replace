@@ -3,7 +3,6 @@ import Nav from "../../components/Nav";
 import { Redirect } from "react-router-dom";
 import API from "../../utils/API";
 import "./SearchGames.css";
-import cards from "../Dashboard/cards.json";
 import games from "../Dashboard/games.json";
 import StarRatingComponent from "react-star-rating-component";
 
@@ -29,7 +28,7 @@ class SearchGames extends Component {
     sessionObject.gamesByUser = [[{gameName: "blank"}]];
     sessionObject.titleResults = [{gameName: "blank"}];
     sessionObject.showBadges = [];
-    for (let i in sessionObject.games) sessionObject.showBadges.push(false);
+    sessionObject.games.forEach(() => sessionObject.showBadges.push(false));
     this.populateBadgesArray(sessionObject);
     this.setState(sessionObject, () => this.searchDB());
   }
@@ -40,7 +39,7 @@ class SearchGames extends Component {
 
   loadGame = (selectedGame, selectedVersion, createdNew) => {
     
-    let {games} = this.state;
+    let { games } = this.state;
     let rules;
 
     if (this.state.newAce === true && (this.state.currentGame)) {
@@ -61,7 +60,7 @@ class SearchGames extends Component {
       games = this.addRandom(games);
     }
 
-    if (selectedVersion === undefined) var selectedVersion = selectedGame.versions.length - 1;
+    if (selectedVersion === undefined) selectedVersion = selectedGame.versions.length - 1;
 
     this.setState({
       redirectTo: "/dashboard",

@@ -90,7 +90,7 @@ class Dashboard extends Component {
       games = this.addRandom(games);
     }
 
-    if (selectedVersion === undefined) var selectedVersion = selectedGame.versions.length - 1;
+    if (selectedVersion === undefined) selectedVersion = selectedGame.versions.length - 1;
 
     this.setState({
       cards: this.shuffleArray(this.state.cards.concat(this.state.burnedCards || {})),
@@ -220,7 +220,8 @@ class Dashboard extends Component {
             </h3>
           </form>
         );
-      case null, undefined: // player hasn't started game
+      case null:
+      case undefined: // player hasn't started game
         return (
           <div className="current-rule">
             <h3 className="intro">{this.renderIntro()}</h3>
@@ -267,7 +268,7 @@ class Dashboard extends Component {
   };
  
   setRule(name, instructions, rank, replace) {
-    if (rank == '13') {
+    if (rank === '13') {
       const kings = this.state.kingRules;
       kings.push({
         name,
@@ -276,7 +277,7 @@ class Dashboard extends Component {
       });
       this.setState({kingRules: kings});
     }
-    else if (rank == '1') {
+    else if (rank === '1') {
       if (!name) return window.alert('You must at least enter a name!');
       const oldRules = this.state.rules;
       const newRules = oldRules.filter(rule => rule.rank !== replace);
@@ -540,18 +541,11 @@ class Dashboard extends Component {
                  onClick={() => this.drawCard()}/>
           </div>
           
-          {/* <div className="displayed-card">
-            <img alt={this.state.currentCard.rank} 
-                 src={this.state.currentCard.image} 
-                 onClick={() => this.undo()}
-                 className={this.state.cardAction ? "current-card card-action" : "current-card"}/>
-          </div> */}
-
           <DisplayedCard 
-            alt={this.state.currentCard.rank} 
-            src={this.state.currentCard.image} 
-            onClick={() => this.undo()} 
-            cardAction={this.state.cardAction} 
+            alt={this.state.currentCard.rank}
+            src={this.state.currentCard.image}
+            onClick={() => this.undo()}
+            cardAction={this.state.cardAction}
           />
           
           <div className="king-rules">
@@ -591,7 +585,7 @@ class Dashboard extends Component {
           
           <div className="HUD">
             <div className={this.state.burnedCards.length ? 
-              (this.state.currentCard.rank == 1 && !this.state.usedKAs.includes(this.state.currentCard.id)) ? "banner-turned faded" : "banner-turned" 
+              (this.state.currentCard.rank === '1' && !this.state.usedKAs.includes(this.state.currentCard.id)) ? "banner-turned faded" : "banner-turned" 
               : "hide"}>
               <img alt="banner" src="./images/regal6.png" />
             </div>

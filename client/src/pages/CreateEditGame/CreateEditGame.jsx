@@ -67,7 +67,7 @@ class CreateEditGame extends Component {
     }
 
     // Set current version to most recent (or only) version
-    if (selectedVersion === undefined) var selectedVersion = selectedGame.versions.length - 1;
+    if (selectedVersion === undefined) selectedVersion = selectedGame.versions.length - 1;
 
     this.setState({
       redirectTo: "/dashboard",
