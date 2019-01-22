@@ -77,12 +77,12 @@ class Dashboard extends Component {
       }
     }
     
-      if (localStorage.getItem(`versionState: ${selectedGame.gameName}`)) {
-        if (window.confirm(`Load previous rule changes to ${selectedGame.gameName}?`)) {
-          const localObject = JSON.parse(localStorage.getItem(`versionState: ${selectedGame.gameName}`));
-          rules = localObject;
-        }
+    if (localStorage.getItem(`versionState: ${selectedGame.gameName}`)) {
+      if (window.confirm(`Load previous rule changes to ${selectedGame.gameName}?`)) {
+        const localObject = JSON.parse(localStorage.getItem(`versionState: ${selectedGame.gameName}`));
+        rules = localObject;
       }
+    }
 
     if (selectedGame.gameName === "[Random Mix!]") {
       games = games.filter(game => game.gameName !== "[Random Mix!]");
@@ -127,7 +127,6 @@ class Dashboard extends Component {
           <li>As rules change, version history is saved (for premium users)</li>
           <li>Premium users can create themed games and share them online!</li>
         </ul>
-
         <p>You will see instructions for each card in this window.</p>
       </div>
     )
