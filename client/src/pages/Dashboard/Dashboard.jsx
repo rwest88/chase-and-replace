@@ -7,6 +7,7 @@ import cards from './cards.json';
 import games from './games.json';
 import './Dashboard.css';
 import Background from '../../components/Background';
+import DisplayedCard from '../../components/DisplayedCard';
 import GameRule from '../../components/GameRule';
 import KingRule from '../../components/KingRule';
 
@@ -539,12 +540,19 @@ class Dashboard extends Component {
                  onClick={() => this.drawCard()}/>
           </div>
           
-          <div className="current-cards">
+          {/* <div className="displayed-card">
             <img alt={this.state.currentCard.rank} 
                  src={this.state.currentCard.image} 
                  onClick={() => this.undo()}
                  className={this.state.cardAction ? "current-card card-action" : "current-card"}/>
-          </div>
+          </div> */}
+
+          <DisplayedCard 
+            alt={this.state.currentCard.rank} 
+            src={this.state.currentCard.image} 
+            onClick={() => this.undo()} 
+            cardAction={this.state.cardAction} 
+          />
           
           <div className="king-rules">
             <div className="scroll king">
