@@ -16,38 +16,6 @@ body {
 .wrapper > div {
   text-align: center;
 }
-.background {
-  z-index: 0;
-  display: grid;
-  grid-template-columns: 50% 50%;
-  grid-auto-rows:9vh;
-  grid-column: 1/12;
-  grid-row: 1/12;
-  text-align: center;
-  /* position: relative; */
-}
-.background > .background-image {
-  text-align: center;
-  grid-column: 1/3;
-  grid-row: 1/2;
-  z-index: 0;
-  -webkit-transform: perspective(650px) rotateX(40deg);
-}
-.background-tile {
-  /* transform: rotate(-90deg); */
-  text-align: center;
-  z-index: -200;
-  position: relative;
-  top: -80%;
-  left: -8%;
-  display: grid;
-  grid-template-columns: 250px 250px 250px 250px 250px 250px;
-}
-.background-tile > img {
-  position: relative;
-  top: -100%;
-  width: 250px;
-}
 .game-title {
   display: grid;
   grid-template-columns: 50% 50%;

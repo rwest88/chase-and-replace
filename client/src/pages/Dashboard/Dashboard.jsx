@@ -1,13 +1,14 @@
-import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
-import Nav from "../../components/Nav";
-// import CurrentCard from "../../components/CurrentCard";
-import API from "../../utils/API";
-import cards from "./cards.json";
-import games from "./games.json";
-import "./Dashboard.css";
-import GameRule from "../../components/GameRule";
-import KingRule from "../../components/KingRule";
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
+import Nav from '../../components/Nav';
+// import CurrentCard from '../../components/CurrentCard';
+import API from '../../utils/API';
+import cards from './cards.json';
+import games from './games.json';
+import './Dashboard.css';
+import Background from '../../components/Background';
+import GameRule from '../../components/GameRule';
+import KingRule from '../../components/KingRule';
 
 class Dashboard extends Component {
 
@@ -144,7 +145,7 @@ class Dashboard extends Component {
     }
 
     switch(currentCard.rank) {
-      case "13":
+      case '13':
         return (
           <form className="current-rule">
             <h1 className="king">Make a Rule!</h1>
@@ -173,7 +174,7 @@ class Dashboard extends Component {
             </h3>
           </form>
         );
-      case "1":
+      case '1':
         return (
           <form className="current-rule">
             <h1 className="chase-replace">Chase and Replace!</h1>
@@ -258,15 +259,15 @@ class Dashboard extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
     const {ruleName, ruleInstructions, currentCard, replace} = this.state;
-    if (replace || currentCard.rank === "13") {
+    if (replace || currentCard.rank === '13') {
       this.setRule(ruleName, ruleInstructions, currentCard.rank, replace);
-    } else if (currentCard.rank === "1") {
-      alert("choose a card rank!");
+    } else if (currentCard.rank === '1') {
+      alert('choose a card rank!');
     }
   };
  
   setRule(name, instructions, rank, replace) {
-    if (rank == "13") {
+    if (rank == '13') {
       const kings = this.state.kingRules;
       kings.push({
         name,
@@ -275,8 +276,8 @@ class Dashboard extends Component {
       });
       this.setState({kingRules: kings});
     }
-    else if (rank == "1") {
-      if (!name) return window.alert("You must at least enter a name!");
+    else if (rank == '1') {
+      if (!name) return window.alert('You must at least enter a name!');
       const oldRules = this.state.rules;
       const newRules = oldRules.filter(rule => rule.rank !== replace);
       newRules.push({
@@ -495,30 +496,7 @@ class Dashboard extends Component {
 
         <div className="wrapper">
           
-          <div className="background">
-            <div className="background-image">
-              <div className="background-tile">
-              <img alt="stone" src="./images/stone.png" />
-              <img alt="stone" src="./images/stone.png" />
-              <img alt="stone" src="./images/stone.png" />
-              <img alt="stone" src="./images/stone.png" />
-              <img alt="stone" src="./images/stone.png" />
-              <img alt="stone" src="./images/stone.png" /> 
-              <img alt="stone" src="./images/stone.png" />
-              <img alt="stone" src="./images/stone.png" />
-              <img alt="stone" src="./images/stone.png" /> 
-              <img alt="stone" src="./images/stone.png" />
-              <img alt="stone" src="./images/stone.png" />
-              <img alt="stone" src="./images/stone.png" />
-              <img alt="stone" src="./images/stone.png" />
-              <img alt="stone" src="./images/stone.png" />
-              <img alt="stone" src="./images/stone.png" /> 
-              <img alt="stone" src="./images/stone.png" />
-              <img alt="stone" src="./images/stone.png" />
-              <img alt="stone" src="./images/stone.png" /> 
-              </div>
-            </div>
-          </div>
+          <Background tiles={32} />
 
           <div className="game-title">
             <div className={this.state.burnedCards.length ? "banner raised" : "banner"}>
