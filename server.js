@@ -26,8 +26,32 @@ if (process.env.NODE_ENV === "production") {
 // Add routes, both API and view
 app.use(routes);
 
+var username = 'YOUR_USERNAME';
+var password = 'YOUR_PASSWORD';
+var hosts = 'iad2-c13-1.mongo.objectrocket.com:54555,iad2-c13-2.mongo.objectrocket.com:54555,iad2-c13-0.mongo.objectrocket.com:54555';
+var database = 'YOUR_DATABASE_NAME';
+var options = '?replicaSet=6c0f6352a2e546c6b87d828a365cae32';
+var connectionString = 'mongodb://' + username + ':' + password + '@' + hosts + '/' + database + options;
+
 // Connect to the Mongo DB
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/kings");
+// mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/kings");
+mongoose.connect(connectionString)
+
+// Ensure you have run 'npm install mongodb'
+// var MongoClient = require('mongodb').MongoClient;
+
+
+// MongoClient.connect(connectionString, function(err, db) {
+//     if (db) {
+//         db.close();
+//     }
+//     if (err) {
+//         console.log('Error: ', err);
+//     } else {
+//         console.log('Connected!');
+//         process.exit();
+//     }
+// });
 
 // Start the API server
 app.listen(PORT, function() {
