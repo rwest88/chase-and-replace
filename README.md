@@ -18,8 +18,6 @@ A Full-Stack MERN web app (MongoDB, Express.js, React, Node.js)
 #### Packages Used
 
 - axios
-- bcrypt
-- bcrypt-nodejs
 - body-parser
 - express
 - express-session

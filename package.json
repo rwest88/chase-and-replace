@@ -21,8 +21,6 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "bcrypt": "^2.0.1",
-    "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.17.2",
     "express": "^4.15.4",
     "express-session": "^1.15.6",
