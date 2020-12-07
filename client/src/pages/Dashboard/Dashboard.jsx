@@ -39,7 +39,7 @@ class Dashboard extends Component {
   componentWillMount() {
     if (!localStorage.getItem('username')) {
       // redirect to landing page, move this block into there.
-      const username = window.prompt("Enter your username: (Pretend this is logging in. Hit cancel for no login.")
+      const username = window.prompt("Enter your username. (Recruiters and Hiring Managers, please login as 'guest')", "guest")
       if (username) {
         localStorage.setItem('username', username)
         this.setState({username})
