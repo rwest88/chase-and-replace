@@ -10,10 +10,10 @@ mongoose.Promise = global.Promise;
 //   process.env.MONGODB_URI || "mongodb://localhost/kings"
 // );
 
-var username = 'YOUR_USERNAME';
-var password = 'YOUR_PASSWORD';
+var username = 'kings';
+var password = 'kingston';
 var hosts = 'iad2-c13-1.mongo.objectrocket.com:54555,iad2-c13-2.mongo.objectrocket.com:54555,iad2-c13-0.mongo.objectrocket.com:54555';
-var database = 'YOUR_DATABASE_NAME';
+var database = 'kings';
 var options = '?replicaSet=6c0f6352a2e546c6b87d828a365cae32';
 var connectionString = 'mongodb://' + username + ':' + password + '@' + hosts + '/' + database + options;
 
