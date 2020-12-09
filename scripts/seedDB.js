@@ -6,36 +6,10 @@ mongoose.Promise = global.Promise;
 // To apply this to Heroku:
 // Add to package.json -- { "scripts" : { "heroku-postbuild": "node scripts/seedDB.js && npm run build" } }
 
-// mongoose.connect(
-//   process.env.MONGODB_URI || "mongodb://localhost/kings"
-// );
-
-var username = 'kings';
-var password = 'kingston';
-var hosts = 'iad2-c13-1.mongo.objectrocket.com:54555,iad2-c13-2.mongo.objectrocket.com:54555,iad2-c13-0.mongo.objectrocket.com:54555';
-var database = 'kings';
-var options = '?replicaSet=6c0f6352a2e546c6b87d828a365cae32';
-var connectionString = 'mongodb://' + username + ':' + password + '@' + hosts + '/' + database + options;
-
 // Connect to the Mongo DB
+const uri = "mongodb+srv://rwest88:rwest88@cluster0.asalx.mongodb.net/kings?retryWrites=true&w=majority";
+mongoose.connect(uri);
 // mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/kings");
-mongoose.connect(connectionString)
-
-// Ensure you have run 'npm install mongodb'
-// var MongoClient = require('mongodb').MongoClient;
-
-
-// MongoClient.connect(connectionString, function(err, db) {
-//     if (db) {
-//         db.close();
-//     }
-//     if (err) {
-//         console.log('Error: ', err);
-//     } else {
-//         console.log('Connected!');
-//         process.exit();
-//     }
-// });
 
 const gameSeed = [
   {
@@ -309,13 +283,13 @@ const userSeed = [
 // user
 
 db.User
-  .remove({})
+  .findOneAndRemove({})
   .then(() => db.User.create(userSeed))
   .then(data => {
     console.log(data.length + " records inserted into User collection!");
 
     db.Game
-    .remove({})
+    .findOneAndRemove({})
     .then(() => db.Game.insertMany(gameSeed))
     .then(data => {
       console.log(data.length + " records inserted into Game collection!");
