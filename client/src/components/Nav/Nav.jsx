@@ -78,7 +78,7 @@ class Nav extends React.Component {
                     className={
                     window.location.pathname === "/search" ? "nav-link active" : "nav-link"
               }>
-                Search Games
+                Community
               </Link>
             </li>
             {!localStorage.username ? // Check to see if user is logged in
