@@ -26,7 +26,6 @@ A Full-Stack MERN web app (MongoDB, Express.js, React, Node.js)
 - mongoose
 - morgan
 - passport
-- passport-local
 - react-moment
 - react-star-rating-component
 
