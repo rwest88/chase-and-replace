@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import Nav from '../../components/Nav';
-// import CurrentCard from '../../components/CurrentCard';
 import API from '../../utils/API';
 import cards from './cards.json';
 import games from './games.json';
@@ -38,7 +37,6 @@ class Dashboard extends Component {
 
   componentWillMount() {
     if (!localStorage.getItem('username')) {
-      // redirect to landing page, move this block into there.
       const username = window.prompt("Enter your username. (Recruiters and Hiring Managers, please login as 'guest')", "guest")
       if (username) {
         localStorage.setItem('username', username)
@@ -69,8 +67,6 @@ class Dashboard extends Component {
 
     let {games} = this.state;
     let rules;
-    
-    // if (selectedGame === undefined) selectedGame = games[0];
 
     if (this.state.newAce === true && (this.state.currentGame)) {
       if (window.confirm(`Save current rule changes to ${this.state.currentGame.gameName}?  \n\n(Note: This will not add a new version. Click 'Save Current as Version' when you are happy with the set of rules.)`)) {
@@ -221,7 +217,7 @@ class Dashboard extends Component {
           </form>
         );
       case null:
-      case undefined: // player hasn't started game
+      case undefined:
         return (
           <div className="current-rule">
             <h3 className="intro">{this.renderIntro()}</h3>
@@ -298,16 +294,16 @@ class Dashboard extends Component {
 
   loadGamesFromDB() {
     
-    if (this.state.username) { // IF AUTHENTICATED / SIGNED IN
+    if (this.state.username) {
       console.log("loading games from DB");
-      API.getUser(this.state.username) // retrieves user obj
+      API.getUser(this.state.username)
         .then(userRes => {
           console.log(userRes);
           if (userRes.data.length > 0) {
             console.log("user exists");
             if (!userRes.data[0].seeded) {
               console.log("seeding user");
-              API.getDefaultGames("Chase_Replacenson")  // retrieves admin: Chase_Replacenson
+              API.getDefaultGames("Chase_Replacenson")
                 .then(res => {
                   let clones = [];
                   for (let i in res.data) {
@@ -333,7 +329,7 @@ class Dashboard extends Component {
                     }).catch(err => console.log(err));
                 }).catch(err => console.log(err));
             }
-            else {     // if already seeded // need to grab created games
+            else {
               console.log("already seeded");
               API.getGamesByUser({gameIDs: userRes.data[0].games})
                 .then(res => {
@@ -353,7 +349,7 @@ class Dashboard extends Component {
             console.log("creating user");
             API.createUser({
               userName: this.state.username,
-              email: this.state.username + "@aol.com", // fake
+              email: this.state.username + "@aol.com",
               password: "password",
               seeded: false,
               games: []
@@ -410,8 +406,6 @@ class Dashboard extends Component {
   }
 
   saveVersion() {
-    // local storage
-    // db (authenticated)
     if (this.state.newAce || localStorage.getItem(`versionState: ${this.state.currentGame.gameName}`)) {
       const name = window.prompt("Enter a name for this version:");
       if (name) {
@@ -451,7 +445,7 @@ class Dashboard extends Component {
         deckEmpty: (this.state.cards.length === 0),
         cardAction: true
       });
-      setTimeout(() => this.setState({cardAction:false}), 700); // use 100 for development, 700 for production
+      setTimeout(() => this.setState({cardAction:false}), 700);
     }
   }
 
